@@ -1,21 +1,13 @@
 <template>
-  <Header />
-  <main>
-    <RouterView />
-  </main>
-  <Footer />
+  <RouterView />
+  <div class="teleport">
+    <!--SideBar, Alert, Toast, No Modal-->
+    <!--Component here controlled by ui store (not main logic)-->
+    <SideNav />
+  </div>
 </template>
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Footer from '@/components/layouts/Footer.vue'
-import Header from '@/components/layouts/Header.vue'
+import SideNav from '@/components/navigations/SideNav.vue'
 </script>
-
-<style scoped>
-/* height: calc(100vh - var(--footer-height)); */
-main {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-</style>
+<style scoped></style>

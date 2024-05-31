@@ -4,4 +4,13 @@
 
 :root {
     --footer-height: 95px;
+    --header-height: 64px;
+}
+
+body {
+    padding-top: var(--header-height);
+}
+
+.prevent-scroll {
+    overflow: hidden;
 }

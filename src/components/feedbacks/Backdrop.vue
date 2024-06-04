@@ -1,5 +1,9 @@
 <template>
-  <div class="backdrop backdrop-blur-sm prevent-scroll" v-show="isOpen"></div>
+  <div
+    class="backdrop backdrop-blur-sm prevent-scroll"
+    v-show="isOpen"
+    @click="$emit('bgClick')"
+  ></div>
 </template>
 <script lang="ts" setup>
 import { watchEffect } from 'vue'
@@ -7,6 +11,8 @@ import { watchEffect } from 'vue'
 const props = defineProps<{
   isOpen: boolean
 }>()
+
+const emit = defineEmits(['bgClick'])
 
 watchEffect(() => {
   if (props.isOpen) {

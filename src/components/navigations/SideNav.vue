@@ -62,6 +62,13 @@ const isOpen = computed(() => sidebar.isOpen)
 @media (min-width: 768px) {
   .side-nav {
     left: 0;
+    width: 100px;
+  }
+
+  .open {
+    left: 0;
   }
 }
+
+
 </style>

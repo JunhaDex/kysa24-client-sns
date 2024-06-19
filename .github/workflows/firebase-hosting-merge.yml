@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: ls -al
       - env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KYSA24_SNS }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CONFIG_KYSA24_SNS }}
         run: mkdir secret && echo $FIREBASE_TOKEN > ./secret/firebase-config.json
       - run: yarn && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0

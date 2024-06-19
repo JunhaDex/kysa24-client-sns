@@ -9,5 +9,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import SideNav from '@/components/navigations/SideNav.vue'
+import { onMounted } from 'vue'
+import { FirebaseProvider } from '@/providers/firebase.provider'
+
+const firebase = new FirebaseProvider()
+onMounted(async () => {
+  console.log('App.vue mounted')
+  const fcm = await firebase.getUserToken()
+  console.log('fcm', fcm)
+})
 </script>
 <style scoped></style>

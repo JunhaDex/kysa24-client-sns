@@ -21,3 +21,9 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# secret
+.env
+*.env
+!.env.example
+secret

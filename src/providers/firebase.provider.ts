@@ -10,7 +10,6 @@ export class FirebaseProvider {
   constructor() {
     this.app = initializeApp(firebaseConfig)
     this.messaging = getMessaging(this.app)
-    this.setupMessageListener()
   }
 
   async getUserToken() {

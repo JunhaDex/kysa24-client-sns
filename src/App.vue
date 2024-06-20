@@ -17,6 +17,7 @@ onMounted(async () => {
   console.log('App.vue mounted')
   const fcm = await firebase.getUserToken()
   console.log('fcm', fcm)
+  firebase.setupMessageListener()
 })
 </script>
 <style scoped></style>

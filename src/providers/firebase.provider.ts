@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 import firebaseConfig from '@/../secret/firebase-config.json'
 
-
 export class FirebaseProvider {
   private readonly app
   private readonly messaging
@@ -26,16 +25,15 @@ export class FirebaseProvider {
           }
         })
       }
-
     } catch (e: any) {
       console.error('getUserTokenErr', e)
       throw e
     }
   }
 
-  setupMessageListener() {
+  setupMessageListener(): void {
     onMessage(this.messaging, (payload) => {
-      console.log('Message received. ', payload)
+      console.log('Message received foreground: ', payload)
     })
   }
 }

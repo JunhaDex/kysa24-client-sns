@@ -1,17 +1,15 @@
 <template>
-  <header class="header bg-amber-200" :class="{ 'header--scrolling-up': isScrollingUp }">
-    <div class="flex justify-between items-center py-4">
-      <router-link to="/" class="text-2xl font-bold">Vue 3</router-link>
+  <header class="header" :class="{ 'header--scrolling-up': isScrollingUp }">
+    <div class="container flex justify-between items-center py-2">
+      <router-link to="/" class="text-lg font-bold">Crewz</router-link>
       <nav>
-        <ul class="flex space-x-4">
+        <ul class="flex space-x-2">
           <li>
-            <router-link to="/">Home</router-link>
+            <IconButton image="Notification" />
           </li>
           <li>
-            <router-link to="/about">About</router-link>
-          </li>
-          <li>
-            <button class="btn btn-ghost" @click="openSideNav">Menu</button>
+            <!--<button class="btn btn-ghost" @click="openSideNav">Menu</button>-->
+            <IconButton image="Menu" @click="openSideNav" />
           </li>
         </ul>
       </nav>
@@ -22,6 +20,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useSidebarStore } from '@/stores/ui/sidebar.store'
+import IconButton from '@/components/inputs/IconButton.vue'
 
 const H_HI = 64
 const isScrollingUp = ref(true)
@@ -62,8 +61,14 @@ function openSideNav() {
 }
 </script>
 <style scoped>
+.container {
+  margin: auto;
+}
+
 .header {
   position: absolute;
+  background-color: theme('colors.white');
+  border-bottom: 1px solid theme('colors.gray.300');
   top: calc(var(--header-height) * -1);
   width: 100%;
   transition: top 0.3s ease-in-out;

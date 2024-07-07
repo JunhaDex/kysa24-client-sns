@@ -4,11 +4,28 @@
 
 :root {
     --footer-height: 95px;
-    --header-height: 64px;
+    --header-height: 66px;
 }
 
 body {
     padding-top: var(--header-height);
+    background-color: theme('colors.gray.50');
+}
+
+.container {
+    max-width: 327px; /* margin 24px gutter 20px 1col */
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 542px; /* margin 72px gutter 20px 2cols sidebar 130px */
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1096px; /* margin 72px gutter 20px 2cols sidebar 272px */
+    }
 }
 
 .prevent-scroll {

@@ -2,19 +2,6 @@
   <nav class="side-nav" :class="{ open: isOpen }">
     <ul>
       <li class="nav-item">
-        <i class="w-3 md:w-7">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M20 3 L11 22 L8 13 L2 9 Z"></path>
-          </svg>
-        </i>
         <router-link to="/">Home</router-link>
       </li>
       <li class="nav-item">
@@ -40,9 +27,10 @@ const isOpen = computed(() => sidebar.isOpen)
   position: fixed;
   top: var(--header-height);
   right: -100%;
-  width: 200px;
+  width: 230px;
   height: 100vh;
-  background-color: #333;
+  background-color: theme('colors.white');
+  border-left: 1px solid theme('colors.gray.300');
   color: #fff;
   padding: 1rem;
   transition: right 0.3s ease-in-out;
@@ -63,12 +51,11 @@ const isOpen = computed(() => sidebar.isOpen)
   .side-nav {
     left: 0;
     width: 100px;
+    border-left: none;
   }
 
   .open {
     left: 0;
   }
 }
-
-
 </style>

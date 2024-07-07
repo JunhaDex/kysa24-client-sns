@@ -1,8 +1,23 @@
 <template>
   <nav class="side-nav" :class="{ open: isOpen }">
+    <!--if not logged in-->
+    <!--      <div class="nav-profile mx-4 py-4">-->
+    <!--        <a class="btn btn-sm btn-primary btn-block" href="/login" target="_blank">로그인</a>-->
+    <!--      </div>-->
+    <!--if logged in-->
+    <div class="nav-profile">
+      <img class="mr-2" src="" alt="profile image" />
+      <div class="flex-1">
+        <h4>백예린 님</h4>
+        <div class="flex justify-between w-full">
+          <span class="inline-block">6개 남음</span>
+          <a class="btn btn-primary btn-xs">내 프로필</a>
+        </div>
+      </div>
+    </div>
     <ul>
       <li class="nav-item">
-        <router-link to="/">Home</router-link>
+        <router-link class="btn btn-ghost btn-xl btn-block" to="/">Home</router-link>
       </li>
       <li class="nav-item">
         <router-link to="/about">About</router-link>
@@ -31,10 +46,20 @@ const isOpen = computed(() => sidebar.isOpen)
   height: 100vh;
   background-color: theme('colors.white');
   border-left: 1px solid theme('colors.gray.300');
-  color: #fff;
   padding: 1rem;
   transition: right 0.3s ease-in-out;
   z-index: 9;
+}
+
+.nav-profile {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.nav-profile > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .open {
@@ -44,7 +69,10 @@ const isOpen = computed(() => sidebar.isOpen)
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+}
+
+.nav-item > a {
+  justify-content: start;
 }
 
 @media (min-width: 768px) {

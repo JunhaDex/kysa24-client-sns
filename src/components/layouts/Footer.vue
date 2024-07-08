@@ -1,20 +1,28 @@
 <template>
-  <footer class="footer">
-    <ul class="flex justify-center text-sm text-gray-500 mb-3.5">
-      <li><a href="/">Instagram</a></li>
-      <li><a href="/about">Discord</a></li>
-      <li><a href="/contact">Github</a></li>
-      <li><a href="/">terms</a></li>
-      <li><a href="/">privacy</a></li>
+  <footer
+    class="footer bg-white rounded-t text-center text-sm">
+    <ul class="flex space-x-2 mb-1">
+      <li>
+        <a href="#" class="text-gray-600 hover:text-gray-800">Instagram</a>
+      </li>
+      <li>
+        <a href="#" class="text-gray-600 hover:text-gray-800">Notion</a>
+      </li>
+      <li>
+        <a href="#" class="text-gray-600 hover:text-gray-800">Github</a>
+      </li>
     </ul>
-    <div class="text-center text-sm text-gray-500">&copy; 2021 FooBar Inc.</div>
+    <div class="text-xs text-gray-500">
+      © 2024 KYSA All Rights Reserved. <span class="italic">designed with</span> ❤️
+    </div>
   </footer>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 <style>
 .footer {
-  padding: 20px 0 20px 0;
-  background-color: #f9f9f9;
+  display: block;
+  background-color: theme('colors.white');
   border-top: 1px solid #e5e7eb;
 }
 

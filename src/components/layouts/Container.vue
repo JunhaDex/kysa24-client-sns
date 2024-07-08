@@ -14,9 +14,6 @@ const props = withDefaults(
 )
 </script>
 <style scoped>
-.container {
-  margin: 0 auto 2rem auto;
-}
 
 .container-full {
   max-width: 100% !important;

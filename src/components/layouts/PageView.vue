@@ -1,16 +1,30 @@
 <template>
   <slot name="header" />
-  <main>
+  <main :class="{headless, footless}">
     <slot name="main" />
   </main>
   <slot name="footer" />
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = withDefaults(defineProps<{
+  headless: boolean
+  footless: boolean
+}>(), {
+  headless: false,
+  footless: false
+})
+</script>
 <style scoped>
-/* height: calc(100vh - var(--footer-height)); */
 main {
+  padding-top: var(--header-height);
+  height: calc(100vh - var(--footer-height));
+}
+
+.headless {
+  padding-top: 0;
+}
+
+.footless {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 </style>

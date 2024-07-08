@@ -8,11 +8,11 @@
 }
 
 body {
-    padding-top: var(--header-height);
     background-color: theme('colors.gray.50');
 }
 
 .container {
+    margin: 0 auto 2rem auto;
     max-width: 327px; /* margin 24px gutter 20px 1col */
 }
 

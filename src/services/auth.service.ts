@@ -1,9 +1,15 @@
 import { ApiService } from '@/services/api.service'
 import type { User, UserAuth } from '@/types/general.type'
+import { cleanObject } from '@/utils/index.util'
+import { UserClass } from '@/constants/class.constant'
 
 export class AuthService extends ApiService {
   constructor() {
     super('auth')
+  }
+
+  private cleanUser(user: User): User {
+    return cleanObject<User>(user, UserClass)
   }
 
   async login(params: { id: string; pwd: string; fcm?: string }): Promise<void> {
@@ -18,6 +24,7 @@ export class AuthService extends ApiService {
 
   async getMy(): Promise<User> {
     const res = await this.auth().client.get('/me')
-    return this.unpackRes(res) as User
+    const user = this.unpackRes(res) as User
+    return this.cleanUser(user)
   }
 }

@@ -40,6 +40,11 @@ export interface User extends Profile {
   actStatus: number
 }
 
+export interface Team {
+  id: number
+  teamName: string
+}
+
 export interface Group {
   id: number
   ref: string
@@ -61,12 +66,15 @@ export interface Post {
   message: string
   likes: number
   comments: number
+  createdAt: string
 }
 
 export interface Reply {
   id: number
   author: Profile
   message: string
+  createdAt: string
+  deletedAt: string | null
 }
 
 export interface UserNoti {
@@ -84,7 +92,7 @@ export interface ChatMessage {
   sender: number
   message: string
   encoded: boolean
-  createdAt: Date
+  createdAt: string
 }
 
 export interface ChatRoom {

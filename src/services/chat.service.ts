@@ -1,9 +1,24 @@
 import { ApiService } from '@/services/api.service'
 import type { ChatMessage, ChatRoom, PageRequest, PageResponse } from '@/types/general.type'
+import { cleanObject } from '@/utils/index.util'
+import { ChatMessageClass, ChatRoomClass } from '@/constants/class.constant'
+import dayjs from 'dayjs'
 
 export class ChatService extends ApiService {
   constructor() {
     super('chat')
+  }
+
+  private cleanChatRoom(room: any): ChatRoom {
+    const clean = cleanObject(room, ChatRoomClass)
+    clean.latestMessage = this.cleanChatMessage(room.latestMessage)
+    return clean
+  }
+
+  private cleanChatMessage(message: any): ChatMessage {
+    const clean = cleanObject(message, ChatMessageClass)
+    clean.createdAt = dayjs(message.createdAt).tz().format('YYYY-MM-DD HH:mm:ss')
+    return clean
   }
 
   async listRecentChatRooms(options?: {
@@ -17,7 +32,11 @@ export class ChatService extends ApiService {
         'is-block': options?.isBlock
       }
     })
-    return this.unpackRes(res) as PageResponse<ChatRoom>
+    const { meta, list } = this.unpackRes(res) as PageResponse<ChatRoom>
+    return {
+      meta,
+      list: list.map(this.cleanChatRoom)
+    }
   }
 
   async countUnreadChats(): Promise<number> {
@@ -36,7 +55,11 @@ export class ChatService extends ApiService {
         size: options?.page?.size
       }
     })
-    return this.unpackRes(res) as PageResponse<ChatMessage>
+    const { meta, list } = this.unpackRes(res) as PageResponse<ChatMessage>
+    return {
+      meta,
+      list: list.map(this.cleanChatMessage)
+    }
   }
 
   async markAsRead(ref: string): Promise<void> {

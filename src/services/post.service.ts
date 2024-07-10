@@ -56,12 +56,12 @@ export class PostService extends ApiService {
 
   async getPostById(postId: number): Promise<{ post: Post; reply: PageResponse<Reply> }> {
     const res = await this.client.get(`/detail/${postId}`)
-    const { post, reply } = this.unpackRes(res) as { post: Post; reply: PageResponse<Reply> }
+    const { post, comments } = this.unpackRes(res) as { post: Post; comments: PageResponse<Reply> }
     return {
       post: this.cleanPost(post),
       reply: {
-        meta: reply.meta,
-        list: reply.list.map(this.cleanReply)
+        meta: comments.meta,
+        list: comments.list.map(this.cleanReply)
       }
     }
   }

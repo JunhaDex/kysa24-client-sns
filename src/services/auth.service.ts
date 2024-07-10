@@ -23,7 +23,7 @@ export class AuthService extends ApiService {
   }
 
   async getMy(): Promise<User> {
-    const res = await this.auth().client.get('/me')
+    const res = await this.auth().client.get('/my')
     const user = this.unpackRes(res) as User
     return this.cleanUser(user)
   }

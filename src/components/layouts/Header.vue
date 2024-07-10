@@ -5,11 +5,11 @@
       <nav>
         <ul class="flex space-x-2">
           <li>
-            <IconButton image="Notification" />
+            <IconButton class="btn-ghost" image="Notification" />
           </li>
           <li>
             <!--<button class="btn btn-ghost" @click="openSideNav">Menu</button>-->
-            <IconButton image="Menu" @click="openSideNav" />
+            <IconButton class="btn-ghost" image="Menu" @click="openSideNav" />
           </li>
         </ul>
       </nav>

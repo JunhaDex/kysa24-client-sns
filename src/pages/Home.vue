@@ -1,15 +1,15 @@
 <template>
-  <PageView>
+  <PageView @scroll="handleScroll($event, fetchPage)" ref="scrollView">
     <template #header>
       <Header />
     </template>
     <template #main>
       <Container>
-        <div class="text-3xl font-bold underline">foo</div>
-        <button class="btn btn-primary" @click="openWelcomeModal">Click me</button>
+        <GroupSearchInput />
       </Container>
       <Container>
-        <button class="btn" @click="copyFcm">copy</button>
+        <GroupCard />
+        <SearchEmpty />
       </Container>
     </template>
     <template #footer>
@@ -30,11 +30,19 @@ import PageView from '@/components/layouts/PageView.vue'
 import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import Modal from '@/components/feedbacks/Modal.vue'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
+import { setupListPage } from '@/stores/setups/list.composition'
+import { GroupService } from '@/services/group.service'
+import GroupSearchInput from '@/components/displays/home/GroupSearchInput.vue'
+import GroupCard from '@/components/displays/home/GroupCard.vue'
+import SearchEmpty from '@/components/displays/SearchEmpty.vue'
 
 const showWelcomeModal = ref(false)
 const authStore = useAuthStore()
+const groupService = new GroupService()
+const { currentPage, isFetching, onRender, hasMore, handleScroll } = setupListPage()
+const scrollView = ref<HTMLDivElement>()
 
 function openWelcomeModal() {
   showWelcomeModal.value = true
@@ -49,5 +57,20 @@ function copyFcm() {
   navigator.clipboard.writeText(fcm)
   window.alert('FCM copied')
 }
+
+async function fetchPage(pageNo = 1) {
+  const res = await groupService.listGroups({ page: { page: pageNo } })
+  console.log(res)
+}
+
+onMounted(async () => {
+  await fetchPage()
+})
+
+onUnmounted(() => {
+  if (scrollView.value) {
+    scrollView.value.removeEventListener('scroll', (e) => handleScroll(e, fetchPage))
+  }
+})
 </script>
 <style scoped></style>

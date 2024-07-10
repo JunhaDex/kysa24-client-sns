@@ -26,12 +26,12 @@ const router = createRouter({
       path: '/chat',
       children: [
         {
-          path: '/list',
+          path: 'list',
           name: 'chat_list',
           component: () => import('@/pages/chat/List.vue')
         },
         {
-          path: '/:ref',
+          path: ':ref',
           name: 'chat_room',
           component: () => import('@/pages/chat/Detail.vue')
         }
@@ -41,19 +41,24 @@ const router = createRouter({
       path: '/group',
       children: [
         {
-          path: '/:ref',
+          path: ':ref',
           name: 'group_feed',
           component: () => import('@/pages/group/Feed.vue')
         },
         {
-          path: '/new',
+          path: ':ref/post/:id',
+          name: 'post_detail',
+          component: () => import('@/pages/post/Detail.vue')
+        },
+        {
+          path: 'new',
           name: 'group_new',
           component: () => import('@/pages/group/New.vue')
         }
       ]
     },
     {
-      path: '/alart',
+      path: '/alert',
       name: 'notification',
       component: () => import('@/pages/noti/List.vue')
     },
@@ -66,6 +71,11 @@ const router = createRouter({
       path: '/user-all',
       name: 'user_all',
       component: () => import('@/pages/user/List.vue')
+    },
+    {
+      path: '/user/:ref',
+      name: 'user_profile',
+      component: () => import('@/pages/user/Profile.vue')
     },
     {
       path: '/404',

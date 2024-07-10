@@ -39,7 +39,7 @@ export class GroupService extends ApiService {
     const { meta, list } = this.unpackRes(res) as PageResponse<Group>
     return {
       meta,
-      list: list.map(this.cleanGroup)
+      list: list.map((group) => this.cleanGroup(group))
     }
   }
 

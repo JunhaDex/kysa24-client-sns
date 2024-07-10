@@ -9,8 +9,8 @@ export interface PageResponse<T> {
 }
 
 export interface PageRequest {
-  page: number
-  size: number
+  page?: number
+  size?: number
 }
 
 export interface UserAuth {
@@ -101,5 +101,5 @@ export interface ChatRoom {
   title: string
   isBlock: boolean
   lastRead: number
-  latestMessage: ChatMessage
+  lastChat: ChatMessage
 }

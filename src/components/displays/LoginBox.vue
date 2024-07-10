@@ -12,9 +12,8 @@
           v-model="userInput.id"
           class="input input-bordered w-full"
           type="text"
-          id="username"
           name="username"
-          placeholder="john.doe"
+          placeholder="아이디를 입력해주세요"
         />
       </div>
       <div class="input-group">
@@ -25,12 +24,13 @@
           v-model="userInput.pwd"
           class="input input-bordered w-full"
           type="password"
-          id="password"
           name="password"
           placeholder="********"
         />
       </div>
-      <button class="btn btn-primary btn-block" type="button" @click="pressLogin">로그인</button>
+      <ProcessButton class="btn btn-primary btn-block" :is-disabled="isPress" @click="pressLogin">
+        로그인
+      </ProcessButton>
     </form>
     <div class="links mt-2"><a href="#">이용약관</a> | <a href="#">사용 설명서</a></div>
   </Box>
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import { ref } from 'vue'
+import ProcessButton from '@/components/inputs/ProcessButton.vue'
 
 const emit = defineEmits(['login'])
 defineExpose({ releaseLogin })

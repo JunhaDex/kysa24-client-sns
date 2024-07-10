@@ -79,5 +79,5 @@ export class ChatRoomClass implements ChatRoom {
   title: string = ''
   isBlock: boolean = false
   lastRead: number = 0
-  latestMessage: ChatMessage = {} as any
+  lastChat: ChatMessage = {} as any
 }

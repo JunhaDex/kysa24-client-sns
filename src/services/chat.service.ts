@@ -11,7 +11,7 @@ export class ChatService extends ApiService {
 
   private cleanChatRoom(room: any): ChatRoom {
     const clean = cleanObject(room, ChatRoomClass)
-    clean.latestMessage = this.cleanChatMessage(room.latestMessage)
+    clean.lastChat = this.cleanChatMessage(room.lastChat)
     return clean
   }
 
@@ -35,7 +35,7 @@ export class ChatService extends ApiService {
     const { meta, list } = this.unpackRes(res) as PageResponse<ChatRoom>
     return {
       meta,
-      list: list.map(this.cleanChatRoom)
+      list: list.map((room) => this.cleanChatRoom(room))
     }
   }
 

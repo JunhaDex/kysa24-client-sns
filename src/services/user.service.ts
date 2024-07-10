@@ -28,7 +28,7 @@ export class UserService extends ApiService {
     name?: string
     team?: string
   }): Promise<PageResponse<User>> {
-    const res = await this.client.get('/secure-list', {
+    const res = await this.auth().client.get('/secure-list', {
       params: {
         page: options?.page?.page,
         size: options?.page?.size,
@@ -41,7 +41,8 @@ export class UserService extends ApiService {
   }
 
   async listTeams(): Promise<Team[]> {
-    const res = await this.client.get('/team')
+    const teamUrl = import.meta.env.VITE_API_BASE_URL + '/team'
+    const res = await this.client.get(teamUrl)
     return this.unpackRes(res) as Team[] // no cleanup
   }
 
@@ -67,7 +68,7 @@ export class UserService extends ApiService {
   }
 
   async listNotifications(options?: { page?: PageRequest }): Promise<PageResponse<UserNoti>> {
-    const res = await this.client.get('/notification', {
+    const res = await this.auth().client.get('/my/noti', {
       params: {
         page: options?.page?.page,
         size: options?.page?.size
@@ -78,7 +79,7 @@ export class UserService extends ApiService {
   }
 
   async deleteNotification(params: { ids: number[] }): Promise<void> {
-    await this.client.delete('my/noti/delete-batch', {
+    await this.auth().client.delete('my/noti/delete-batch', {
       data: params
     })
   }

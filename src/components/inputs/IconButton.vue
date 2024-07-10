@@ -1,5 +1,5 @@
 <template>
-  <button class="btn btn-ghost px-2">
+  <button class="btn btn-square px-2">
     <img :src="svgAsset" alt="icon" />
   </button>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <PageView @scroll="handleScroll($event, fetchPage)" ref="scrollView">
+  <PageView @scroll="handleScroll($event, fetchPage)" ref="scrollView" white>
     <template #header>
       <Header />
     </template>

@@ -1,5 +1,5 @@
 <template>
-  <section class="container mb-6" :class="{ 'container-full': stretch }">
+  <section class="container mx-auto mb-4" :class="{ 'container-full': stretch }">
     <slot />
   </section>
 </template>
@@ -16,6 +16,6 @@ const props = withDefaults(
 <style scoped>
 
 .container-full {
-  max-width: 100% !important;
+  max-width: 1096px !important;
 }
 </style>

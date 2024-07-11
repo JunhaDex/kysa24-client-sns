@@ -1,5 +1,5 @@
 <template>
-  <div class="dp-box rounded shadow">
+  <div class="dp-box shadow">
     <slot />
   </div>
 </template>
@@ -10,5 +10,6 @@
   padding: 1.5rem;
   width: 100%;
   max-width: 400px;
+  border-radius: 0.5rem;
 }
 </style>

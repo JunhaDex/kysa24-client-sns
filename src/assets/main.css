@@ -3,8 +3,16 @@
 @tailwind utilities;
 
 :root {
-    --footer-height: 95px;
+    --footer-height: 75px;
     --header-height: 66px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
 }
 
 body {
@@ -12,7 +20,6 @@ body {
 }
 
 .container {
-    margin: 0 auto 2rem auto;
     max-width: 327px; /* margin 24px gutter 20px 1col */
 }
 
@@ -30,4 +37,16 @@ body {
 
 .prevent-scroll {
     overflow: hidden;
+}
+
+.btn-white {
+    --btn-color: theme('colors.white');
+    background-color: theme('colors.white');
+    border-color: transparent;
+}
+
+.btn-custom {
+    height: 2.25rem;
+    width: 2.25rem;
+    min-height: 2.25rem;
 }

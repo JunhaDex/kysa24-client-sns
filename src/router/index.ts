@@ -75,7 +75,7 @@ const router = createRouter({
     {
       path: '/user/:ref',
       name: 'user_profile',
-      component: () => import('@/pages/user/Profile.vue')
+      component: () => import('@/components/displays/Profile.vue')
     },
     {
       path: '/404',

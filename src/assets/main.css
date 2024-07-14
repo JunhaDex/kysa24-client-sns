@@ -39,6 +39,12 @@ body {
     overflow: hidden;
 }
 
+.dp-box {
+    background-color: theme('colors.white');
+    width: 100%;
+    border-radius: 0.5rem;
+}
+
 .btn-white {
     --btn-color: theme('colors.white');
     background-color: theme('colors.white');

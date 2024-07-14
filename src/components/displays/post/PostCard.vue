@@ -11,10 +11,13 @@
         </div>
       </div>
       <div class="post-action">
-        <button class="action-button">⋮</button>
+        <IconButton class="btn-xs btn-ghost" image="vmore" />
       </div>
       <div class="post-content">
         <p>어디야 지금 뭐해? 나랑 별 보러 가지 않을래? 너희 집 앞으로 잠깐 나올래? 가볍게 걷 좀 하나 걸치고서 나오면 돼 ⭐</p>
+      </div>
+      <div class="post-media">
+        <img src="@/assets/images/group-cover.png" alt="media" />
       </div>
       <div class="post-stats">
         <span>Like 13</span>
@@ -25,20 +28,18 @@
 </template>
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
 </script>
 <style>
 .post {
-  background-color: white;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
         "profile header action"
         "content content content"
+        "media media media"
         "stats stats stats";
-  gap: 10px;
+  gap: 8px;
   align-items: start;
 }
 
@@ -83,6 +84,19 @@ import Box from '@/components/layouts/Box.vue'
 .post-content {
   grid-area: content;
   line-height: 1.4;
+}
+
+.post-media {
+  grid-area: media;
+  overflow: hidden;
+}
+
+.post-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
 }
 
 .post-stats {

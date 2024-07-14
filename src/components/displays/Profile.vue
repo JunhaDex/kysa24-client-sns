@@ -32,7 +32,6 @@
   width: 86px;
   height: 86px;
   border-radius: 50%;
-  box-sizing: border-box;
   position: absolute;
   top: -40px;
   left: 24px;
@@ -41,9 +40,6 @@
 
 .group-details {
   margin-left: 90px;
-}
-
-.group-details h2 {
-  margin: 0;
+  width: 100%;
 }
 </style>

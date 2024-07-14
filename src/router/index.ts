@@ -46,11 +46,6 @@ const router = createRouter({
           component: () => import('@/pages/group/Feed.vue')
         },
         {
-          path: ':ref/post/:id',
-          name: 'post_detail',
-          component: () => import('@/pages/post/Detail.vue')
-        },
-        {
           path: 'new',
           name: 'group_new',
           component: () => import('@/pages/group/New.vue')
@@ -63,7 +58,7 @@ const router = createRouter({
       component: () => import('@/pages/noti/List.vue')
     },
     {
-      path: '/post/:id',
+      path: '/group/:ref/post/:id',
       name: 'post_detail',
       component: () => import('@/pages/post/Detail.vue')
     },
@@ -75,7 +70,7 @@ const router = createRouter({
     {
       path: '/user/:ref',
       name: 'user_profile',
-      component: () => import('@/components/displays/Profile.vue')
+      component: () => import('@/pages/user/Detail.vue')
     },
     {
       path: '/404',

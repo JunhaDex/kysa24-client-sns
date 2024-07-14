@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
 <style scoped>
 main {
   padding-top: var(--header-height);
-  height: calc(100vh - var(--footer-height));
+  min-height: calc(100vh - var(--footer-height));
 }
 
 .headless {

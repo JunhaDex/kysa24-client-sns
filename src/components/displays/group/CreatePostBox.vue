@@ -22,13 +22,9 @@ import Box from '@/components/layouts/Box.vue'
 </script>
 <style>
 .create-post {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: flex-start;
-  gap: 15px;
+  gap: 8px;
 }
 
 .profile-pic {

@@ -1,4 +1,5 @@
 import type { Mention, Profile } from '@/types/general.type'
+import dayjs from 'dayjs'
 
 export function cleanObject<T>(obj: any, def: new () => T): T {
   const cleaned: Partial<T> = {}
@@ -24,4 +25,21 @@ export function getProfile(obj: {
 
 export function getMention(obj: { ref: string; nickname: string }): Mention {
   return obj
+}
+
+/**
+ * Convert Time to String
+ * Every createdAt, updatedAt, etc. should be converted.
+ * @param time
+ */
+export function tts(time: Date | string): string {
+  const current = dayjs()
+  const local = dayjs(time).tz()
+  const diff = current.diff(local, 'second')
+  if (diff < 5) return `방금 전`
+  else if (diff < 60) return `${diff}초 전`
+  else if (diff < 3600) return `${Math.floor(diff / 60)}분 전`
+  else if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`
+  else if (diff < 604800) return `${Math.floor(diff / 86400)}일 전`
+  else return local.format('MM월DD일 HH:mm')
 }

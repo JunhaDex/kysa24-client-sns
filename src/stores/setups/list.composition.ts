@@ -1,11 +1,17 @@
-import { ref } from 'vue'
-import { isNavigationFailure } from 'vue-router'
+import type { PageMeta } from '@/types/general.type'
+import { computed, ref } from 'vue'
+import { DEFAULT_PAGE_SIZE } from '@/constants/index.constant'
 
 export const setupListPage = () => {
-  const currentPage = ref(1)
-  const onRender = ref(false)
+  const pageMeta = ref<PageMeta>({
+    pageNo: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+    totalPage: 1,
+    totalCount: 0
+  })
+  const onRender = ref(true)
   const isFetching = ref(false)
-  const hasMore = ref(true)
+  const hasMore = computed(() => pageMeta.value.pageNo < pageMeta.value.totalPage)
 
   // be sure to remove the event listener onUnmount
   // container.removeEventListener('scroll', handleScroll);
@@ -16,11 +22,9 @@ export const setupListPage = () => {
       !isFetching.value &&
       hasMore.value
     ) {
-      isFetching.value = true
-      await moreFunc(currentPage.value + 1)
-      isFetching.value = false
+      await moreFunc(pageMeta.value.pageNo + 1)
     }
   }
 
-  return { currentPage, onRender, isFetching, hasMore, handleScroll }
+  return { pageMeta, onRender, isFetching, hasMore, handleScroll }
 }

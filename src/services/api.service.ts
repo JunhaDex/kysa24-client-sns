@@ -26,6 +26,14 @@ export abstract class ApiService {
     throw new Error('token not found')
   }
 
+  authOpt() {
+    const token = this.authStore.jwt
+    if (token) {
+      this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    }
+    return this
+  }
+
   unpackRes(res: AxiosResponse): unknown {
     return res.data.result
   }

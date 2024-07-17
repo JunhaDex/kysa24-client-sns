@@ -29,7 +29,7 @@ export class GroupService extends ApiService {
   }
 
   async listGroups(options?: { page?: PageRequest; name?: string }): Promise<PageResponse<Group>> {
-    const res = await this.client.get('', {
+    const res = await this.authOpt().client.get('', {
       params: {
         page: options?.page?.page,
         size: options?.page?.size,

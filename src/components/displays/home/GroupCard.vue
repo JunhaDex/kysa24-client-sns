@@ -1,32 +1,75 @@
 <template>
   <div class="group-info">
     <div class="cover-image">
-      <img src="@/assets/images/group-cover.png" alt="Cover" class="cover-pic">
+      <img :src="group.coverImg" alt="Group Cover" class="cover-pic" />
     </div>
     <div class="profile">
-      <img src="@/assets/images/profile-image.png" alt="Profile" class="profile-pic">
+      <img :src="group.profileImg" alt="Group Profile" class="profile-pic" />
       <div class="group-details">
-        <h2 class="text-lg font-bold">축구 좋아하는 사람들 모임</h2>
+        <h2 class="text-lg font-bold">{{ group.groupName }}</h2>
         <div class="group-meta">
           <span class="group-type">그룹장</span>
-          <span class="join-status">안유진</span>
-          <span class="member-count">팔로우 132명</span>
+          <!--TODO: add badge with anchor -> onclick group.creator.ref-->
+          <span class="join-status">{{ group.creator.nickname }}</span>
+          <span class="member-count">팔로우 {{ group.followers }}명</span>
         </div>
       </div>
     </div>
-    <div class="post mb-2">
-      <img src="@/assets/images/profile-image.png" alt="User" class="user-avatar">
+    <!--TODO: add carousel-->
+    <div v-for="post in group.posts" class="post mb-2" :key="post.id">
+      <img src="@/assets/images/profile-image.png" alt="User" class="user-avatar" />
       <div class="post-content">
-        <h3 class="mr-2">임솜아</h3>
-        <span class="post-time">13조 • 1분전</span>
-        <p class="post-text">포스트 미리보기 한줄만 표시 몇 자까지....</p>
+        <h3 class="mr-2">{{ post.author.nickname }}</h3>
+        <span class="post-time"
+          >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
+        >
+        <p class="post-text">{{ post.message }}</p>
       </div>
     </div>
-    <button class="btn btn-sm btn-primary btn-block">팔로우</button>
+    <!--TODO: button design with icons-->
+    <button v-if="!followState" class="btn btn-sm btn-primary btn-block" @click="followGroup">
+      팔로우
+    </button>
+    <button v-else class="btn btn-sm btn-block">팔로잉</button>
+    <!--TODO: Toggle Dropdown with 언팔로우-->
     <hr class="mt-2 mb-4" />
   </div>
 </template>
 <script setup lang="ts">
+import type { Group } from '@/types/general.type'
+import { setupTeamInfo } from '@/stores/setups/team.composition'
+import { tts } from '@/utils/index.util'
+import { onMounted, ref } from 'vue'
+import { throttle } from 'lodash-es'
+
+const props = defineProps<{
+  group: Group
+}>()
+const emits = defineEmits(['followGroup', 'unfollowGroup'])
+defineExpose({ updateFollowState })
+
+const { getTeamNameById } = setupTeamInfo()
+const followState = ref(false)
+
+onMounted(() => {
+  followState.value = !!props.group.already
+})
+
+async function followGroup() {
+  throttle(() => {
+    emits('followGroup', props.group)
+  }, 1000)
+}
+
+async function unfollowGroup() {
+  throttle(() => {
+    emits('unfollowGroup', props.group)
+  }, 1000)
+}
+
+async function updateFollowState(state: boolean) {
+  followState.value = state
+}
 </script>
 <style scoped>
 .group-info {

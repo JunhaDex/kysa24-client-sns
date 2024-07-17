@@ -13,9 +13,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.12",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "firebase": "^10.12.2",
+    "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.21",

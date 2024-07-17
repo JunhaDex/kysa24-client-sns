@@ -8,7 +8,14 @@
         <GroupSearchInput />
       </Container>
       <Container>
-        <GroupCard />
+        <GroupCard
+          v-for="(grp, i) in groupList"
+          :group="grp"
+          :key="i"
+          ref="groupCards"
+          @followGroup="followGroup"
+          @unfollowGroup="unfollowGroup"
+        />
         <SearchEmpty />
       </Container>
     </template>
@@ -37,12 +44,15 @@ import { GroupService } from '@/services/group.service'
 import GroupSearchInput from '@/components/displays/home/GroupSearchInput.vue'
 import GroupCard from '@/components/displays/home/GroupCard.vue'
 import SearchEmpty from '@/components/displays/SearchEmpty.vue'
+import type { Group } from '@/types/general.type'
 
 const showWelcomeModal = ref(false)
 const authStore = useAuthStore()
 const groupService = new GroupService()
-const { currentPage, isFetching, onRender, hasMore, handleScroll } = setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, handleScroll } = setupListPage()
+const groupList = ref<Group[]>([])
 const scrollView = ref<HTMLDivElement>()
+const groupCards = ref([])
 
 function openWelcomeModal() {
   showWelcomeModal.value = true
@@ -59,12 +69,28 @@ function copyFcm() {
 }
 
 async function fetchPage(pageNo = 1) {
-  const res = await groupService.listGroups({ page: { page: pageNo } })
-  console.log(res)
+  if (!isFetching.value) {
+    isFetching.value = true
+    const res = await groupService.listGroups({ page: { page: pageNo } })
+    console.log(res)
+    pageMeta.value = res.meta
+    groupList.value.push(...res.list)
+    isFetching.value = false
+  }
+}
+
+async function followGroup(group: Group) {
+  console.log('followGroup', group)
+  await groupService.followGroup(group.ref)
+}
+
+async function unfollowGroup(group: Group) {
+  console.log('unfollowGroup', group)
 }
 
 onMounted(async () => {
   await fetchPage()
+  onRender.value = false
 })
 
 onUnmounted(() => {

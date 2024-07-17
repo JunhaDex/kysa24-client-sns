@@ -45,6 +45,7 @@ export class GroupClass implements Group {
   priority: number = 0
   posts: Post[] = []
   followers: number = 0
+  already?: boolean = undefined
 }
 
 export class PostClass implements Post {

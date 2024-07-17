@@ -1,11 +1,13 @@
 export interface PageResponse<T> {
-  meta: {
-    pageNo: number
-    pageSize: number
-    totalPage: number
-    totalCount: number
-  }
+  meta: PageMeta
   list: T[]
+}
+
+export interface PageMeta {
+  pageNo: number
+  pageSize: number
+  totalPage: number
+  totalCount: number
 }
 
 export interface PageRequest {
@@ -57,6 +59,7 @@ export interface Group {
   priority: number
   posts: Post[]
   followers: number
+  already?: boolean
 }
 
 export interface Post {

@@ -13,6 +13,16 @@ export abstract class ApiService {
         'Content-Type': 'application/json'
       }
     })
+    this.client.interceptors.response.use((res) => {
+      return res
+    }, (err) => {
+      if (err.response.status === 401) {
+        this.authStore.setJwt('')
+        window.alert('로그인이 필요한 서비스 입니다.')
+        window.location.href = '/login'
+      }
+      return Promise.reject(err)
+    })
   }
 
   auth(): this {

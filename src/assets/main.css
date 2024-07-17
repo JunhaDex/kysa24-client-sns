@@ -56,3 +56,12 @@ body {
     width: 2.25rem;
     min-height: 2.25rem;
 }
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-height {
+    height: 2.25rem;
+}

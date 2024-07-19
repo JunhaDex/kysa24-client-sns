@@ -5,10 +5,8 @@
         <div class="profile-pic"></div>
       </div>
       <div class="post-header">
-        <div class="user-info">
-          <strong>김적재</strong>
-          <span class="post-time">13조 • 1분 전</span>
-        </div>
+        <strong>김적재</strong><br />
+        <span class="text-xs">13조 • 1분 전</span>
       </div>
       <div class="post-action">
         <IconButton class="btn-xs btn-ghost" image="vmore" />
@@ -29,6 +27,7 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
+import '@/assets/card.css'
 </script>
 <style>
 .post {
@@ -47,25 +46,8 @@ import IconButton from '@/components/inputs/IconButton.vue'
   grid-area: profile;
 }
 
-.profile-pic {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #ddd;
-}
-
 .post-header {
   grid-area: header;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.post-time {
-  font-size: 0.8em;
-  color: #777;
 }
 
 .post-action {

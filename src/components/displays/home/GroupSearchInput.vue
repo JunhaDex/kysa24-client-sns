@@ -7,7 +7,10 @@
       placeholder="그룹 이름으로 검색하기"
     />
     <IconButton class="ml-2 btn-primary btn-custom i-16" image="Search" color="#fff" />
-    <IconButton class="ml-2 btn-primary btn-custom i-16" image="Plus" />
+    <RouterLink to="/group/new">
+      <IconButton class="ml-2 btn-primary btn-custom i-16" image="Plus" />
+    </RouterLink>
+
   </div>
 </template>
 <script setup lang="ts">

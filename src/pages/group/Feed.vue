@@ -7,14 +7,16 @@
       <Container>
         <Breadcrumb />
       </Container>
-      <Container stretch>
-        <GroupProfile />
-      </Container>
-      <Container>
-        <CreatePostBox class="mb-4" />
-        <PostCard class="mb-4" />
-        <SearchEmpty />
-      </Container>
+      <template v-if="groupItem">
+        <Container stretch>
+          <GroupProfile :group="groupItem" />
+        </Container>
+        <Container>
+          <CreatePostBox class="mb-4" />
+          <SearchEmpty v-if="postList.length === 0" />
+          <PostCard v-else v-for="(p,i) in postList" :post="p" class="mb-4" :key="i" ref="postCards" />
+        </Container>
+      </template>
     </template>
     <template #footer>
       <Footer />
@@ -36,23 +38,32 @@ import GroupProfile from '@/components/displays/group/GroupProfile.vue'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
 import SearchEmpty from '@/components/displays/SearchEmpty.vue'
+import type { Group, Post } from '@/types/general.type'
 
-const { currentPage, isFetching, onRender, hasMore, handleScroll } = setupListPage()
+const { pageMeta, isFetching } = setupListPage()
 const scrollView = ref<HTMLDivElement>()
 const groupService = new GroupService()
 const postService = new PostService()
 const route = useRoute()
+const groupItem = ref<Group>()
+const postList = ref<Post[]>([])
+const postCards = ref<(typeof PostCard)[]>([])
 
 async function fetchGroup() {
   const groupRef = route.params.ref as string
-  const res = await groupService.getGroupByRef(groupRef)
-  console.log(res)
+  groupItem.value = await groupService.getGroupByRef(groupRef)
 }
 
 async function fetchPage(pageNo = 1) {
-  const groupRef = route.params.ref as string
-  const res = await postService.listPostsByGroup(groupRef, { page: { page: pageNo } })
-  console.log(res)
+  if (!isFetching.value) {
+    isFetching.value = true
+    const groupRef = route.params.ref as string
+    const res = await postService.listPostsByGroup(groupRef, { page: { page: pageNo } })
+    console.log(res)
+    pageMeta.value = res.meta
+    postList.value.push(...res.list)
+    isFetching.value = false
+  }
 }
 
 onMounted(async () => {

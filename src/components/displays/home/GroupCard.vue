@@ -1,12 +1,15 @@
 <template>
   <div class="group-info">
-    <div class="cover-image">
+    <RouterLink class="cover-image" :to="{name: 'group_feed', params: {ref: group.ref}}">
       <img :src="group.coverImg" alt="Group Cover" class="cover-pic" />
-    </div>
+    </RouterLink>
     <div class="profile">
       <img :src="group.profileImg" alt="Group Profile" class="profile-pic" />
       <div class="group-details">
-        <h2 class="text-lg font-bold">{{ group.groupName }}</h2>
+        <h2 class="text-lg">
+          <RouterLink class="font-bold" :to="{name: 'group_feed', params: {ref: group.ref}}">{{ group.groupName }}
+          </RouterLink>
+        </h2>
         <div class="group-meta">
           <span class="group-type">그룹장</span>
           <!--TODO: add badge with anchor -> onclick group.creator.ref-->
@@ -15,17 +18,18 @@
         </div>
       </div>
     </div>
-    <!--TODO: add carousel-->
-    <div v-for="post in group.posts" class="post mb-2" :key="post.id">
-      <img src="@/assets/images/profile-image.png" alt="User" class="user-avatar" />
-      <div class="post-content">
-        <h3 class="mr-2">{{ post.author.nickname }}</h3>
-        <span class="post-time"
+    <PostCarousel :item-count="group.posts.length">
+      <div v-for="post in group.posts" class="post mb-2 post-carousel-item" :key="post.id">
+        <img src="@/assets/images/profile-image.png" alt="User" class="user-avatar" />
+        <div class="post-content">
+          <h3 class="mr-2">{{ post.author.nickname }}</h3>
+          <span class="post-time"
           >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
-        >
-        <p class="post-text">{{ post.message }}</p>
+          >
+          <p class="post-text">{{ post.message }}</p>
+        </div>
       </div>
-    </div>
+    </PostCarousel>
     <!--TODO: button design with icons-->
     <button v-if="!followState" class="btn btn-sm btn-primary btn-block" @click="followGroup">
       팔로우
@@ -41,6 +45,7 @@ import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { tts } from '@/utils/index.util'
 import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
+import PostCarousel from '@/components/displays/home/PostCarousel.vue'
 
 const props = defineProps<{
   group: Group
@@ -78,6 +83,7 @@ function updateFollowState(state: boolean) {
 }
 
 .cover-image {
+  display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   background-color: #dddddd;
@@ -119,6 +125,15 @@ function updateFollowState(state: boolean) {
 .group-meta {
   font-size: 14px;
   color: #666;
+}
+
+.post-carousel-item {
+  flex: 0 0 100%;
+  margin-right: 16px;
+}
+
+.post-carousel-item:last-child {
+  margin-right: 0;
 }
 
 .post {

@@ -70,6 +70,7 @@ export interface Post {
   likes: number
   comments: number
   createdAt: string
+  iLikes?: boolean
 }
 
 export interface Reply {

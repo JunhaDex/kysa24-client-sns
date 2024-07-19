@@ -2,24 +2,26 @@
   <Box>
     <div class="post">
       <div class="post-profile">
-        <div class="profile-pic"></div>
+        <div class="profile-pic">
+          <img :src="post.author.profileImg" alt="author profile" />
+        </div>
       </div>
       <div class="post-header">
-        <strong>김적재</strong><br />
-        <span class="text-xs">13조 • 1분 전</span>
+        <strong>{{ post.author.nickname }}</strong><br />
+        <span class="text-xs">{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span>
       </div>
       <div class="post-action">
         <IconButton class="btn-xs btn-ghost" image="vmore" />
       </div>
       <div class="post-content">
-        <p>어디야 지금 뭐해? 나랑 별 보러 가지 않을래? 너희 집 앞으로 잠깐 나올래? 가볍게 걷 좀 하나 걸치고서 나오면 돼 ⭐</p>
-      </div>
-      <div class="post-media">
-        <img src="@/assets/images/group-cover.png" alt="media" />
+        <p>{{ post.message }}</p>
+        <div class="post-media">
+          <img :src="post.image" alt="media" />
+        </div>
       </div>
       <div class="post-stats">
-        <span>Like 13</span>
-        <span>Reply 7</span>
+        <span @click="clickLike">Like {{ post.likes }}</span>
+        <span>Reply {{ post.comments }}</span>
       </div>
     </div>
   </Box>
@@ -28,6 +30,30 @@
 import Box from '@/components/layouts/Box.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import '@/assets/card.css'
+import type { Post } from '@/types/general.type'
+import { tts } from '@/utils/index.util'
+import { setupTeamInfo } from '@/stores/setups/team.composition'
+import { onMounted, ref } from 'vue'
+import { throttle } from 'lodash-es'
+
+const props = defineProps<{
+  post: Post
+}>()
+const emits = defineEmits(['likePost'])
+const likeState = ref(false)
+
+onMounted(() => {
+  likeState.value = !!props.post.iLikes
+})
+
+function clickLike() {
+  throttle(() => {
+    likeState.value = !likeState.value
+    emits('likePost', { post: props.post, isLike: likeState })
+  }, 1000)
+}
+
+const { getTeamNameById } = setupTeamInfo()
 </script>
 <style>
 .post {
@@ -36,7 +62,6 @@ import '@/assets/card.css'
   grid-template-areas:
         "profile header action"
         "content content content"
-        "media media media"
         "stats stats stats";
   gap: 8px;
   align-items: start;
@@ -55,21 +80,12 @@ import '@/assets/card.css'
   justify-self: end;
 }
 
-.action-button {
-  background: none;
-  border: none;
-  font-size: 1.2em;
-  cursor: pointer;
-  padding: 0 5px;
-}
-
 .post-content {
   grid-area: content;
   line-height: 1.4;
 }
 
 .post-media {
-  grid-area: media;
   overflow: hidden;
 }
 

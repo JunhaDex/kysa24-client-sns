@@ -1,7 +1,7 @@
 <template>
   <Profile>
     <div class="user-profile-wrap">
-      <div class="name-area">
+      <div class="name-area mr-4">
         <h2>김은지 <span>자매</span></h2>
         <ul>
           <li>13조</li>
@@ -9,8 +9,8 @@
         </ul>
       </div>
       <div class="action-area">
-        <button class="btn btn-primary btn-block mb-2">관심 보내기</button>
-        <button class="btn btn-block">메세지</button>
+        <button class="btn btn-sm btn-primary btn-block mb-2">관심 보내기</button>
+        <button class="btn btn-sm btn-block">메세지</button>
       </div>
     </div>
   </Profile>

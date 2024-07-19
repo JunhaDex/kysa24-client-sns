@@ -67,7 +67,7 @@ async function unfollowGroup() {
   }, 1000)
 }
 
-async function updateFollowState(state: boolean) {
+function updateFollowState(state: boolean) {
   followState.value = state
 }
 </script>

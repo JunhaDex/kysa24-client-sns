@@ -13,8 +13,8 @@
           :group="grp"
           :key="i"
           ref="groupCards"
-          @followGroup="followGroup"
-          @unfollowGroup="unfollowGroup"
+          @followGroup="(payload) => followGroup(payload, i)"
+          @unfollowGroup="(payload) => unfollowGroup(payload, i)"
         />
         <SearchEmpty />
       </Container>
@@ -52,7 +52,7 @@ const groupService = new GroupService()
 const { pageMeta, isFetching, onRender, hasMore, handleScroll } = setupListPage()
 const groupList = ref<Group[]>([])
 const scrollView = ref<HTMLDivElement>()
-const groupCards = ref([])
+const groupCards = ref<(typeof GroupCard)[]>([])
 
 function openWelcomeModal() {
   showWelcomeModal.value = true
@@ -79,13 +79,16 @@ async function fetchPage(pageNo = 1) {
   }
 }
 
-async function followGroup(group: Group) {
+async function followGroup(group: Group, index: number) {
   console.log('followGroup', group)
   await groupService.followGroup(group.ref)
+  groupCards.value[index].updateFollowState(true)
 }
 
-async function unfollowGroup(group: Group) {
+async function unfollowGroup(group: Group, index: number) {
   console.log('unfollowGroup', group)
+  await groupService.followGroup(group.ref, { undo: 'true' })
+  groupCards.value[index].updateFollowState(false)
 }
 
 onMounted(async () => {

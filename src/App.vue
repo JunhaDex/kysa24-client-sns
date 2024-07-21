@@ -57,7 +57,7 @@ function setAppBadgeNative(value: number) {
 }
 
 async function initUserInfo() {
-  if (userStore.teams === undefined) {
+  if (userStore.teams.length === 0) {
     userStore.teams = await userService.listTeams()
     console.log('teams', userStore.teams)
   }

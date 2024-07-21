@@ -29,7 +29,6 @@ let lastScrollPosition = 0
 let isFixed = false
 const handleScroll = () => {
   const currentScrollPosition = window.scrollY || document.documentElement.scrollTop
-  console.log('current ', currentScrollPosition, 'last: ', lastScrollPosition)
   const headerElement = document.querySelector<HTMLElement>('.header')!
   if (currentScrollPosition === 0) {
     headerElement.style.position = 'absolute'

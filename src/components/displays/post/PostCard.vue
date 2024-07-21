@@ -7,16 +7,20 @@
         </div>
       </div>
       <div class="post-header">
-        <strong>{{ post.author.nickname }}</strong><br />
-        <span class="text-xs">{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span>
+        <strong>{{ post.author.nickname }}</strong
+        ><br />
+        <span class="text-xs"
+          >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
+        >
       </div>
       <div class="post-action">
         <IconButton class="btn-xs btn-ghost" image="vmore" />
       </div>
       <div class="post-content">
         <p>{{ post.message }}</p>
-        <div class="post-media">
-          <img :src="post.image" alt="media" />
+        <div v-if="!isImageFail" class="post-media">
+          <!--TODO: debug on @error hook-->
+          <img :src="post.image" alt="media" @error="disableImage" />
         </div>
       </div>
       <div class="post-stats">
@@ -41,9 +45,11 @@ const props = defineProps<{
 }>()
 const emits = defineEmits(['likePost'])
 const likeState = ref(false)
+const isImageFail = ref(false)
 
 onMounted(() => {
   likeState.value = !!props.post.iLikes
+  isImageFail.value = !props.post.image
 })
 
 function clickLike() {
@@ -53,6 +59,11 @@ function clickLike() {
   }, 1000)
 }
 
+function disableImage(e) {
+  console.log('err hook')
+  isImageFail.value = true
+}
+
 const { getTeamNameById } = setupTeamInfo()
 </script>
 <style>
@@ -60,9 +71,9 @@ const { getTeamNameById } = setupTeamInfo()
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
-        "profile header action"
-        "content content content"
-        "stats stats stats";
+    'profile header action'
+    'content content content'
+    'stats stats stats';
   gap: 8px;
   align-items: start;
 }

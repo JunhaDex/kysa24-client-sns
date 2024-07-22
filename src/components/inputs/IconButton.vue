@@ -14,10 +14,11 @@ import Back from '@/assets/icons/Back.svg'
 import Search from '@/assets/icons/Search.svg'
 import Plus from '@/assets/icons/Plus.svg'
 import VMore from '@/assets/icons/VMore.svg'
+import HMore from '@/assets/icons/HMore.svg'
 import { computed } from 'vue'
 
 const props = defineProps<{
-  image: 'Notification' | 'Menu' | 'Back' | 'Search' | 'Plus' | 'vmore'
+  image: 'Notification' | 'Menu' | 'Back' | 'Search' | 'Plus' | 'vmore' | 'hmore'
   color?: string
 }>()
 
@@ -35,6 +36,8 @@ const svgAsset = computed(() => {
       return Search
     case 'vmore':
       return VMore
+    case 'hmore':
+      return HMore
   }
 })
 </script>

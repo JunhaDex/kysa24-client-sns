@@ -1,5 +1,5 @@
 <template>
-  <section class="container mx-auto mb-4" :class="{ 'container-full': stretch }">
+  <section class="container mx-auto" :class="{ 'container-full': stretch }">
     <slot />
   </section>
 </template>

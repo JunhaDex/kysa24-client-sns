@@ -34,9 +34,9 @@
     <button v-if="!followState" class="btn btn-sm btn-primary btn-block" @click="followGroup">
       팔로우
     </button>
-    <button v-else class="btn btn-sm btn-block">팔로잉</button>
-    <!--TODO: Toggle Dropdown with 언팔로우-->
-    <hr class="mt-2 mb-4" />
+    <UnfollowDropdown v-else class="dropdown-end block" :group-ref="group.ref" @unfollow-group="unfollowGroup">
+      <button class="btn btn-sm btn-block" role="button" tabindex="0">팔로잉</button>
+    </UnfollowDropdown>
   </div>
 </template>
 <script setup lang="ts">
@@ -46,6 +46,7 @@ import { tts } from '@/utils/index.util'
 import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
 import PostCarousel from '@/components/displays/home/PostCarousel.vue'
+import UnfollowDropdown from '@/components/inputs/dropdowns/UnfollowDropdown.vue'
 
 const props = defineProps<{
   group: Group

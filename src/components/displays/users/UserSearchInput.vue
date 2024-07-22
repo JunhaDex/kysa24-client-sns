@@ -7,11 +7,14 @@
       placeholder="그룹 이름으로 검색하기"
     />
     <IconButton class="ml-2 btn-primary btn-custom i-16" image="Search" color="#fff" />
-    <IconButton class="ml-2 btn-primary btn-custom i-16" image="Plus" />
+    <UserListDropdown>
+      <IconButton class="ml-2 btn-primary btn-custom i-16" image="Plus" />
+    </UserListDropdown>
   </div>
 </template>
 <script setup lang="ts">
 import IconButton from '@/components/inputs/IconButton.vue'
+import UserListDropdown from '@/components/inputs/dropdowns/UserListDropdown.vue'
 </script>
 <style scoped>
 .input {

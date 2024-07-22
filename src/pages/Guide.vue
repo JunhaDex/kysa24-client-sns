@@ -4,7 +4,10 @@
       <Header />
     </template>
     <template #main>
-      <Container> Guide </Container>
+      <Container> Guide</Container>
+      <Dropdown>
+        <IconButton class="btn-primary" image="Menu" role="button" tabindex="0" />
+      </Dropdown>
     </template>
   </PageView>
 </template>
@@ -12,5 +15,7 @@
 import PageView from '@/components/layouts/PageView.vue'
 import Container from '@/components/layouts/Container.vue'
 import Header from '@/components/layouts/Header.vue'
+import Dropdown from '@/components/inputs/Dropdown.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
 </script>
 <style scoped></style>

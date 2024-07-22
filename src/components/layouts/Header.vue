@@ -1,7 +1,7 @@
 <template>
   <BaseHeader>
     <template #prefix>
-      <router-link to="/" class="text-lg font-bold">Crewz</router-link>
+      <RouterLink to="/" class="text-lg font-bold">Crewz</RouterLink>
     </template>
   </BaseHeader>
 </template>

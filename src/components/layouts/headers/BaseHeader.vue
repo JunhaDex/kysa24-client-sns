@@ -5,11 +5,13 @@
       <nav>
         <ul class="flex space-x-2">
           <li>
-            <IconButton class="btn-ghost" image="Notification" />
+            <RouterLink to="/alert">
+              <IconButton class="btn-ghost" image="Notification" />
+            </RouterLink>
           </li>
           <li>
-            <!--<button class="btn btn-ghost" @click="openSideNav">Menu</button>-->
-            <IconButton class="btn-ghost" image="Menu" @click="openSideNav" />
+            <IconButton v-if="sideBar.isOpen" class="btn-ghost" image="Back" @click="openSideNav" />
+            <IconButton v-else class="btn-ghost" image="Menu" @click="openSideNav" />
           </li>
         </ul>
       </nav>
@@ -56,7 +58,6 @@ onBeforeUnmount(() => {
 
 function openSideNav() {
   sideBar.isOpen = !sideBar.isOpen
-  console.log(sideBar.isOpen)
 }
 </script>
 <style scoped>

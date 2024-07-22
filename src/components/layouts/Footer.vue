@@ -4,19 +4,19 @@
     <ul class="app-footer-link-group mb-2 my-auto">
       <li>
         <a href="#" class="app-footer-link">
-          <img :src="insta" alt="Instagram" class="brand-icon mr-1" />
+          <img src="@/assets/icons/brands/insta-icon.svg" alt="Instagram" class="brand-icon mr-1" />
           <span>Instagram</span>
         </a>
       </li>
       <li>
         <a href="#" class="app-footer-link">
-          <img :src="notion" alt="Notion" class="brand-icon mr-1" />
+          <img src="@/assets/icons/brands/notion-icon.svg" alt="Notion" class="brand-icon mr-1" />
           <span>Notion</span>
         </a>
       </li>
       <li>
         <a href="#" class="app-footer-link">
-          <img :src="github" alt="Github" class="brand-icon mr-1" />
+          <img src="@/assets/icons/brands/github-icon.svg" alt="Github" class="brand-icon mr-1" />
           <span>Github</span>
         </a>
       </li>
@@ -27,9 +27,7 @@
   </footer>
 </template>
 <script setup lang="ts">
-import insta from '@/assets/icons/brands/insta-icon.svg'
-import notion from '@/assets/icons/brands/notion-icon.svg'
-import github from '@/assets/icons/brands/github-icon.svg'
+
 </script>
 <style>
 .app-footer {

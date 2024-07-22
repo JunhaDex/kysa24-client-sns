@@ -12,6 +12,7 @@
           v-for="(grp, i) in groupList"
           :group="grp"
           :key="i"
+          class="mb-6"
           ref="groupCards"
           @followGroup="(payload) => followGroup(payload, i)"
           @unfollowGroup="(payload) => unfollowGroup(payload, i)"

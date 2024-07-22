@@ -17,7 +17,7 @@
               <span class="text-xs">형제</span>
             </div>
             <span class="member-location">서울남 청년지부</span>
-            <IconButton class="btn-xs btn-ghost" image="vmore" />
+            <IconButton class="btn-xs btn-ghost" image="hmore" />
           </div>
           <div class="member-item">
             <div class="profile-image"></div>
@@ -26,7 +26,7 @@
               <span class="text-xs">형제</span>
             </div>
             <span class="member-location">서울남 청년지부</span>
-            <IconButton class="btn-xs btn-ghost" image="vmore" />
+            <IconButton class="btn-xs btn-ghost" image="hmore" />
           </div>
           <!-- Add more member items as needed -->
         </div>

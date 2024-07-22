@@ -7,14 +7,18 @@
         </div>
       </div>
       <div class="post-header">
-        <strong>{{ post.author.nickname }}</strong
-        ><br />
-        <span class="text-xs"
-          >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
-        >
+        <strong>
+          {{ post.author.nickname }}
+        </strong>
+        <br />
+        <span class="text-xs">
+          {{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}
+        </span>
       </div>
       <div class="post-action">
-        <IconButton class="btn-xs btn-ghost" image="vmore" />
+        <UserHandleDropdown class="dropdown-end" :post-reply-id="post.id" is-author>
+          <IconButton class="btn-xs btn-ghost" image="vmore" role="button" tabindex="0" />
+        </UserHandleDropdown>
       </div>
       <div class="post-content">
         <p>{{ post.message }}</p>
@@ -24,8 +28,14 @@
         </div>
       </div>
       <div class="post-stats">
-        <span @click="clickLike">Like {{ post.likes }}</span>
-        <span>Reply {{ post.comments }}</span>
+        <span @click="clickLike">
+          <img src="@/assets/icons/Like.svg" alt="Like Button" />
+          <span>Like {{ post.likes }}</span>
+        </span>
+        <span>
+          <img src="@/assets/icons/Comment.svg" alt="Comment Button" />
+          <span>Reply {{ post.comments }}</span>
+        </span>
       </div>
     </div>
   </Box>
@@ -39,6 +49,7 @@ import { tts } from '@/utils/index.util'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
+import UserHandleDropdown from '@/components/inputs/dropdowns/UserHandleDropdown.vue'
 
 const props = defineProps<{
   post: Post

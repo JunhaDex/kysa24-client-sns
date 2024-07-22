@@ -9,7 +9,10 @@
         </ul>
       </div>
       <div class="action-area">
-        <button class="btn btn-primary btn-sm btn-block">팔로우</button>
+        <button v-if="!followState" class="btn btn-primary btn-sm btn-block">팔로우</button>
+        <Dropdown v-else class="dropdown-end block" :menu-list="unfollowMenu">
+          <button class="btn btn-sm btn-block">팔로잉</button>
+        </Dropdown>
       </div>
     </div>
   </Profile>
@@ -25,10 +28,18 @@ import Profile from '@/components/displays/Profile.vue'
 import Container from '@/components/layouts/Container.vue'
 import Box from '@/components/layouts/Box.vue'
 import type { Group } from '@/types/general.type'
+import { onMounted, ref } from 'vue'
+import Dropdown from '@/components/inputs/Dropdown.vue'
+import { unfollowMenu } from '@/constants/menu.constant'
 
 const props = defineProps<{
   group: Group
 }>()
+const followState = ref(false)
+
+onMounted(() => {
+  followState.value = !!props.group.already
+})
 </script>
 <style scoped>
 .group-profile-wrap {

@@ -9,7 +9,9 @@
         <span class="text-xs ml-2">11:45</span>
       </div>
       <div class="chat-card-action">
-        <IconButton class="btn-xs btn-ghost" image="vmore" />
+        <ChatListDropdown class="dropdown-end" user-ref="1">
+          <IconButton class="btn-xs btn-ghost" image="vmore" role="button" tabindex="0" />
+        </ChatListDropdown>
       </div>
       <div class="chat-card-contents">
         <p>어디야 지금 뭐해?</p>
@@ -21,6 +23,7 @@
 import Box from '@/components/layouts/Box.vue'
 import '@/assets/card.css'
 import IconButton from '@/components/inputs/IconButton.vue'
+import ChatListDropdown from '@/components/inputs/dropdowns/ChatListDropdown.vue'
 </script>
 <style scoped>
 .chat-list-item {

@@ -1,5 +1,5 @@
 <template>
-  <div class="input-group mt-4">
+  <div class="input-group my-4">
     <input
       class="input input-bordered input-md input-height w-full"
       type="text"
@@ -10,7 +10,6 @@
     <RouterLink to="/group/new">
       <IconButton class="ml-2 btn-primary btn-custom i-16" image="Plus" />
     </RouterLink>
-
   </div>
 </template>
 <script setup lang="ts">

@@ -4,10 +4,10 @@
       <Header />
     </template>
     <template #main>
-      <Container> Guide</Container>
-      <Dropdown>
-        <IconButton class="btn-primary" image="Menu" role="button" tabindex="0" />
-      </Dropdown>
+      <Container>
+        GUIDE
+        <CustomButton class="btn-primary btn-square btn-sm" :prefix-icon="HMore"></CustomButton>
+      </Container>
     </template>
   </PageView>
 </template>
@@ -17,5 +17,7 @@ import Container from '@/components/layouts/Container.vue'
 import Header from '@/components/layouts/Header.vue'
 import Dropdown from '@/components/inputs/Dropdown.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
+import CustomButton from '@/components/inputs/CustomButton.vue'
+import HMore from '@/assets/icons/HMore.svg'
 </script>
 <style scoped></style>

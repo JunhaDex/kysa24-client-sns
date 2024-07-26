@@ -34,7 +34,6 @@ import PostCard from '@/components/displays/post/PostCard.vue'
 import ReplyBox from '@/components/displays/post/ReplyBox.vue'
 import type { Post, Reply } from '@/types/general.type'
 import { setupListPage } from '@/stores/setups/list.composition'
-import { post } from 'axios'
 
 const { pageMeta, isFetching } = setupListPage()
 const route = useRoute()

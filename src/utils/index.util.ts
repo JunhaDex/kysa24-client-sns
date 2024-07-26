@@ -43,3 +43,7 @@ export function tts(time: Date | string): string {
   else if (diff < 604800) return `${Math.floor(diff / 86400)}일 전`
   else return local.format('MM월DD일 HH:mm')
 }
+
+export function sfx(sex: number) {
+  return sex === 1 ? '형제' : '자매'
+}

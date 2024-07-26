@@ -2,10 +2,12 @@
   <Profile>
     <div class="user-profile-wrap">
       <div class="name-area mr-4">
-        <h2>김은지 <span>자매</span></h2>
+        <h2>
+          {{ user.nickname }} <span>{{ subfix }}</span>
+        </h2>
         <ul>
-          <li>13조</li>
-          <li>서울남 청년지부</li>
+          <li>{{ team }}</li>
+          <li>{{ user.geo }}</li>
         </ul>
       </div>
       <div class="action-area">
@@ -18,9 +20,7 @@
     <Box>
       <h2>한줄 소개</h2>
       <p>
-        안녕하세요! 저는 AI 챗봇, ChatGPT입니다.
-        질문에 답변하고 대화를 나누는 것을 좋아해요.
-        언제든지 말씀해 주세요!
+        {{ user.introduce }}
       </p>
     </Box>
   </Container>
@@ -29,6 +29,25 @@
 import Profile from '@/components/displays/Profile.vue'
 import Container from '@/components/layouts/Container.vue'
 import Box from '@/components/layouts/Box.vue'
+import type { User } from '@/types/general.type'
+import { computed } from 'vue'
+import { sfx } from '@/utils/index.util'
+import { useUserStore } from '@/stores/user.store'
+
+const props = defineProps<{
+  user: User
+}>()
+const userStore = useUserStore()
+const subfix = computed(() => {
+  return sfx(props.user.sex)
+})
+const team = computed(() => {
+  const match = userStore.teams.find((team) => team.id === props.user.teamId)
+  if (match) {
+    return match.teamName
+  }
+  return ''
+})
 </script>
 <style scoped>
 .user-profile-wrap {

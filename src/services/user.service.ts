@@ -1,5 +1,12 @@
 import { ApiService } from '@/services/api.service'
-import type { PageRequest, PageResponse, Team, User, UserNoti } from '@/types/general.type'
+import type {
+  PageRequest,
+  PageResponse,
+  Team,
+  User,
+  UserExtra,
+  UserNoti
+} from '@/types/general.type'
 import { cleanObject } from '@/utils/index.util'
 import { UserClass, UserNotiClass } from '@/constants/class.constant'
 import dayjs from 'dayjs'
@@ -38,6 +45,15 @@ export class UserService extends ApiService {
     })
     const { meta, list } = this.unpackRes(res) as PageResponse<User>
     return { meta, list: list.map(this.cleanUser) }
+  }
+
+  async getUserByRef(ref: string): Promise<{ user: User; extra: UserExtra }> {
+    const res = await this.auth().client.get(`/${ref}`)
+    const { user, extra } = this.unpackRes(res) as { user: User; extra: UserExtra }
+    return {
+      user: this.cleanUser(user),
+      extra
+    }
   }
 
   async listTeams(): Promise<Team[]> {

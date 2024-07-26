@@ -42,6 +42,8 @@ export interface User extends Profile {
   actStatus: number
 }
 
+export interface UserExtra {}
+
 export interface Team {
   id: number
   teamName: string

@@ -49,7 +49,7 @@ import { tts } from '@/utils/index.util'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
-import UserHandleDropdown from '@/components/inputs/dropdowns/UserHandleDropdown.vue'
+import UserHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
 
 const props = defineProps<{
   post: Post

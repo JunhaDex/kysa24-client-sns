@@ -8,6 +8,7 @@ export const useToastStore = defineStore('toast', () => {
   function showToast(msg: string) {
     message.value = msg
     isShow.value = true
+    console.log('Toast: ', msg)
     setTimeout(() => {
       isShow.value = false
     }, 3000)

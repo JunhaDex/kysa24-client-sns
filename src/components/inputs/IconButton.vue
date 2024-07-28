@@ -1,62 +1,36 @@
+<!--TODO: Replace Icon Button-->
 <template>
-  <button class="btn btn-square">
-    <span class="icon-area" :style="{
-      maskImage: `url(${svgAsset})`,
-      WebkitMaskImage: `url(${svgAsset})`,
-      backgroundColor: color
-    }"></span>
+  <button class="btn">
+    <span v-if="prefixIcon" class="icon prefix-icon" :style="prefixIconStyle"></span>
+    <slot></slot>
+    <span v-if="suffixIcon" class="icon suffix-icon" :style="suffixIconStyle"></span>
   </button>
 </template>
-<script setup lang="ts">
-import Notification from '@/assets/icons/Notification.svg'
-import Menu from '@/assets/icons/Menu.svg'
-import Back from '@/assets/icons/Back.svg'
-import Search from '@/assets/icons/Search.svg'
-import Plus from '@/assets/icons/Plus.svg'
-import VMore from '@/assets/icons/VMore.svg'
-import HMore from '@/assets/icons/HMore.svg'
+<script lang="ts" setup>
 import { computed } from 'vue'
 
 const props = defineProps<{
-  image: 'Notification' | 'Menu' | 'Back' | 'Search' | 'Plus' | 'vmore' | 'hmore'
-  color?: string
+  prefixIcon?: string
+  suffixIcon?: string
 }>()
+const prefixIconStyle = computed(() => ({
+  maskImage: props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
+  WebkitMaskImage: props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
+  backgroundColor: 'currentColor'
+}))
 
-const svgAsset = computed(() => {
-  switch (props.image) {
-    case 'Notification':
-      return Notification
-    case 'Menu':
-      return Menu
-    case 'Back':
-      return Back
-    case 'Plus':
-      return Plus
-    case 'Search':
-      return Search
-    case 'vmore':
-      return VMore
-    case 'hmore':
-      return HMore
-  }
-})
+const suffixIconStyle = computed(() => ({
+  maskImage: props.suffixIcon ? `url(${props.suffixIcon})` : 'none',
+  WebkitMaskImage: props.suffixIcon ? `url(${props.suffixIcon})` : 'none',
+  backgroundColor: 'currentColor'
+}))
 </script>
 <style scoped>
-.btn span {
-  width: 24px;
-  height: 24px;
-}
-
-.i-16 span {
-  width: 16px;
-  height: 16px;
-}
-
-.icon-area {
-  mask-size: 100%;
-  -webkit-mask-repeat: no-repeat;
+.icon {
+  width: 1.6em;
+  height: 1.6em;
+  mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
-  background-color: #000;
 }
 </style>

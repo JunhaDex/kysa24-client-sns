@@ -6,30 +6,32 @@
     <!--      </div>-->
     <!--if logged in-->
     <div class="nav-profile">
-      <img class="mr-2" src="" alt="profile image" />
+      <div class="nav-profile-img profile-xl mr-2">
+        <img src="@/assets/images/profile-image.png" alt="profile image" />
+      </div>
       <div class="flex-1">
         <h4>백예린 님</h4>
         <div class="flex justify-between w-full">
           <span class="inline-block">6개 남음</span>
-          <a class="btn btn-primary btn-xs">내 프로필</a>
         </div>
       </div>
     </div>
     <ul class="menu text-xl">
       <li class="menu-item mb-2">
         <RouterLink to="/">
-          <img src="@/assets/icons/Home.svg" alt="Home Icon">
+          <img class="profile-md" src="@/assets/icons/Home.svg" alt="Home Icon">
           <span class="flex-1">그룹 목록</span>
         </RouterLink>
       </li>
       <li class="menu-item mb-2">
         <RouterLink to="/user-all">
+          <img class="profile-md" src="@/assets/icons/Users.svg" alt="Users Icon">
           <span class="flex-1">전체 참가자</span>
         </RouterLink>
       </li>
       <li class="menu-item mb-2">
         <RouterLink to="/chat/list">
-          <img src="@/assets/icons/Chat.svg" alt="Chat Icon">
+          <img class="profile-md" src="@/assets/icons/Chat.svg" alt="Chat Icon">
           <span class="flex-1">메세지</span>
           <span class="msg-count text-sm">3</span>
         </RouterLink>
@@ -37,12 +39,14 @@
       <li class="menu-item mb-2">
 
         <a href="https://daisyui.com/" target="_blank">
-          <img src="@/assets/icons/InfoExt.svg" alt="Chat Icon">
+          <img class="profile-md" src="@/assets/icons/InfoExt.svg" alt="Info Icon">
           <span class="flex-1">대회정보</span>
+          <img class="profile-md" src="@/assets/icons/Outlink.svg" alt="Outlink Icon">
         </a>
       </li>
       <li class="menu-item">
         <RouterLink to="/guide">
+          <img class="profile-md" src="@/assets/icons/Gear.svg" alt="Gear Icon">
           <span class="flex-1">개인설정</span>
         </RouterLink>
       </li>
@@ -50,53 +54,45 @@
     <hr />
     <div class="nav-group-recent flex-1">
       <div class="group-item">
-        <span class="group-icon"></span>
-        <span>대회 공지사항</span>
+        <div class="group-profile-img profile-sm mr-2"></div>
+        <span class="flex-1">대회 공지사항</span>
       </div>
       <div class="group-item">
-        <span class="group-icon"></span>
-        <span>대전 선교부 14'-16'</span>
-      </div>
-      <div class="group-item">
-        <span class="group-icon"></span>
-        <span>최대몇글글자까지가능한거예요</span>
-      </div>
-      <div class="group-item">
-        <span class="group-icon"></span>
-        <span>축구 좋아하는 사람들 모임</span>
+        <div class="group-profile-img profile-sm mr-2"></div>
+        <span class="flex-1">대전 선교부 14'-16'</span>
       </div>
     </div>
     <div class="nav-bottom">
-      <div class="nav-support">
+      <div class="nav-support mb-2">
         <a href="#" class="support-item">
-          <img src="@/assets/icons/InfoExt.svg" alt="Support Icon">
-          <span>대회 지원센터</span>
+          <img class="profile-sm mr-2" src="@/assets/icons/Support.svg" alt="Support Icon">
+          <span class="flex-1">대회 지원센터</span>
         </a>
-        <a href="#" class="logout-link">
-          <img src="@/assets/icons/InfoExt.svg" alt="Logout Icon">
-          <span>로그아웃</span>
+        <a href="#" class="support-item">
+          <img class="profile-sm mr-2" src="@/assets/icons/Logout.svg" alt="Logout Icon">
+          <span class="flex-1">로그아웃</span>
         </a>
       </div>
 
       <div class="nav-footer">
-        <ul class="social-links">
+        <ul class="social-links mb-2">
           <li>
-            <a href="#" class="app-footer-link">
-              <img src="@/assets/icons/brands/insta-icon.svg" alt="Instagram" />
+            <a href="#" target="_blank">
+              <img class="profile-sm" src="@/assets/icons/brands/insta-icon.svg" alt="Instagram" />
             </a>
           </li>
           <li>
-            <a href="#" class="app-footer-link">
-              <img src="@/assets/icons/brands/notion-icon.svg" alt="Notion" />
+            <a href="#" target="_blank">
+              <img class="profile-sm" src="@/assets/icons/brands/notion-icon.svg" alt="Notion" />
             </a>
           </li>
           <li>
-            <a href="#" class="app-footer-link">
-              <img src="@/assets/icons/brands/github-icon.svg" alt="Github" />
+            <a href="#" target="_blank">
+              <img class="profile-sm" src="@/assets/icons/brands/github-icon.svg" alt="Github" />
             </a>
           </li>
         </ul>
-        <p class="copyright">© 2024 KYSA designed with ❤️</p>
+        <p class="copyright text-xs">© 2024 KYSA designed with ❤️</p>
       </div>
     </div>
   </nav>
@@ -126,28 +122,11 @@ const isOpen = computed(() => sidebar.isOpen)
   z-index: 9;
 }
 
-.menu-item a {
-  padding: 0.6rem 1rem;
-  display: flex;
-}
-
-.nav-profile {
-  display: flex;
-  margin-bottom: 1rem;
-}
-
-.nav-profile > img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.msg-count {
-  display: inline-block;
-  background-color: theme('colors.error');
-  color: theme('colors.white');
-  border-radius: 8px;
-  padding: 0.3rem 0.5rem;
+.side-nav hr {
+  margin: 1rem auto;
+  border: none;
+  border-top: 2px solid theme('colors.gray.300');
+  width: 42%;
 }
 
 .open {
@@ -166,30 +145,56 @@ const isOpen = computed(() => sidebar.isOpen)
   }
 }
 
-.nav-support {
-  margin-bottom: 20px;
+.support-item, .group-item, .menu-item a {
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.support-item:hover, .support-item:active, .group-item:hover, .group-item:active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.nav-profile {
+  display: flex;
+}
+
+.nav-profile-img, .group-profile-img {
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: theme('colors.gray.300');
+}
+
+.msg-count {
+  display: inline-block;
+  background-color: theme('colors.error');
+  color: theme('colors.white');
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
 }
 
 .social-links {
   display: flex;
   justify-content: center;
+  align-items: center;
   list-style-type: none;
   padding: 0;
-  margin-bottom: 10px;
+  width: 100%;
 }
 
-.social-links li {
-  margin: 0 5px;
+.social-links li a img {
+  display: inline-block;
 }
 
-.social-links img {
-  width: 24px;
-  height: 24px;
+.nav-footer ul li:not(:last-child)::after {
+  content: '|';
+  margin: 0 10px;
 }
 
 .copyright {
   text-align: center;
-  font-size: 12px;
-  color: #666;
+  color: theme('colors.gray.600');
 }
 </style>

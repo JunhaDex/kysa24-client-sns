@@ -41,11 +41,11 @@
 </template>
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
-import IconButton from '@/components/inputs/IconButton.vue'
+import IconButton from '@/components/inputs/IconButtonDep.vue'
 import { computed, onMounted, ref } from 'vue'
 import type { Reply } from '@/types/general.type'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
-import { tts } from '../../../utils/index.util'
+import { tts } from '@/utils/index.util'
 
 const props = defineProps<{
   replyList: Reply[]

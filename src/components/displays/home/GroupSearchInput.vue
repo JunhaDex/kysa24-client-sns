@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import IconButton from '@/components/inputs/IconButton.vue'
+import IconButton from '@/components/inputs/IconButtonDep.vue'
 </script>
 <style scoped>
 .input {

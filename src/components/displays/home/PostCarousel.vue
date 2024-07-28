@@ -8,19 +8,19 @@
     <div class="post-carousel" :style="{ transform: `translateX(calc(-${current * 100}% - ${current * 16}px))` }">
       <slot />
     </div>
-    <div class="carousel-control" :class="{visible: isController}">
+    <div v-if="itemCount > 1" class="carousel-control" :class="{visible: isController}">
       <IconButton class="btn-xs btn-ghost" image="vmore" @click="slidePrev" />
       <IconButton class="btn-xs btn-primary" image="vmore" @click="slideNext" />
     </div>
   </div>
-  <div class="carousel-dots">
+  <div v-if="itemCount > 1" class="carousel-dots mb-2">
       <span v-for="index in itemCount" class="c-dot" :class="{'is-now': (index-1) === current}"
             :key="`cd-${index}`"></span>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import IconButton from '@/components/inputs/IconButton.vue'
+import IconButton from '@/components/inputs/IconButtonDep.vue'
 
 const props = defineProps<{
   itemCount: number
@@ -96,6 +96,8 @@ function touchEnd() {
 
 .carousel-dots {
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .c-dot {

@@ -15,7 +15,7 @@
 </template>
 <script lang="ts" setup>
 import type { User } from '@/types/general.type'
-import IconButton from '@/components/inputs/IconButton.vue'
+import IconButton from '@/components/inputs/IconButtonDep.vue'
 import { computed } from 'vue'
 import UserHandleDropdown from '@/components/inputs/dropdowns/UserHandleDropdown.vue'
 import { sfx } from '@/utils/index.util'

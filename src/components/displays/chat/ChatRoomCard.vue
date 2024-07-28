@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import '@/assets/card.css'
-import IconButton from '@/components/inputs/IconButton.vue'
+import IconButton from '@/components/inputs/IconButtonDep.vue'
 import ChatListDropdown from '@/components/inputs/dropdowns/ChatListDropdown.vue'
 </script>
 <style scoped>

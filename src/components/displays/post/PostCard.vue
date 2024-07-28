@@ -17,7 +17,7 @@
       </div>
       <div class="post-action">
         <UserHandleDropdown class="dropdown-end" :post-reply-id="post.id" is-author>
-          <IconButton class="btn-xs btn-ghost" image="vmore" role="button" tabindex="0" />
+          <IconButton class="btn-sm btn-ghost btn-square" :prefix-icon="VMoreIcon" role="button" tabindex="0" />
         </UserHandleDropdown>
       </div>
       <div class="post-content">
@@ -29,11 +29,11 @@
       </div>
       <div class="post-stats">
         <span @click="clickLike">
-          <img src="@/assets/icons/Like.svg" alt="Like Button" />
+          <img class="profile-md" src="@/assets/icons/Like.svg" alt="Like Button" />
           <span>Like {{ post.likes }}</span>
         </span>
         <span>
-          <img src="@/assets/icons/Comment.svg" alt="Comment Button" />
+          <img class="profile-md" src="@/assets/icons/Comment.svg" alt="Comment Button" />
           <span>Reply {{ post.comments }}</span>
         </span>
       </div>
@@ -43,13 +43,14 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
-import '@/assets/card.css'
 import type { Post } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
 import UserHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
+import VMoreIcon from '@/assets/icons/VMore.svg'
+import '@/assets/card.css'
 
 const props = defineProps<{
   post: Post
@@ -125,5 +126,16 @@ const { getTeamNameById } = setupTeamInfo()
   gap: 15px;
   font-size: 0.9em;
   color: #555;
+}
+
+.post-stats span {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-stats span img {
+  display: inline-block;
 }
 </style>

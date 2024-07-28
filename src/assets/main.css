@@ -71,3 +71,30 @@ img {
 .input-height {
     height: 2.25rem;
 }
+
+.icon {
+    display: inline-block;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+.profile-xl {
+    width: 48px;
+    height: 48px;
+}
+
+.profile-md {
+    width: 24px;
+    height: 24px;
+}
+
+.profile-sm {
+    width: 18px;
+    height: 18px;
+}
+
+.profile-xxs {
+    width: 12px;
+    height: 12px;
+}

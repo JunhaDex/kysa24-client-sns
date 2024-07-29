@@ -33,20 +33,21 @@
           </div>
           <p class="reply-text">{{ reply.message }}</p>
         </div>
-        <IconButton class="btn-xs btn-ghost" image="vmore" />
+        <IconButton class="btn-ghost btn-square btn-sm" :prefix-icon="VMoreIcon" />
       </li>
-      <!-- More reply items can be added here -->
+      <!-- TODO: More reply items can be added here -->
     </ul>
   </Box>
 </template>
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
-import IconButton from '@/components/inputs/IconButtonDep.vue'
 import { computed, onMounted, ref } from 'vue'
 import type { Reply } from '@/types/general.type'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { tts } from '@/utils/index.util'
 import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
+import IconButton from '@/components/inputs/IconButton.vue'
+import VMoreIcon from '@/assets/icons/VMore.svg'
 
 const props = defineProps<{
   replyList: Reply[]

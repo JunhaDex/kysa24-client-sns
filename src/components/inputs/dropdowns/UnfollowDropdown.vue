@@ -4,7 +4,9 @@
       <slot />
     </template>
     <template #menus>
-      <li @click="unfollowGroup"><span class="text-error">팔로우 취소</span></li>
+      <li :class="{'disabled': disabled}" @click="unfollowGroup" :aria-disabled="disabled">
+        <span :class="{'text-error': !disabled}">팔로우 취소</span>
+      </li>
     </template>
   </Dropdown>
 </template>
@@ -14,13 +16,16 @@ import { ref } from 'vue'
 
 const props = defineProps<{
   groupRef: string
+  disabled?: boolean
 }>()
 const emit = defineEmits(['unfollowGroup'])
 const drp = ref<typeof Dropdown>()
 
 function unfollowGroup() {
-  emit('unfollowGroup', props.groupRef)
-  drp.value!.close()
+  if (!props.disabled) {
+    emit('unfollowGroup', props.groupRef)
+    drp.value!.close()
+  }
 }
 
 </script>

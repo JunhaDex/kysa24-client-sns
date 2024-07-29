@@ -10,7 +10,7 @@
       </div>
       <div class="chat-card-action">
         <ChatListDropdown class="dropdown-end" user-ref="1">
-          <IconButton class="btn-xs btn-ghost" image="vmore" role="button" tabindex="0" />
+          <IconButton class="btn-sm btn-ghost btn-square" role="button" tabindex="0" :prefix-icon="VMoreIcon" />
         </ChatListDropdown>
       </div>
       <div class="chat-card-contents">
@@ -22,8 +22,10 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import '@/assets/card.css'
-import IconButton from '@/components/inputs/IconButtonDep.vue'
 import ChatListDropdown from '@/components/inputs/dropdowns/ChatListDropdown.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import VMoreIcon from '@/assets/icons/VMore.svg'
+// TODO: Add Props
 </script>
 <style scoped>
 .chat-list-item {

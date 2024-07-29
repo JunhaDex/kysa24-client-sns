@@ -1,5 +1,5 @@
 <template>
-  <header class="top-fixed header" :class="{ 'header--scrolling-up': isScrollingUp }">
+  <header class="header" :class="{ 'header--scrolling-up': isScrollingUp }">
     <div class="container flex justify-between items-center py-2">
       <slot name="prefix" />
       <nav>
@@ -100,12 +100,15 @@ function openSideNav() {
 }
 
 .top-fixed {
-  position: absolute;
+  position: fixed;
   top: calc(var(--header-height) * -1);
   width: 100%;
 }
 
 .header {
+  position: absolute;
+  top: calc(var(--header-height) * -1);
+  width: 100%;
   background-color: theme('colors.white');
   border-bottom: 1px solid theme('colors.gray.300');
   transition: top 0.3s ease-in-out;
@@ -116,7 +119,7 @@ function openSideNav() {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: top 0.3s ease-in-out;
+  transition: top 0.3s ease-in-out 0s, top 0.2s ease-in-out 0s;
   z-index: 9;
 }
 

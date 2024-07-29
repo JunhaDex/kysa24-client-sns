@@ -7,8 +7,8 @@
       <img :src="group.profileImg" alt="Group Profile" class="profile-pic" />
       <div class="group-details">
         <h2 class="text-lg">
-          <RouterLink class="font-bold" :to="{ name: 'group_feed', params: { ref: group.ref } }"
-            >{{ group.groupName }}
+          <RouterLink class="font-bold" :to="{ name: 'group_feed', params: { ref: group.ref } }">
+            {{ group.groupName }}
           </RouterLink>
         </h2>
         <div class="group-meta">
@@ -25,7 +25,7 @@
         <div class="post-content">
           <h3 class="mr-2">{{ post.author.nickname }}</h3>
           <span class="post-time"
-            >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
+          >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
           >
           <p class="post-text">{{ post.message }}</p>
         </div>
@@ -43,6 +43,7 @@
       v-else
       class="dropdown-end block"
       :group-ref="group.ref"
+      :disabled="unfollowBlocked"
       @unfollow-group="unfollowGroup"
     >
       <IconButton
@@ -61,7 +62,7 @@
 import type { Group } from '@/types/general.type'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { tts } from '@/utils/index.util'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
 import PostCarousel from '@/components/displays/home/PostCarousel.vue'
 import UnfollowDropdown from '@/components/inputs/dropdowns/UnfollowDropdown.vue'
@@ -69,6 +70,8 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import BellOn from '@/assets/icons/BellOn.svg'
 import CaretDown from '@/assets/icons/CaretDown.svg'
 import Notification from '@/assets/icons/Notification.svg'
+import { useAuthStore } from '@/stores/auth.store'
+import { useUserStore } from '@/stores/user.store'
 
 const props = defineProps<{
   group: Group
@@ -76,8 +79,12 @@ const props = defineProps<{
 const emits = defineEmits(['followGroup', 'unfollowGroup'])
 defineExpose({ updateFollowState })
 
+const userStore = useUserStore()
 const { getTeamNameById } = setupTeamInfo()
 const followState = ref(false)
+const unfollowBlocked = computed(() => {
+  return props.group.id === 1 || props.group.creator.ref === userStore.myInfo?.ref
+})
 
 onMounted(() => {
   followState.value = !!props.group.already

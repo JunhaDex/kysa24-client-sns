@@ -6,15 +6,17 @@
       name="userSearch"
       placeholder="그룹 이름으로 검색하기"
     />
-    <IconButton class="ml-2 btn-primary btn-custom i-16" image="Search" color="#fff" />
+    <IconButton class="ml-2 btn-sm btn-primary btn-square" :prefix-icon="SearchIcon" />
     <UserListDropdown>
-      <IconButton class="ml-2 btn-primary btn-custom i-16" image="Plus" />
+      <IconButton class="ml-2 btn-sm btn-square" :prefix-icon="PlusIcon" />
     </UserListDropdown>
   </div>
 </template>
 <script setup lang="ts">
-import IconButton from '@/components/inputs/IconButtonDep.vue'
 import UserListDropdown from '@/components/inputs/dropdowns/UserListDropdown.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import SearchIcon from '@/assets/icons/Search.svg'
+import PlusIcon from '@/assets/icons/Plus.svg'
 </script>
 <style scoped>
 .input {

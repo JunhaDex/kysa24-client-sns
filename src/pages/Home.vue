@@ -42,6 +42,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { setupListPage } from '@/stores/setups/list.composition'
 import { GroupService } from '@/services/group.service'
+import { useToastStore } from '@/stores/ui/toast.store'
 import GroupSearchInput from '@/components/displays/home/GroupSearchInput.vue'
 import GroupCard from '@/components/displays/home/GroupCard.vue'
 import SearchEmpty from '@/components/displays/SearchEmpty.vue'
@@ -54,6 +55,7 @@ const { pageMeta, isFetching, onRender, hasMore, handleScroll } = setupListPage(
 const groupList = ref<Group[]>([])
 const scrollView = ref<HTMLDivElement>()
 const groupCards = ref<(typeof GroupCard)[]>([])
+const toastStore = useToastStore()
 
 function openWelcomeModal() {
   showWelcomeModal.value = true
@@ -81,15 +83,25 @@ async function fetchPage(pageNo = 1) {
 }
 
 async function followGroup(group: Group, index: number) {
-  console.log('followGroup', group)
-  await groupService.followGroup(group.ref)
-  groupCards.value[index].updateFollowState(true)
+  try {
+    await groupService.followGroup(group.ref)
+    groupCards.value[index].updateFollowState(true)
+    toastStore.showToast('팔로우 성공!', 'success')
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+  }
 }
 
 async function unfollowGroup(group: Group, index: number) {
-  console.log('unfollowGroup', group)
-  await groupService.followGroup(group.ref, { undo: 'true' })
-  groupCards.value[index].updateFollowState(false)
+  try {
+    await groupService.followGroup(group.ref, { undo: 'true' })
+    groupCards.value[index].updateFollowState(false)
+    toastStore.showToast('팔로우를 해제했습니다.', 'info')
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+  }
 }
 
 onMounted(async () => {

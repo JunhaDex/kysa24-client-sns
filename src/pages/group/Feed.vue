@@ -4,17 +4,24 @@
       <Header />
     </template>
     <template #main>
-      <Container>
+      <Container class="mb-4">
         <Breadcrumb />
       </Container>
       <template v-if="groupItem">
-        <Container stretch>
+        <Container stretch class="mb-4">
           <GroupProfile :group="groupItem" />
         </Container>
         <Container>
           <CreatePostBox class="mb-4" />
           <SearchEmpty v-if="postList.length === 0" />
-          <PostCard v-else v-for="(p,i) in postList" :post="p" class="mb-4" :key="i" ref="postCards" />
+          <PostCard
+            v-else
+            v-for="(p, i) in postList"
+            :post="p"
+            class="mb-4"
+            :key="i"
+            ref="postCards"
+          />
         </Container>
       </template>
     </template>

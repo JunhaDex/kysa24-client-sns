@@ -9,16 +9,22 @@
     </div>
     <span class="member-location">{{ user.geo }}</span>
     <UserHandleDropdown class="dropdown-end" :target-ref="user.ref">
-      <IconButton class="btn-xs btn-ghost" image="vmore" />
+      <IconButton
+        class="btn-sm btn-ghost btn-square"
+        role="button"
+        tabindex="0"
+        :prefix-icon="VMoreIcon"
+      />
     </UserHandleDropdown>
   </div>
 </template>
 <script lang="ts" setup>
 import type { User } from '@/types/general.type'
-import IconButton from '@/components/inputs/IconButtonDep.vue'
 import { computed } from 'vue'
 import UserHandleDropdown from '@/components/inputs/dropdowns/UserHandleDropdown.vue'
 import { sfx } from '@/utils/index.util'
+import IconButton from '@/components/inputs/IconButton.vue'
+import VMoreIcon from '@/assets/icons/VMore.svg'
 
 const props = defineProps<{
   user: User

@@ -1,16 +1,24 @@
 <template>
   <Box>
     <div class="create-post">
-      <div class="profile-pic"></div>
+      <div class="profile-pic profile-xl"></div>
       <form class="post-form">
         <div class="post-content">
-          <textarea name="post-text" placeholder="무슨 생각을 하고 있나요?"></textarea>
-          <div class="post-actions">
-            <label for="file-upload" class="file-upload-btn">
-              <span class="file-icon">📎</span>
-            </label>
-            <input id="file-upload" name="file-upload" type="file" accept="image/*" style="display: none;">
-            <button type="submit" class="submit-btn">올리기</button>
+          <textarea
+            v-model="userInput"
+            class="textarea text-input"
+            name="post-text"
+            placeholder="무슨 생각을 하고 있나요?"
+            ref="postInput"
+          ></textarea>
+          <div class="post-actions mt-2">
+            <input type="file" id="cover-input" class="hidden" accept="image/*" ref="mediaInput" />
+            <IconButton
+              class="btn-square btn-sm mr-4"
+              @click="clickMediaInput"
+              :prefix-icon="ImageIcon"
+            />
+            <IconButton class="btn-primary btn-sm" @click="submitCreatePost">올리기</IconButton>
           </div>
         </div>
       </form>
@@ -19,6 +27,40 @@
 </template>
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
+import { onMounted, ref } from 'vue'
+import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
+import IconButton from '@/components/inputs/IconButton.vue'
+import ImageIcon from '@/assets/icons/Image.svg'
+
+const postInput = ref<HTMLTextAreaElement>()
+const mediaInput = ref<HTMLInputElement>()
+const userInput = ref('')
+
+onMounted(async () => {
+  if (postInput.value) {
+    postInput.value.addEventListener('input', () => {
+      // Auto resize
+      postInput.value!.style.height = 'auto'
+      postInput.value!.style.height = postInput.value!.scrollHeight + 'px'
+      // Prevent overflow
+      ignoreInput()
+    })
+  }
+})
+
+function clickMediaInput() {
+  if (mediaInput.value) {
+    mediaInput.value.click()
+  }
+}
+
+function submitCreatePost() {}
+
+function ignoreInput() {
+  if (userInput.value.length > MAX_POST_INPUT_SIZE) {
+    userInput.value = userInput.value.slice(0, MAX_POST_INPUT_SIZE)
+  }
+}
 </script>
 <style>
 .create-post {
@@ -28,8 +70,6 @@ import Box from '@/components/layouts/Box.vue'
 }
 
 .profile-pic {
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
   background-color: #ddd;
   flex-shrink: 0;
@@ -43,40 +83,19 @@ import Box from '@/components/layouts/Box.vue'
   width: 100%;
 }
 
-.create-post textarea {
+.text-input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  resize: vertical;
-  margin-bottom: 10px;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  resize: none;
+  overflow: hidden;
+  min-height: 20px;
+  line-height: 20px;
 }
 
 .post-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
-}
-
-.file-upload-btn {
-  cursor: pointer;
-  padding: 5px 10px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  display: inline-flex;
-  align-items: center;
-}
-
-.file-icon {
-  font-size: 20px;
-}
-
-.submit-btn {
-  padding: 10px 20px;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 </style>

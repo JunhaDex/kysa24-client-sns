@@ -46,6 +46,7 @@ import { computed, onMounted, ref } from 'vue'
 import type { Reply } from '@/types/general.type'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { tts } from '@/utils/index.util'
+import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
 
 const props = defineProps<{
   replyList: Reply[]
@@ -57,13 +58,15 @@ const { getTeamNameById } = setupTeamInfo()
 const inputCounter = computed<number>(() => {
   return new Blob([userInput.value]).size
 })
-const maxInputLength = 500
+const maxInputLength = MAX_POST_INPUT_SIZE
 
 onMounted(async () => {
   if (replyInput.value) {
     replyInput.value.addEventListener('input', () => {
+      // auto resize
       replyInput.value!.style.height = 'auto'
       replyInput.value!.style.height = replyInput.value!.scrollHeight + 'px'
+      // prevent overflow
       ignoreInput()
     })
   }

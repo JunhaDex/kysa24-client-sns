@@ -9,8 +9,8 @@
       <slot />
     </div>
     <div v-if="itemCount > 1" class="carousel-control" :class="{visible: isController}">
-      <IconButton class="btn-xs btn-ghost" image="vmore" @click="slidePrev" />
-      <IconButton class="btn-xs btn-primary" image="vmore" @click="slideNext" />
+      <IconButton class="btn-sm btn-square" :prefix-icon="Back" @click="slidePrev" />
+      <IconButton class="btn-sm btn-square" :prefix-icon="Forward" @click="slideNext" />
     </div>
   </div>
   <div v-if="itemCount > 1" class="carousel-dots mb-2">
@@ -20,7 +20,9 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import IconButton from '@/components/inputs/IconButtonDep.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import Back from '@/assets/icons/Back.svg'
+import Forward from '@/assets/icons/Forward.svg'
 
 const props = defineProps<{
   itemCount: number

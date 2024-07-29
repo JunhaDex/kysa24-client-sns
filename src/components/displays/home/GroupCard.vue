@@ -1,13 +1,14 @@
 <template>
   <div class="group-info">
-    <RouterLink class="cover-image" :to="{name: 'group_feed', params: {ref: group.ref}}">
+    <RouterLink class="cover-image" :to="{ name: 'group_feed', params: { ref: group.ref } }">
       <img :src="group.coverImg" alt="Group Cover" class="cover-pic" />
     </RouterLink>
     <div class="profile">
       <img :src="group.profileImg" alt="Group Profile" class="profile-pic" />
       <div class="group-details">
         <h2 class="text-lg">
-          <RouterLink class="font-bold" :to="{name: 'group_feed', params: {ref: group.ref}}">{{ group.groupName }}
+          <RouterLink class="font-bold" :to="{ name: 'group_feed', params: { ref: group.ref } }"
+            >{{ group.groupName }}
           </RouterLink>
         </h2>
         <div class="group-meta">
@@ -24,18 +25,35 @@
         <div class="post-content">
           <h3 class="mr-2">{{ post.author.nickname }}</h3>
           <span class="post-time"
-          >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
+            >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
           >
           <p class="post-text">{{ post.message }}</p>
         </div>
       </div>
     </PostCarousel>
-    <!--TODO: button design with icons-->
-    <button v-if="!followState" class="btn btn-sm btn-primary btn-block" @click="followGroup">
+    <IconButton
+      v-if="!followState"
+      class="btn-sm btn-primary btn-block"
+      :prefix-icon="Notification"
+      @click="followGroup"
+    >
       팔로우
-    </button>
-    <UnfollowDropdown v-else class="dropdown-end block" :group-ref="group.ref" @unfollow-group="unfollowGroup">
-      <button class="btn btn-sm btn-block" role="button" tabindex="0">팔로잉</button>
+    </IconButton>
+    <UnfollowDropdown
+      v-else
+      class="dropdown-end block"
+      :group-ref="group.ref"
+      @unfollow-group="unfollowGroup"
+    >
+      <IconButton
+        class="btn-sm btn-block"
+        role="button"
+        tabindex="0"
+        :prefix-icon="BellOn"
+        :suffix-icon="CaretDown"
+      >
+        팔로잉
+      </IconButton>
     </UnfollowDropdown>
   </div>
 </template>
@@ -47,6 +65,10 @@ import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
 import PostCarousel from '@/components/displays/home/PostCarousel.vue'
 import UnfollowDropdown from '@/components/inputs/dropdowns/UnfollowDropdown.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import BellOn from '@/assets/icons/BellOn.svg'
+import CaretDown from '@/assets/icons/CaretDown.svg'
+import Notification from '@/assets/icons/Notification.svg'
 
 const props = defineProps<{
   group: Group
@@ -61,16 +83,19 @@ onMounted(() => {
   followState.value = !!props.group.already
 })
 
-async function followGroup() {
-  throttle(() => {
+function followGroup() {
+  const caller = throttle(() => {
     emits('followGroup', props.group)
+    console.log('throttled')
   }, 1000)
+  caller()
 }
 
 async function unfollowGroup() {
-  throttle(() => {
+  const caller = throttle(() => {
     emits('unfollowGroup', props.group)
   }, 1000)
+  caller()
 }
 
 function updateFollowState(state: boolean) {

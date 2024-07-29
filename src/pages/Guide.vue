@@ -10,6 +10,9 @@
         <Toast toast-msg="안녕하세요" :prefix-icon="Check" icon-color="success" />
         <button class="btn" @click="showToast">Show Toast</button>
       </Container>
+      <Container>
+        <CreatePostBox class="mb-4" />
+      </Container>
     </template>
   </PageView>
 </template>
@@ -24,6 +27,7 @@ import HMore from '@/assets/icons/HMore.svg'
 import Toast from '@/components/feedbacks/Toast.vue'
 import Check from '@/assets/icons/Check.svg'
 import { useToastStore } from '@/stores/ui/toast.store'
+import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 
 const toastStore = useToastStore()
 

@@ -15,6 +15,12 @@ export interface PageRequest {
   size?: number
 }
 
+export interface PageBreadcrumb {
+  name: string
+  path: string
+  image?: string
+}
+
 export interface UserAuth {
   accessToken: string
   isRegister: boolean

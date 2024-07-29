@@ -1,9 +1,9 @@
 <template>
   <nav class="app-bread text-xs mt-4" aria-label="breadcrumb">
-    <IconButton image="Back" class="btn-white btn-custom shadow mr-2.5" />
+    <IconButton class="btn-white btn-square btn-custom shadow mr-2" :prefix-icon="BackIcon" />
     <ol class="app-bread-location shadow">
       <li class="bc-item flex align-middle">
-        <img class="bread-icon mr-1" src="@/assets/icons/Home.svg" alt="bread-icon">
+        <img class="bread-icon mr-1" src="@/assets/icons/Home.svg" alt="bread-icon" />
         <span>홈</span>
       </li>
       <li class="bc-item">
@@ -16,7 +16,8 @@
   </nav>
 </template>
 <script setup lang="ts">
-import IconButton from '@/components/inputs/IconButtonDep.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import BackIcon from '@/assets/icons/Back.svg'
 </script>
 <style scoped>
 .app-bread {
@@ -41,7 +42,8 @@ import IconButton from '@/components/inputs/IconButtonDep.vue'
   cursor: pointer;
 }
 
-.bc-item span:hover, span:active {
+.bc-item span:hover,
+span:active {
   font-weight: bold;
   text-decoration: underline;
 }

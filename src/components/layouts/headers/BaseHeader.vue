@@ -10,19 +10,37 @@
             </RouterLink>
           </li>
           <li>
-            <IconButton v-if="sideBar.isOpen" class="btn-ghost" :prefix-icon="ArrowRightIcon" @click="openSideNav" />
-            <IconButton v-else class="btn-ghost" :prefix-icon="MenuIcon" @click="openSideNav" />
+            <IconButton
+              v-if="sideBar.isOpen"
+              class="btn-ghost btn-square"
+              :prefix-icon="ArrowRightIcon"
+              @click="openSideNav"
+            />
+            <IconButton
+              v-else
+              class="btn-ghost btn-square"
+              :prefix-icon="MenuIcon"
+              @click="openSideNav"
+            />
           </li>
         </ul>
       </nav>
       <slot name="postfix" />
     </div>
   </header>
-  <div class="top-fixed toast-area" :class="{'toast-area--show': toastStore.isShow}">
-    <Toast v-if="toastStore.msgLevel === 'success'" :toast-msg="toastStore.message" :prefix-icon="Check"
-           icon-color="success" />
-    <Toast v-else-if="toastStore.msgLevel === 'error'" :toast-msg="toastStore.message" :prefix-icon="Close"
-           icon-color="error" />
+  <div class="top-fixed toast-area" :class="{ 'toast-area--show': toastStore.isShow }">
+    <Toast
+      v-if="toastStore.msgLevel === 'success'"
+      :toast-msg="toastStore.message"
+      :prefix-icon="Check"
+      icon-color="success"
+    />
+    <Toast
+      v-else-if="toastStore.msgLevel === 'error'"
+      :toast-msg="toastStore.message"
+      :prefix-icon="Close"
+      icon-color="error"
+    />
     <Toast v-else :toast-msg="toastStore.message" icon-color="info" />
   </div>
 </template>
@@ -38,7 +56,6 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import NotiIcon from '@/assets/icons/Notification.svg'
 import MenuIcon from '@/assets/icons/Menu.svg'
 import ArrowRightIcon from '@/assets/icons/ArrowRight.svg'
-
 
 const H_HI = 66 - 4 // 4px is the border width
 const isScrollingUp = ref(true)

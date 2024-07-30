@@ -1,4 +1,3 @@
-<!--TODO: Replace Icon Button-->
 <template>
   <button class="btn">
     <span v-if="prefixIcon" class="icon prefix-icon" :style="prefixIconStyle"></span>

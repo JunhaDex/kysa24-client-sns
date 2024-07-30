@@ -4,21 +4,38 @@
       <div class="name-area mr-4">
         <h2 class="text-xl font-bold">{{ group.groupName }}</h2>
         <ul>
-          <li>그룹장 {{ group.creator.nickname }}</li>
-          <li>팔로우 {{ group.followers }}명</li>
+          <li>
+            <span class="mr-2 text-xs font-bold">그룹장</span>
+            <RouterLink :to="{ name: 'user_profile', params: { ref: group.creator.ref } }">
+              <UserBadge>
+                {{ group.creator.nickname }}
+              </UserBadge>
+            </RouterLink>
+          </li>
+          <li>
+            <span class="mr-2 text-xs font-bold">팔로우</span>
+            <span class="text-sm">{{ group.followers }}명</span>
+          </li>
         </ul>
       </div>
       <div class="action-area">
-        <button v-if="!followState" class="btn btn-primary btn-sm btn-block">팔로우</button>
-        <Dropdown v-else class="dropdown-end block" :menu-list="unfollowMenu">
-          <button class="btn btn-sm btn-block">팔로잉</button>
-        </Dropdown>
+        <IconButton v-if="!followState" class="btn-primary btn-sm btn-block"> 팔로우</IconButton>
+        <UnfollowDropdown
+          v-else
+          class="dropdown-end block"
+          :group-ref="group.ref"
+          :disabled="false"
+        >
+          <IconButton class="btn-sm btn-white btn-block text-xs" :suffix-icon="CaretDown">
+            팔로잉
+          </IconButton>
+        </UnfollowDropdown>
       </div>
     </div>
   </Profile>
   <Container>
     <Box>
-      <h2>그룹 공지</h2>
+      <h2 class="font-bold text-sm">그룹 공지</h2>
       <p>{{ group.introduce }}</p>
     </Box>
   </Container>
@@ -29,8 +46,11 @@ import Container from '@/components/layouts/Container.vue'
 import Box from '@/components/layouts/Box.vue'
 import type { Group } from '@/types/general.type'
 import { onMounted, ref } from 'vue'
-import Dropdown from '@/components/inputs/Dropdown.vue'
 import { unfollowMenu } from '@/constants/menu.constant'
+import UserBadge from '@/components/layouts/UserBadge.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import CaretDown from '@/assets/icons/CaretDown.svg'
+import UnfollowDropdown from '@/components/inputs/dropdowns/UnfollowDropdown.vue'
 
 const props = defineProps<{
   group: Group
@@ -50,7 +70,13 @@ onMounted(() => {
   flex: 1;
 }
 
+.name-area ul li {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
 .action-area {
-  width: 108px;
+  width: 96px;
 }
 </style>

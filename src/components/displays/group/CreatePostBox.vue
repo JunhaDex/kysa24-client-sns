@@ -5,12 +5,13 @@
       <form class="post-form">
         <div class="post-content">
           <textarea
-            v-model="userInput"
+            v-model="userInput.postText"
             class="textarea text-input"
             name="post-text"
             placeholder="무슨 생각을 하고 있나요?"
             ref="postInput"
           ></textarea>
+          <!--TODO: Image Preview-->
           <div class="post-actions mt-2">
             <input type="file" id="cover-input" class="hidden" accept="image/*" ref="mediaInput" />
             <IconButton
@@ -18,7 +19,7 @@
               @click="clickMediaInput"
               :prefix-icon="ImageIcon"
             />
-            <IconButton class="btn-primary btn-sm" @click="submitCreatePost">올리기</IconButton>
+            <IconButton class="btn-primary btn-sm" @click="clickSubmit">포스트 올리기</IconButton>
           </div>
         </div>
       </form>
@@ -31,10 +32,20 @@ import { onMounted, ref } from 'vue'
 import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
 import IconButton from '@/components/inputs/IconButton.vue'
 import ImageIcon from '@/assets/icons/Image.svg'
+import { throttle } from 'lodash-es'
 
+const emit = defineEmits(['submitPost'])
 const postInput = ref<HTMLTextAreaElement>()
 const mediaInput = ref<HTMLInputElement>()
-const userInput = ref('')
+const userInput = ref<{
+  postImage: any
+  postImageFile: any
+  postText: string
+}>({
+  postImage: null,
+  postImageFile: null,
+  postText: ''
+})
 
 onMounted(async () => {
   if (postInput.value) {
@@ -54,12 +65,28 @@ function clickMediaInput() {
   }
 }
 
-function submitCreatePost() {}
-
 function ignoreInput() {
-  if (userInput.value.length > MAX_POST_INPUT_SIZE) {
-    userInput.value = userInput.value.slice(0, MAX_POST_INPUT_SIZE)
+  if (userInput.value.postText.length > MAX_POST_INPUT_SIZE) {
+    userInput.value.postText = userInput.value.postText.slice(0, MAX_POST_INPUT_SIZE)
   }
+}
+
+function resetInput() {
+  userInput.value = {
+    postImage: null,
+    postImageFile: null,
+    postText: ''
+  }
+}
+
+function clickSubmit() {
+  if (userInput.value.postText) {
+    const caller = throttle(() => {
+      emit('submitPost', userInput.value)
+    }, 1000)
+    caller()
+  }
+  resetInput()
 }
 </script>
 <style>

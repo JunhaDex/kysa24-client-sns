@@ -4,7 +4,7 @@
     <h2 class="text-md font-bold mb-2">로그인</h2>
     <p class="text-sm mb-2">청년대회에 오신 여러분들을 환영합니다!</p>
     <form>
-      <div class="input-group">
+      <div class="form-control">
         <div class="label">
           <label class="label-text" for="username">아이디</label>
         </div>
@@ -16,7 +16,7 @@
           placeholder="아이디를 입력해주세요"
         />
       </div>
-      <div class="input-group">
+      <div class="form-control mb-4">
         <div class="label">
           <label class="label-text" for="password">비밀번호</label>
         </div>
@@ -28,7 +28,12 @@
           placeholder="********"
         />
       </div>
-      <ProcessButton class="btn btn-primary btn-block" :is-disabled="isPress" @click="pressLogin">
+      <ProcessButton
+        class="btn btn-primary btn-block"
+        :is-disabled="isPress"
+        :is-loading="isPress"
+        @click="pressLogin"
+      >
         로그인
       </ProcessButton>
     </form>
@@ -58,10 +63,6 @@ function releaseLogin() {
 }
 </script>
 <style scoped>
-.input-group {
-  margin-bottom: 1rem;
-}
-
 .links {
   text-align: center;
   margin-top: 1rem;

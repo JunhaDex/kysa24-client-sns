@@ -13,6 +13,9 @@
       <Container>
         <CreatePostBox class="mb-4" />
       </Container>
+      <Container>
+        <UserBadge>김민지</UserBadge>
+      </Container>
     </template>
   </PageView>
 </template>
@@ -20,14 +23,13 @@
 import PageView from '@/components/layouts/PageView.vue'
 import Container from '@/components/layouts/Container.vue'
 import Header from '@/components/layouts/Header.vue'
-import Dropdown from '@/components/inputs/Dropdown.vue'
-import IconButton from '@/components/inputs/IconButtonDep.vue'
 import CustomButton from '@/components/inputs/IconButton.vue'
 import HMore from '@/assets/icons/HMore.svg'
 import Toast from '@/components/feedbacks/Toast.vue'
 import Check from '@/assets/icons/Check.svg'
 import { useToastStore } from '@/stores/ui/toast.store'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
+import UserBadge from '@/components/layouts/UserBadge.vue'
 
 const toastStore = useToastStore()
 

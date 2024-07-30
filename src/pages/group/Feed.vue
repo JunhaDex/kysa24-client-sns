@@ -12,7 +12,7 @@
           <GroupProfile :group="groupItem" />
         </Container>
         <Container>
-          <CreatePostBox class="mb-4" />
+          <CreatePostBox class="mb-4" @submit-post="submitCreatePost" />
           <SearchEmpty v-if="postList.length === 0" />
           <PostCard
             v-else
@@ -77,5 +77,20 @@ onMounted(async () => {
   await fetchGroup()
   await fetchPage()
 })
+
+function likePost(payload: any) {}
+
+function submitCreatePost(payload: {
+  postText: string
+  postImageFile?: any
+}) {
+  if(payload.postText) {
+    try {
+
+    } catch (e) {
+
+    }
+  }
+}
 </script>
 <style scoped></style>

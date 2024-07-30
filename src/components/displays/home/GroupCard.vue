@@ -11,12 +11,22 @@
             {{ group.groupName }}
           </RouterLink>
         </h2>
-        <div class="group-meta">
-          <span class="group-type">그룹장</span>
-          <!--TODO: add badge with anchor -> onclick group.creator.ref-->
-          <span class="join-status">{{ group.creator.nickname }}</span>
-          <span class="member-count">팔로우 {{ group.followers }}명</span>
-        </div>
+        <ul class="group-meta">
+          <li>
+            <span class="text-xs font-bold mr-2">그룹장</span>
+            <span class="join-status">
+              <RouterLink :to="{ name: 'user_profile', params: { ref: group.creator.ref } }">
+                <UserBadge>
+                  {{ group.creator.nickname }}
+                </UserBadge>
+              </RouterLink>
+            </span>
+          </li>
+          <li>
+            <span class="text-xs font-bold mr-2">팔로우</span>
+            <span class="text-sm">{{ group.followers }}명</span>
+          </li>
+        </ul>
       </div>
     </div>
     <PostCarousel :item-count="group.posts.length">
@@ -24,9 +34,9 @@
         <img src="@/assets/images/profile-image.png" alt="User" class="user-avatar" />
         <div class="post-content">
           <h3 class="mr-2">{{ post.author.nickname }}</h3>
-          <span class="post-time"
-          >{{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}</span
-          >
+          <span class="post-time">
+            {{ getTeamNameById(post.author.teamId) }} • {{ tts(post.createdAt) }}
+          </span>
           <p class="post-text">{{ post.message }}</p>
         </div>
       </div>
@@ -70,8 +80,8 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import BellOn from '@/assets/icons/BellOn.svg'
 import CaretDown from '@/assets/icons/CaretDown.svg'
 import Notification from '@/assets/icons/Notification.svg'
-import { useAuthStore } from '@/stores/auth.store'
 import { useUserStore } from '@/stores/user.store'
+import UserBadge from '@/components/layouts/UserBadge.vue'
 
 const props = defineProps<{
   group: Group
@@ -93,7 +103,6 @@ onMounted(() => {
 function followGroup() {
   const caller = throttle(() => {
     emits('followGroup', props.group)
-    console.log('throttled')
   }, 1000)
   caller()
 }
@@ -158,6 +167,12 @@ function updateFollowState(state: boolean) {
 .group-meta {
   font-size: 14px;
   color: #666;
+}
+
+.group-meta li {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 
 .post-carousel-item {

@@ -47,3 +47,12 @@ export function tts(time: Date | string): string {
 export function sfx(sex: number) {
   return sex === 1 ? '형제' : '자매'
 }
+
+export function genRandStr(len: number) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return result
+}

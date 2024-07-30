@@ -46,11 +46,16 @@ import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
 import SearchEmpty from '@/components/displays/SearchEmpty.vue'
 import type { Group, Post } from '@/types/general.type'
+import { genRandStr } from '@/utils/index.util'
+import { FileService } from '@/services/file.service'
+import { useToastStore } from '@/stores/ui/toast.store'
 
 const { pageMeta, isFetching } = setupListPage()
 const scrollView = ref<HTMLDivElement>()
 const groupService = new GroupService()
 const postService = new PostService()
+const fileService = new FileService()
+const toastStore = useToastStore()
 const route = useRoute()
 const groupItem = ref<Group>()
 const postList = ref<Post[]>([])
@@ -73,22 +78,47 @@ async function fetchPage(pageNo = 1) {
   }
 }
 
+async function resetPostList() {
+  const groupRef = route.params.ref as string
+  const res = await postService.listPostsByGroup(groupRef)
+  pageMeta.value = res.meta
+  postList.value = res.list
+}
+
 onMounted(async () => {
   await fetchGroup()
   await fetchPage()
 })
 
-function likePost(payload: any) {}
+function likePost(payload: any) {
+}
 
-function submitCreatePost(payload: {
+async function submitCreatePost(payload: {
   postText: string
   postImageFile?: any
 }) {
-  if(payload.postText) {
+  if (payload.postText) {
+    let urls: any = {}
     try {
-
+      // upload image
+      if (payload.postImageFile) {
+        const pfd = new FormData()
+        const salt = genRandStr(7)
+        pfd.append('file', payload.postImageFile)
+        urls.postImgUrl = await fileService.uploadPostMedia(salt, pfd)
+      }
+      // create post payload
+      const newPost = {
+        groupRef: groupItem.value!.ref,
+        message: payload.postText,
+        image: urls.postImgUrl?.location
+      }
+      const res = await postService.createPost(newPost)
+      console.log(res)
+      await resetPostList()
     } catch (e) {
-
+      console.error(e)
+      toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
     }
   }
 }

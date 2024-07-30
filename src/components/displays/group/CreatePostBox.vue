@@ -2,7 +2,7 @@
   <Box>
     <div class="create-post">
       <div class="profile-pic profile-xl"></div>
-      <form class="post-form">
+      <form class="post-form" onsubmit="return false;">
         <div class="post-content">
           <textarea
             v-model="userInput.postText"
@@ -13,7 +13,14 @@
           ></textarea>
           <!--TODO: Image Preview-->
           <div class="post-actions mt-2">
-            <input type="file" id="cover-input" class="hidden" accept="image/*" ref="mediaInput" />
+            <input
+              type="file"
+              id="cover-input"
+              class="hidden"
+              accept="image/*"
+              ref="mediaInput"
+              @change="changeMediaInput"
+            />
             <IconButton
               class="btn-square btn-sm mr-4"
               @click="clickMediaInput"
@@ -62,6 +69,18 @@ onMounted(async () => {
 function clickMediaInput() {
   if (mediaInput.value) {
     mediaInput.value.click()
+  }
+}
+
+function changeMediaInput(e: any) {
+  const file = e.target.files[0]
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      userInput.value.postImageFile = file
+      userInput.value.postImage = e.target!.result
+    }
+    reader.readAsDataURL(file)
   }
 }
 

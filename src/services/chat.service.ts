@@ -80,5 +80,8 @@ export class ChatService extends ApiService {
     await this.auth().client.post(`/deny/${user}`, params)
   }
 
-  async sendChatSocket() {}
+  getSocket(roomRef: string) {
+    const jwt = this.authStore.jwt
+    return new WebSocket(`${import.meta.env.VITE_API_WS_URL}/chat/${roomRef}`, [jwt])
+  }
 }

@@ -48,6 +48,11 @@ export function sfx(sex: number) {
   return sex === 1 ? '형제' : '자매'
 }
 
+export function timeOnly(time: Date | string): string {
+  const local = dayjs(time).tz()
+  return local.format('A hh:mm')
+}
+
 export function genRandStr(len: number) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''

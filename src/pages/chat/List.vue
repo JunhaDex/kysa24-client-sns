@@ -8,7 +8,12 @@
         <ChatSearchInput />
       </Container>
       <Container>
-        <ChatRoomCard />
+        <ChatRoomCard
+          v-for="(room, i) in chatRoomList"
+          :chat-room="room"
+          :key="i"
+          ref="chatRoomCards"
+        />
         <SearchEmpty />
       </Container>
     </template>
@@ -27,13 +32,25 @@ import Footer from '@/components/layouts/Footer.vue'
 import ChatSearchInput from '@/components/displays/chat/ChatSearchInput.vue'
 import SearchEmpty from '@/components/displays/SearchEmpty.vue'
 import ChatRoomCard from '@/components/displays/chat/ChatRoomCard.vue'
+import { setupListPage } from '@/stores/setups/list.composition'
+import type { ChatRoom } from '@/types/general.type'
 
 const chatService = new ChatService()
-const listType = ref<'recent' | 'blocked'>('recent')
+const { pageMeta, isFetching, onRender } = setupListPage()
+const chatRoomList = ref<ChatRoom[]>([])
+const chatRoomCards = ref<(typeof ChatRoomCard)[]>([])
+// TODO: Blocked List should be with User List
+// const listType = ref<'recent' | 'blocked'>('recent')
 
 async function fetchPage(pageNo = 1) {
-  const res = await chatService.listRecentChatRooms({ page: { page: pageNo } })
-  console.log(res)
+  if (!isFetching.value) {
+    isFetching.value = true
+    const res = await chatService.listRecentChatRooms({ page: { page: pageNo } })
+    console.log(res)
+    pageMeta.value = res.meta
+    chatRoomList.value.push(...res.list)
+    isFetching.value = false
+  }
 }
 
 onMounted(async () => {

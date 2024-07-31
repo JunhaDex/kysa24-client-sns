@@ -77,7 +77,7 @@ export class ChatMessageClass implements ChatMessage {
 
 export class ChatRoomClass implements ChatRoom {
   id: number = 0
-  roomRef: string = ''
+  ref: string = ''
   title: string = ''
   isBlock: boolean = false
   lastRead: number = 0

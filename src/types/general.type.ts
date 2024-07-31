@@ -109,7 +109,7 @@ export interface ChatMessage {
 
 export interface ChatRoom {
   id: number
-  roomRef: string
+  ref: string
   title: string
   isBlock: boolean
   lastRead: number

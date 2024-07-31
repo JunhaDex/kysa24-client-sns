@@ -13,8 +13,11 @@
       <Container>
         <CreatePostBox class="mb-4" />
       </Container>
-      <Container>
+      <Container class="mb-8">
         <UserBadge>김민지</UserBadge>
+      </Container>
+      <Container stretch>
+        <ChatMessageInput />
       </Container>
     </template>
   </PageView>
@@ -30,6 +33,7 @@ import Check from '@/assets/icons/Check.svg'
 import { useToastStore } from '@/stores/ui/toast.store'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import UserBadge from '@/components/layouts/UserBadge.vue'
+import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
 
 const toastStore = useToastStore()
 

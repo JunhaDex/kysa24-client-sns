@@ -8,7 +8,7 @@
         ref="msgInput"
         rows="1"
       />
-      <button class="send-button" @click="clickSendMessage">
+      <button class="send-button" @click="clickSendMessage" :disabled="userInput.length === 0">
         <span class="send-icon"></span>
       </button>
     </form>
@@ -99,6 +99,10 @@ function clickTicket() {
   transform: translateY(-50%);
   border: none;
   cursor: pointer;
+}
+
+.send-button:disabled {
+  color: theme('colors.gray.600');
 }
 
 .btn-size {

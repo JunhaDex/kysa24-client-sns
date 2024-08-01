@@ -16,10 +16,10 @@
           <SearchEmpty v-if="postList.length === 0" />
           <PostCard
             v-else
-            v-for="(p, i) in postList"
+            v-for="(p) in postList"
             :post="p"
             class="mb-4"
-            :key="i"
+            :key="p.id"
             ref="postCards"
           />
         </Container>
@@ -90,13 +90,9 @@ onMounted(async () => {
   await fetchPage()
 })
 
-function likePost(payload: any) {
-}
+function likePost(payload: any) {}
 
-async function submitCreatePost(payload: {
-  postText: string
-  postImageFile?: any
-}) {
+async function submitCreatePost(payload: { postText: string; postImageFile?: any }) {
   if (payload.postText) {
     let urls: any = {}
     try {

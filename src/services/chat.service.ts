@@ -21,6 +21,14 @@ export class ChatService extends ApiService {
     return clean
   }
 
+  checkChatType(obj: any): ChatMessage {
+    const reqKeys = ['id', 'sender', 'message', 'encoded', 'createdAt']
+    if (reqKeys.every((key) => Object.keys(obj).includes(key))) {
+      return this.cleanChatMessage(obj)
+    }
+    throw new Error('Invalid chat object')
+  }
+
   async listRecentChatRooms(options?: {
     page: PageRequest
     isBlock?: 'true'

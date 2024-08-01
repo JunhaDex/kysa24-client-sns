@@ -21,6 +21,7 @@
       </Container>
     </template>
   </PageView>
+  <UserProfileModal :is-show="true" />
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -34,6 +35,7 @@ import { useToastStore } from '@/stores/ui/toast.store'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import UserBadge from '@/components/layouts/UserBadge.vue'
 import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
+import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 
 const toastStore = useToastStore()
 

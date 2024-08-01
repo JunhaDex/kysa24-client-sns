@@ -1,15 +1,13 @@
 <template>
   <div v-if="!isMine" class="chat chat-start">
-    <div class="chat-image avatar">
-      <img src="@/assets/images/profile-image.png" alt="User Avatar" class="user-avatar" />
+    <div class="chat-image chat-profile profile-lg">
+      <img src="@/assets/images/profile-image.png" alt="User Avatar" />
     </div>
-    <div class="chat-bubble">
-      {{ message.message }}
-    </div>
+    <div class="chat-bubble chat-bubble-primary" v-html="markupMsg"></div>
     <div class="chat-footer">{{ timeOnly(message.createdAt) }}</div>
   </div>
   <div v-else class="chat chat-end">
-    <div class="chat-bubble">{{ message.message }}</div>
+    <div class="chat-bubble" v-html="markupMsg"></div>
     <div class="chat-footer">{{ timeOnly(message.createdAt) }}</div>
   </div>
 </template>
@@ -23,13 +21,14 @@ const userStore = useUserStore()
 const props = defineProps<{
   message: ChatMessage
 }>()
+const markupMsg = computed(() => {
+  return props.message.message.replace(/(\r\n|\n|\r)/g, '<br>')
+})
 const isMine = computed(() => props.message.sender === userStore.myInfo!.id)
 </script>
 <style>
-.user-avatar {
-  width: 30px;
-  height: 30px;
+.chat-profile {
   border-radius: 50%;
-  margin-right: 10px;
+  overflow: hidden;
 }
 </style>

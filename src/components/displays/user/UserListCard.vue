@@ -1,6 +1,6 @@
 <template>
   <div class="member-item">
-    <div class="profile-image">
+    <div class="profile-image" @click="clickUser">
       <img :src="user.profileImg" alt="User" />
     </div>
     <div class="member-info">
@@ -8,7 +8,11 @@
       <span class="text-xs">{{ subfix }}</span>
     </div>
     <span class="member-location">{{ user.geo }}</span>
-    <UserHandleDropdown class="dropdown-end" :target-ref="user.ref">
+    <UserHandleDropdown
+      class="dropdown-end"
+      :target-ref="user.ref"
+      @select-user-profile="clickUser"
+    >
       <IconButton
         class="btn-sm btn-ghost btn-square"
         role="button"
@@ -29,9 +33,14 @@ import VMoreIcon from '@/assets/icons/VMore.svg'
 const props = defineProps<{
   user: User
 }>()
+const emit = defineEmits(['selectUser'])
 const subfix = computed(() => {
   return sfx(props.user.sex)
 })
+
+function clickUser() {
+  emit('selectUser', props.user)
+}
 </script>
 <style scoped>
 .member-item {

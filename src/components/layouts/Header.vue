@@ -1,7 +1,7 @@
 <template>
   <BaseHeader>
     <template #prefix>
-      <RouterLink to="/" class="text-lg font-bold">Crewz</RouterLink>
+      <RouterLink to="/" class="text-lg font-bold">MATE</RouterLink>
     </template>
   </BaseHeader>
 </template>

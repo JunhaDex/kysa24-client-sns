@@ -73,6 +73,12 @@ const router = createRouter({
       component: () => import('@/pages/user/Detail.vue')
     },
     {
+      // path: '/user/:ref/update',
+      path: '/user-update',
+      name: 'user_update',
+      component: () => import('@/pages/user/Update.vue')
+    },
+    {
       path: '/404',
       name: '404',
       component: NotFound

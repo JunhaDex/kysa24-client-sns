@@ -52,7 +52,7 @@
                 v-model="userInput.groupName"
                 class="input input-bordered text-sm w-full"
                 type="text"
-                name="username"
+                name="group-name"
                 placeholder="그룹 이름을 입력해주세요."
               />
             </div>
@@ -64,7 +64,7 @@
                 v-model="userInput.groupNotice"
                 class="textarea text-input"
                 type="text"
-                name="username"
+                name="group-notice"
                 placeholder="그룹공지 첫번째는 그룹에 대한 간단한 소개를 적어주세요."
               />
             </div>

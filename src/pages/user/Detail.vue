@@ -4,16 +4,20 @@
       <Header />
     </template>
     <template #main>
-      <Container>
+      <Container class="mb-4">
         <Breadcrumb />
       </Container>
-      <Container stretch>
+      <Container stretch class="mb-4">
         <UserProfile v-if="user" :user="user" />
       </Container>
       <Container>
         <Box v-if="extra">
-          <h2>내 정보</h2>
+          <h2 class="font-bold text-sm mb-2">내 정보</h2>
           <ul>
+            <li>좋아하는 영화</li>
+            <li>가보고 싶은 여행지</li>
+            <li>감명깊게 읽은 책</li>
+            <li>좋아하는 음악</li>
             <li>...</li>
           </ul>
         </Box>

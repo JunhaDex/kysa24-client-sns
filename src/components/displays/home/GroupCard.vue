@@ -31,7 +31,7 @@
     </div>
     <PostCarousel :item-count="group.posts.length">
       <div v-for="post in group.posts" class="post mb-2 post-carousel-item" :key="post.id">
-        <img src="@/assets/images/profile-image.png" alt="User" class="user-avatar" />
+        <img :src="post.author.profileImg" alt="User" class="user-avatar" />
         <div class="post-content">
           <h3 class="mr-2">{{ post.author.nickname }}</h3>
           <span class="post-time">

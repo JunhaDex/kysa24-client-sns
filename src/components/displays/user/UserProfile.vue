@@ -1,13 +1,19 @@
 <template>
-  <Profile>
+  <Profile :cover-img="user.coverImg" :profile-img="user.profileImg">
     <div class="user-profile-wrap">
       <div class="name-area mr-4">
         <h2>
           {{ user.nickname }} <span>{{ subfix }}</span>
         </h2>
         <ul>
-          <li>{{ team }}</li>
-          <li>{{ user.geo }}</li>
+          <li class="align-center">
+            <span class="icon-mask team-icon mr-1"></span>
+            <span>{{ team }}</span>
+          </li>
+          <li class="align-center">
+            <span class="icon-mask geo-icon mr-1"></span>
+            <span>{{ user.geo }}</span>
+          </li>
         </ul>
       </div>
       <div class="action-area">
@@ -18,7 +24,7 @@
   </Profile>
   <Container>
     <Box>
-      <h2>한줄 소개</h2>
+      <h2 class="font-bold text-sm mb-2">한줄 소개</h2>
       <p>
         {{ user.introduce }}
       </p>
@@ -60,5 +66,30 @@ const team = computed(() => {
 
 .action-area {
   width: 108px;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.icon-mask {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-color: theme('colors.gray.600');
+}
+
+.geo-icon {
+  mask-image: url("@/assets/icons/Location.svg");
+  -webkit-mask-image: url("@/assets/icons/Location.svg");
+}
+
+.team-icon {
+  mask-image: url("@/assets/icons/Users.svg");
+  -webkit-mask-image: url("@/assets/icons/Users.svg");
 }
 </style>

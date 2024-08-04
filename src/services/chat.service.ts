@@ -21,6 +21,12 @@ export class ChatService extends ApiService {
     return clean
   }
 
+  async openChatRoom(userRef: string): Promise<string> {
+    const res = await this.auth().client.get(`/user/${userRef}`)
+    const upk = this.unpackRes(res) as any
+    return upk.ref
+  }
+
   checkChatType(obj: any): ChatMessage {
     const reqKeys = ['id', 'sender', 'message', 'encoded', 'createdAt']
     if (reqKeys.every((key) => Object.keys(obj).includes(key))) {

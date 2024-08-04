@@ -1,6 +1,6 @@
 <template>
   <nav class="app-bread text-xs mt-4" aria-label="breadcrumb">
-    <IconButton class="btn-white btn-square btn-custom shadow mr-2" :prefix-icon="BackIcon" />
+    <IconButton class="btn-white btn-square btn-custom shadow mr-2" :prefix-icon="BackIcon" @click="goBack" />
     <ol class="app-bread-location shadow">
       <li class="bc-item flex align-middle">
         <img class="bread-icon mr-1" src="@/assets/icons/Home.svg" alt="bread-icon" />
@@ -18,6 +18,13 @@
 <script setup lang="ts">
 import IconButton from '@/components/inputs/IconButton.vue'
 import BackIcon from '@/assets/icons/Back.svg'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+function goBack() {
+  router.go(-1)
+}
 </script>
 <style scoped>
 .app-bread {

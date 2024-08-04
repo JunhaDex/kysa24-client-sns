@@ -2,8 +2,8 @@
   <ModalBase :is-show="isShow">
     <div class="up-modal">
       <div class="up-header">
-        <img src="@/assets/images/group-cover.png" alt="Group Cover" />
-        <button class="up-close-btn">
+        <img :src="user.coverImg" alt="Group Cover" />
+        <button class="up-close-btn" @click="() => emit('modalClose')">
           <span class="icon-close"></span>
         </button>
         <div class="flow-sign font-mono">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="up-profile">
-        <img src="@/assets/images/profile-image.png" alt="User Profile" />
+        <img :src="user.profileImg" alt="User Profile" />
       </div>
     </div>
     <div class="up-content">
@@ -30,7 +30,7 @@
         <RouterLink :to="{ name: 'user_profile', params: { ref: user.ref } }">
           <IconButton class="btn-sm">프로필 보기</IconButton>
         </RouterLink>
-        <IconButton class="btn-sm btn-primary">메세지</IconButton>
+        <IconButton class="btn-sm btn-primary" @click="moveToChat">메세지</IconButton>
       </div>
     </div>
   </ModalBase>
@@ -39,13 +39,17 @@
 import ModalBase from '@/components/feedbacks/ModalBase.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import type { User } from '@/types/general.type'
+import { ChatService } from '@/services/chat.service'
 
 const props = defineProps<{
   isShow: boolean
   user: User
 }>()
+const emit = defineEmits(['modalClose', 'moveChat'])
 
-async function moveToChat() {}
+async function moveToChat() {
+  emit('moveChat', props.user.ref)
+}
 </script>
 <style scoped>
 .up-modal {

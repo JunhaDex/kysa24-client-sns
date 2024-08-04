@@ -1,7 +1,7 @@
 <template>
-  <PageView headless>
+  <PageView headless splash>
     <template #main>
-      <div class="container">
+      <div class="container relative mx-auto">
         <LoginBox @login="processLogin" ref="loginBox" />
       </div>
     </template>
@@ -34,10 +34,11 @@ async function processLogin(payload: { id: string; pwd: string }) {
 </script>
 <style scoped>
 .container {
-  margin: 0 auto;
+  padding-top: 30%;
   height: calc(100vh - var(--footer-height));
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: start;
   align-items: center;
 }
 </style>

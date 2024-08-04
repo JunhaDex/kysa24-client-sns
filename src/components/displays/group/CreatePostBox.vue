@@ -1,7 +1,9 @@
 <template>
   <Box>
     <div class="create-post">
-      <div class="profile-pic profile-xl"></div>
+      <div class="profile-pic profile-xl">
+        <img :src="userStore.myInfo?.profileImg" alt="profile image" />
+      </div>
       <form class="post-form" onsubmit="return false;">
         <div class="post-content">
           <textarea
@@ -40,6 +42,7 @@ import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
 import IconButton from '@/components/inputs/IconButton.vue'
 import ImageIcon from '@/assets/icons/Image.svg'
 import { throttle } from 'lodash-es'
+import { useUserStore } from '@/stores/user.store'
 
 const emit = defineEmits(['submitPost'])
 const postInput = ref<HTMLTextAreaElement>()
@@ -53,6 +56,8 @@ const userInput = ref<{
   postImageFile: null,
   postText: ''
 })
+
+const userStore = useUserStore()
 
 onMounted(async () => {
   if (postInput.value) {

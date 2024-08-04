@@ -25,6 +25,7 @@ import { reverse } from 'lodash-es'
 import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
 import ChatBubble from '@/components/displays/chat/ChatBubble.vue'
 import { useToastStore } from '@/stores/ui/toast.store'
+import axios from 'axios'
 
 const route = useRoute()
 const chatService = new ChatService()
@@ -54,6 +55,8 @@ function scrollToBottom() {
 }
 
 onBeforeMount(async () => {
+  const test = await axios.post(`${import.meta.env.VITE_API_WS_URL}/healthz`)
+  console.log(test.data)
   // TODO: load chat user (/room/:ref/users)
 })
 onMounted(async () => {

@@ -8,7 +8,7 @@
     />
     <IconButton class="ml-2 btn-sm btn-primary btn-square" :prefix-icon="SearchIcon" />
     <UserListDropdown>
-      <IconButton class="ml-2 btn-sm btn-square" :prefix-icon="PlusIcon" />
+      <IconButton class="ml-2 btn-sm btn-white btn-square" :prefix-icon="CaretDownIcon" />
     </UserListDropdown>
   </div>
 </template>
@@ -16,7 +16,7 @@
 import UserListDropdown from '@/components/inputs/dropdowns/UserListDropdown.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import SearchIcon from '@/assets/icons/Search.svg'
-import PlusIcon from '@/assets/icons/Plus.svg'
+import CaretDownIcon from '@/assets/icons/CaretDown.svg'
 </script>
 <style scoped>
 .input {

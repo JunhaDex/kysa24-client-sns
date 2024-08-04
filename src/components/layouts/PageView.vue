@@ -1,6 +1,6 @@
 <template>
   <slot name="header" />
-  <main :class="{ headless, footless, 'bg-white': white }">
+  <main :class="{ headless, footless, splash, 'bg-white': white}">
     <slot name="main" />
   </main>
   <slot name="footer" />
@@ -11,6 +11,7 @@ const props = withDefaults(
     headless?: boolean
     footless?: boolean
     white?: boolean
+    splash?: boolean
   }>(),
   {
     headless: false,
@@ -31,5 +32,11 @@ main {
 
 .footless {
   height: 100vh;
+}
+
+.splash {
+  background-image: url("@/assets/images/app_splash.png");
+  background-size: cover;
+  background-position: center;
 }
 </style>

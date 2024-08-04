@@ -3,7 +3,7 @@
     <div class="profile-image" @click="clickUser">
       <img :src="user.profileImg" alt="User" />
     </div>
-    <div class="member-info">
+    <div class="member-info" @click="clickUser">
       <span class="font-bold mr-1">{{ user.nickname }}</span>
       <span class="text-xs">{{ subfix }}</span>
     </div>

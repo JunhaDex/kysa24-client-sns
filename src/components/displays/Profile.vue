@@ -1,8 +1,8 @@
 <template>
-  <img src="../../assets/images/group-cover.png" alt="group-cover" class="cover-image" />
+  <img :src="coverImg ?? ''" alt="group-cover" class="cover-image" />
   <div class="profile-container">
     <div class="profile">
-      <img src="../../assets/images/profile-image.png" alt="Profile" class="profile-pic">
+      <img :src="profileImg ?? ''" alt="Profile" class="profile-pic">
       <div class="group-details">
         <slot />
       </div>
@@ -10,6 +10,10 @@
   </div>
 </template>
 <script setup lang="ts">
+const props = defineProps<{
+  coverImg?: string
+  profileImg?: string
+}>()
 </script>
 <style scoped>
 .cover-image {

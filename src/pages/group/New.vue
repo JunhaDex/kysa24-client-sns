@@ -104,6 +104,7 @@ import { computed, onMounted, ref } from 'vue'
 import { GroupService } from '@/services/group.service'
 import { FileService } from '@/services/file.service'
 import { useToastStore } from '@/stores/ui/toast.store'
+import { genRandStr } from '@/utils/index.util'
 
 const coverInput = ref<HTMLInputElement>()
 const profileInput = ref<HTMLInputElement>()
@@ -137,7 +138,8 @@ const validateSubmit = computed(() => {
 })
 const isProgress = ref(false)
 
-onMounted(async () => {})
+onMounted(async () => {
+})
 
 function openCoverInput() {
   coverInput.value!.click()
@@ -187,17 +189,18 @@ async function submitCreateGroup() {
   if (validateSubmit.value && isProgress.value === false) {
     isProgress.value = true
     let urls: any = {}
+    const salt = genRandStr(7)
     try {
       // upload images
       if (userInput.value.coverFile) {
         const cfd = new FormData()
         cfd.append('file', userInput.value.coverFile)
-        urls.coverUrl = await fileService.uploadGroupCover(userInput.value.groupName, cfd)
+        urls.coverUrl = await fileService.uploadGroupCover(salt, cfd)
       }
       if (userInput.value.profileFile) {
         const pfd = new FormData()
         pfd.append('file', userInput.value.profileFile)
-        urls.profileUrl = await fileService.uploadGroupProfile(userInput.value.groupName, pfd)
+        urls.profileUrl = await fileService.uploadGroupProfile(salt, pfd)
       }
       // create group payload
       const payload = {

@@ -1,36 +1,37 @@
 <template>
   <nav class="side-nav" :class="{ open: isOpen }">
-    <!--if not logged in-->
-    <!--      <div class="nav-profile mx-4 py-4">-->
-    <!--        <a class="btn btn-sm btn-primary btn-block" href="/login" target="_blank">로그인</a>-->
-    <!--      </div>-->
     <!--if logged in-->
-    <div class="nav-profile">
+    <div v-if="isAuth" class="nav-profile">
       <div class="nav-profile-img profile-xl mr-2">
-        <img src="@/assets/images/profile-image.png" alt="profile image" />
+        <img :src="userStore.myInfo?.profileImg" alt="profile image" />
       </div>
       <div class="flex-1">
-        <h4>백예린 님</h4>
-        <div class="flex justify-between w-full">
+        <h4 class="text-lg font-bold">{{ userStore.myInfo!.nickname }}</h4>
+        <div class="flex justify-start w-full">
+          <span class="ticket-icon mr-1"></span>
           <span class="inline-block">6개 남음</span>
         </div>
       </div>
     </div>
+    <!--if not logged in-->
+    <div v-else class="nav-profile mx-4 py-4">
+      <RouterLink class="btn btn-sm btn-primary btn-block" to="/login" @click="closeSidebar">로그인</RouterLink>
+    </div>
     <ul class="menu text-xl">
       <li class="menu-item mb-2">
-        <RouterLink to="/">
+        <RouterLink to="/" @click="closeSidebar">
           <img class="profile-md" src="@/assets/icons/Home.svg" alt="Home Icon">
           <span class="flex-1">그룹 목록</span>
         </RouterLink>
       </li>
       <li class="menu-item mb-2">
-        <RouterLink to="/user-all">
+        <RouterLink to="/user-all" @click="closeSidebar">
           <img class="profile-md" src="@/assets/icons/Users.svg" alt="Users Icon">
           <span class="flex-1">전체 참가자</span>
         </RouterLink>
       </li>
       <li class="menu-item mb-2">
-        <RouterLink to="/chat/list">
+        <RouterLink to="/chat/list" @click="closeSidebar">
           <img class="profile-md" src="@/assets/icons/Chat.svg" alt="Chat Icon">
           <span class="flex-1">메세지</span>
           <span class="msg-count text-sm">3</span>
@@ -68,10 +69,14 @@
           <img class="profile-sm mr-2" src="@/assets/icons/Support.svg" alt="Support Icon">
           <span class="flex-1">대회 지원센터</span>
         </a>
-        <a href="#" class="support-item">
+        <span v-if="isAuth" class="support-item">
           <img class="profile-sm mr-2" src="@/assets/icons/Logout.svg" alt="Logout Icon">
           <span class="flex-1">로그아웃</span>
-        </a>
+        </span>
+        <span v-else class="support-item">
+          <img class="profile-sm mr-2" src="@/assets/icons/Login.svg" alt="Login Icon">
+          <span class="flex-1">로그인</span>
+        </span>
       </div>
 
       <div class="nav-footer">
@@ -102,9 +107,17 @@
 import { useSidebarStore } from '@/stores/ui/sidebar.store'
 import { computed } from 'vue'
 import Backdrop from '@/components/feedbacks/Backdrop.vue'
+import { useUserStore } from '@/stores/user.store'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
+const userStore = useUserStore()
+
+const isAuth = computed(() => userStore.myInfo !== undefined)
+
+const closeSidebar = () => {
+  sidebar.isOpen = false
+}
 </script>
 <style scoped>
 .side-nav {
@@ -120,6 +133,18 @@ const isOpen = computed(() => sidebar.isOpen)
   padding: 1rem;
   transition: right 0.3s ease-in-out;
   z-index: 9;
+}
+
+.ticket-icon {
+  display: inline-block;
+  width: 1.4rem;
+  height: 1.4rem;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-image: url('@/assets/icons/LikeFill.svg');
+  -webkit-mask-image: url('@/assets/icons/LikeFill.svg');
+  background-color: theme('colors.error');
 }
 
 .side-nav hr {

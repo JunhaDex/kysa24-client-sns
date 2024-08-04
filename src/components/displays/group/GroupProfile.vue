@@ -1,5 +1,5 @@
 <template>
-  <Profile>
+  <Profile :cover-img="group.coverImg" :profile-img="group.profileImg">
     <div class="group-profile-wrap">
       <div class="name-area mr-4">
         <h2 class="text-xl font-bold">{{ group.groupName }}</h2>
@@ -35,7 +35,7 @@
   </Profile>
   <Container>
     <Box>
-      <h2 class="font-bold text-sm">그룹 공지</h2>
+      <h2 class="font-bold text-sm mb-2">그룹 공지</h2>
       <p>{{ group.introduce }}</p>
     </Box>
   </Container>

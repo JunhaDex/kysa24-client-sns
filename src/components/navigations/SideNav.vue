@@ -46,7 +46,7 @@
         </a>
       </li>
       <li class="menu-item">
-        <RouterLink to="/guide">
+        <RouterLink to="/settings" @click="closeSidebar">
           <img class="profile-md" src="@/assets/icons/Gear.svg" alt="Gear Icon">
           <span class="flex-1">개인설정</span>
         </RouterLink>

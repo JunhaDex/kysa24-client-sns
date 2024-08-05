@@ -1,11 +1,13 @@
 <template>
   <ModalBase :is-show="isShow">
-    <div class="modal-header">
-      <h2>{{ title }}</h2>
-      <button class="btn btn-ghost" @click="$emit('modalClose')">X</button>
-    </div>
-    <div class="modal-content">
-      <slot />
+    <div class="box-wrap">
+      <div class="modal-header">
+        <h2 class="font-bold">{{ title }}</h2>
+        <button class="btn btn-ghost" @click="$emit('modalClose')">X</button>
+      </div>
+      <div class="modal-content">
+        <slot />
+      </div>
     </div>
   </ModalBase>
 </template>
@@ -25,13 +27,13 @@ const props = withDefaults(
 const emit = defineEmits(['modalClose'])
 </script>
 <style scoped>
+.box-wrap {
+  padding: 1.5rem;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.modal-content {
-  margin-top: 1rem;
 }
 </style>

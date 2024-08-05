@@ -7,22 +7,25 @@
       <Container class="mb-4">
         <Breadcrumb />
       </Container>
-      <Container class="relative mb-4">
+      <Container v-if="userStore.myInfo" class="relative mb-4">
         <h2>프로필 수정</h2>
-        <UpdateProfile v-if="userStore.myInfo" :user="userStore.myInfo" />
-        <h2>비밀번호 수정</h2>
-        <UpdatePwd />
+        <UpdateProfile :user="userStore.myInfo" />
         <h2>내 정보 수정</h2>
         <UpdateExtra />
+        <h2>비밀번호 수정</h2>
+        <UpdatePwd :user="userStore.myInfo" @update-done="() => isPwdModal = true" />
       </Container>
-      <div class="fixed-wrap">
-        <IconButton class="btn-primary btn-block btn-fixed container btn-sm">정보 변경하기</IconButton>
-      </div>
     </template>
     <template #footer>
       <Footer />
     </template>
   </PageView>
+  <Modal :is-show="isPwdModal" title="비밀번호 변경 완료" @modal-close="reloadPage">
+    <p>비밀번호 변경이 완료되었습니다! <br /> 다시 로그인해 주세요.</p>
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-primary btn-sm btn-block" @click="reloadPage">재로그인</button>
+    </div>
+  </Modal>
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -34,32 +37,18 @@ import UpdateProfile from '@/components/displays/user/UpdateProfile.vue'
 import { useUserStore } from '@/stores/user.store'
 import UpdatePwd from '@/components/displays/user/UpdatePwd.vue'
 import UpdateExtra from '@/components/displays/user/UpdateExtra.vue'
-import IconButton from '@/components/inputs/IconButton.vue'
 import { ref } from 'vue'
+import Modal from '@/components/modals/Modal.vue'
+import { useAuthStore } from '@/stores/auth.store'
 
 const userStore = useUserStore()
-const coverImgUpdated = ref(false)
-const profileImgUpdated = ref(false)
-const profileUpdated = ref(false)
-const pwdUpdated = ref(false)
-const extraUpdated = ref(false)
+const authStore = useAuthStore()
+const isPwdModal = ref(false)
 
-const updateProfile = () => {
-  if (coverImgUpdated.value) {
-    console.log('coverImgUpdated')
-  }
-  if (profileImgUpdated.value) {
-    console.log('profileImgUpdated')
-  }
-  if (profileUpdated.value) {
-    console.log('profileUpdated')
-  }
-  if (pwdUpdated.value) {
-    console.log('pwdUpdated')
-  }
-  if (extraUpdated.value) {
-    console.log('extraUpdated')
-  }
+function reloadPage() {
+  isPwdModal.value = false
+  authStore.setJwt('')
+  window.location.href = '/login'
 }
 </script>
 <style scoped>

@@ -80,7 +80,7 @@ export class UserService extends ApiService {
       newPwd: string
     }
   ): Promise<void> {
-    await this.auth().client.patch(`/my/${ref}/pwd`, params)
+    await this.auth().client.put(`/my/${ref}/pwd`, params)
   }
 
   async listNotifications(options?: { page?: PageRequest }): Promise<PageResponse<UserNoti>> {

@@ -35,7 +35,7 @@
       />
       <div class="form-control">
         <div class="label">
-          <label class="label-text" for="username">상태 메세지</label>
+          <label class="label-text text-xs font-bold" for="username">상태 메세지</label>
         </div>
         <textarea
           v-model="userInput.userIntroduce"
@@ -43,10 +43,11 @@
           type="text"
           name="username"
           placeholder="2024 청년대회에 참석하는 나의 소감은?"
+          @input="() => diffCheck.introduce = true"
         />
       </div>
       <ProcessButton
-        class="btn btn-sm btn-primary btn-block"
+        class="btn btn-sm btn-primary btn-block mt-4"
         :is-disabled="!validated"
         :is-loading="isProgress"
         @click="updateMyProfile"
@@ -89,7 +90,7 @@ const diffCheck = ref({
   introduce: false
 })
 const validated = computed(() => {
-  return diffCheck.value.cover || diffCheck.value.profile || diffCheck.value.introduce
+  return (diffCheck.value.cover || diffCheck.value.profile || diffCheck.value.introduce) && isProgress.value === false
 })
 const isProgress = ref(false)
 
@@ -113,6 +114,7 @@ function changeCoverImg(e: any) {
       userInput.value.coverImage = e.target!.result
     }
     reader.readAsDataURL(file)
+    diffCheck.value.cover = true
   }
 }
 
@@ -125,6 +127,7 @@ function changeProfileImg(e: any) {
       userInput.value.profileImage = e.target!.result
     }
     reader.readAsDataURL(file)
+    diffCheck.value.profile = true
   }
 }
 
@@ -212,6 +215,6 @@ async function updateMyProfile() {
 }
 
 .form-wrap {
-  padding: calc(22px + 1rem) 1.2rem 1.2rem 1.2rem;
+  padding: calc(22px + 1.2rem) 1.2rem 1.2rem 1.2rem;
 }
 </style>

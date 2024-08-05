@@ -19,9 +19,12 @@
       <Container stretch>
         <ChatMessageInput />
       </Container>
+      <Container>
+        <UpdatePwd v-if="userStore.myInfo" :user="userStore.myInfo" />
+      </Container>
     </template>
   </PageView>
-  <UserProfileModal :is-show="true" />
+<!--  <UserProfileModal :is-show="true" />-->
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -36,8 +39,11 @@ import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import UserBadge from '@/components/layouts/UserBadge.vue'
 import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
+import UpdatePwd from '@/components/displays/user/UpdatePwd.vue'
+import { useUserStore } from '@/stores/user.store'
 
 const toastStore = useToastStore()
+const userStore = useUserStore()
 
 function showToast() {
   toastStore.showToast('문제발생!', 'error')

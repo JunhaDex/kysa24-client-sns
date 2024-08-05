@@ -35,8 +35,32 @@ import { useUserStore } from '@/stores/user.store'
 import UpdatePwd from '@/components/displays/user/UpdatePwd.vue'
 import UpdateExtra from '@/components/displays/user/UpdateExtra.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
+import { ref } from 'vue'
 
 const userStore = useUserStore()
+const coverImgUpdated = ref(false)
+const profileImgUpdated = ref(false)
+const profileUpdated = ref(false)
+const pwdUpdated = ref(false)
+const extraUpdated = ref(false)
+
+const updateProfile = () => {
+  if (coverImgUpdated.value) {
+    console.log('coverImgUpdated')
+  }
+  if (profileImgUpdated.value) {
+    console.log('profileImgUpdated')
+  }
+  if (profileUpdated.value) {
+    console.log('profileUpdated')
+  }
+  if (pwdUpdated.value) {
+    console.log('pwdUpdated')
+  }
+  if (extraUpdated.value) {
+    console.log('extraUpdated')
+  }
+}
 </script>
 <style scoped>
 .fixed-wrap {

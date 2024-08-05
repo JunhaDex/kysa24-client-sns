@@ -1,12 +1,7 @@
 <template>
   <div class="dp-box my-4">
     <div class="box-header" id="header-container" @click="openCoverInput">
-      <img
-        v-if="userInput.coverImage"
-        id="cover-preview"
-        :src="userInput.coverImage"
-        alt=""
-      />
+      <img v-if="userInput.coverImage" id="cover-preview" :src="userInput.coverImage" alt="" />
       <div v-else class="box-header-text text-xs">클릭해서 커버 이미지를 등록하세요</div>
     </div>
     <div class="profile-picture" id="profile-container" @click="openProfileInput">
@@ -17,9 +12,9 @@
         alt=""
       />
       <span v-else class="text-xs">
-              프로필<br />
-              이미지
-            </span>
+        프로필<br />
+        이미지
+      </span>
     </div>
     <div class="form-wrap">
       <input
@@ -50,16 +45,31 @@
           placeholder="2024 청년대회에 참석하는 나의 소감은?"
         />
       </div>
+      <ProcessButton
+        class="btn btn-sm btn-primary btn-block"
+        :is-disabled="!validated"
+        :is-loading="isProgress"
+        @click="updateMyProfile"
+      >
+        프로필 업데이트
+      </ProcessButton>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import type { User } from '@/types/general.type'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import ProcessButton from '@/components/inputs/ProcessButton.vue'
+import { UserService } from '@/services/user.service'
+import { FileService } from '@/services/file.service'
+import { genRandStr } from '@/utils/index.util'
 
 const props = defineProps<{
   user: User
 }>()
+const emit = defineEmits(['updateDone'])
+const userService = new UserService()
+const fileService = new FileService()
 const userInput = ref<{
   coverImage: any
   coverFile: File | null
@@ -73,6 +83,15 @@ const userInput = ref<{
   profileFile: null,
   userIntroduce: props.user.introduce
 })
+const diffCheck = ref({
+  cover: false,
+  profile: false,
+  introduce: false
+})
+const validated = computed(() => {
+  return diffCheck.value.cover || diffCheck.value.profile || diffCheck.value.introduce
+})
+const isProgress = ref(false)
 
 const coverInput = ref<HTMLInputElement>()
 const profileInput = ref<HTMLInputElement>()
@@ -109,6 +128,34 @@ function changeProfileImg(e: any) {
   }
 }
 
+async function updateMyProfile() {
+  if (!isProgress.value) {
+    isProgress.value = true
+    let coverImg = props.user.coverImg
+    let profileImg = props.user.profileImg
+    const salt = genRandStr(7)
+    if (diffCheck.value.cover) {
+      const cfd = new FormData()
+      cfd.append('file', userInput.value.coverFile!)
+      const url = await fileService.uploadUserCover(salt, cfd)
+      coverImg = url.location
+    }
+    if (diffCheck.value.profile) {
+      const pfd = new FormData()
+      pfd.append('file', userInput.value.profileFile!)
+      const url = await fileService.uploadUserProfile(salt, pfd)
+      profileImg = url.location
+    }
+    await userService.updateMyInfo(props.user.ref, {
+      coverImg,
+      profileImg,
+      introduce: userInput.value.userIntroduce
+    })
+    emit('updateDone')
+    // reload when done, show modal
+  }
+  isProgress.value = false
+}
 </script>
 <style scoped>
 .dp-box {

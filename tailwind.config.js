@@ -7,7 +7,7 @@ export default {
     extend: {},
     fontFamily: {
       sans: ['suite', ...defaultTheme.fontFamily.sans],
-      jua: ['jua']
+      gsans: ['gsans']
     },
     colors: {
       transparent: 'transparent',

@@ -90,6 +90,7 @@ onMounted(async () => {
 })
 
 async function likePost(post: Post, payload: any) {
+  console.log('likePost', payload)
   const isUndo = !payload.isLike ? 'true' : undefined
   await postService.likePost(payload.post.id, { undo: isUndo })
   post.likes += payload.isLike ? 1 : -1

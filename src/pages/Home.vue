@@ -8,7 +8,9 @@
         <GroupSearchInput @search-group="searchGroup" />
       </Container>
       <InitialLoad v-if="onRender" />
-      <SearchEmpty v-else-if="groupList.length === 0" @reset-input="() => searchGroup('')" />
+      <SearchEmpty v-else-if="groupList.length === 0" @reset-input="() => searchGroup('')">
+        <span>요청하신 결과가 없습니다.</span>
+      </SearchEmpty>
       <Container class="pb-6" v-else>
         <GroupCard
           v-for="(grp, i) in groupList"

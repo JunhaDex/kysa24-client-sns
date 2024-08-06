@@ -68,7 +68,7 @@ const props = defineProps<{
   groupRef: string
 }>()
 const emits = defineEmits(['likePost'])
-const likeState = ref(!!props.post.iLikes)
+const likeState = ref(!!props.post.already)
 const isImageFail = ref(false)
 
 onMounted(() => {
@@ -79,7 +79,7 @@ const throttleLike = throttle(
   () => {
     likeState.value = !likeState.value
     console.log('likeState', likeState.value)
-    emits('likePost', { post: props.post, isLike: likeState })
+    emits('likePost', { post: props.post, isLike: likeState.value })
   },
   1000,
   { trailing: false }
@@ -90,7 +90,7 @@ function clickLike() {
   throttleLike()
 }
 
-function disableImage(e) {
+function disableImage() {
   console.log('err hook')
   isImageFail.value = true
 }

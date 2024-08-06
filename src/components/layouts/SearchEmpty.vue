@@ -2,7 +2,7 @@
   <div class="full-cover">
     <Container>
       <div class="text-center">
-        <span>요청하신 정보를 찾을 수 없습니다.</span>
+        <slot />
         <div class="btn-group mt-6">
           <RouterLink to="/" class="btn mr-4">새로고침</RouterLink>
           <button class="btn btn-primary" @click="() => emit('resetInput')">입력 초기화</button>

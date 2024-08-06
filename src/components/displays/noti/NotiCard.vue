@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto noti-box">
     <div class="noti-input pt-1">
-      <input type="checkbox" class="checkbox">
+      <input type="checkbox" class="checkbox" />
     </div>
     <div class="noti-content">그룹에 새로운 알림이 있습니다.</div>
     <div class="noti-mark">
@@ -14,6 +14,11 @@
   <hr class="my-4" />
 </template>
 <script setup lang="ts">
+import type { UserNoti } from '@/types/general.type'
+
+const props = defineProps<{
+  noti: UserNoti
+}>()
 </script>
 <style scoped>
 .noti-box {

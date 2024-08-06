@@ -56,7 +56,7 @@ export class PostClass implements Post {
   likes: number = 0
   message: string = ''
   createdAt: string = ''
-  iLikes?: boolean = undefined
+  already?: boolean = undefined
 }
 
 export class ReplyClass implements Reply {

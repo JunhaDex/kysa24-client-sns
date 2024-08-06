@@ -16,16 +16,19 @@
 import Dropdown from '@/components/inputs/Dropdown.vue'
 import { ref } from 'vue'
 
-const props = withDefaults(defineProps<{
-  postReplyId: number
-  isAuthor: boolean
-}>(), {
-  isAuthor: false
-})
-const emit = defineEmits(['deleteInstance'])
+const props = withDefaults(
+  defineProps<{
+    isAuthor: boolean
+  }>(),
+  {
+    isAuthor: false
+  }
+)
+const emit = defineEmits(['openProfile', 'deleteInstance'])
 const drp = ref<typeof Dropdown>()
 
 function openUserProfile() {
+  emit('openProfile')
   drp.value!.close()
 }
 
@@ -34,7 +37,7 @@ function copyShareLink() {
 }
 
 function deletePost() {
-  emit('deleteInstance', props.postReplyId)
+  emit('deleteInstance')
   drp.value!.close()
 }
 </script>

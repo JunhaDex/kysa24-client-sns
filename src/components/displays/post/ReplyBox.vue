@@ -12,10 +12,9 @@
         ></textarea>
       </div>
       <div class="input-bottom">
-        <div class="text-xs">{{ inputCounter }}/500 B</div>
+        <div class="text-xs">{{ inputCounter }}/{{ MAX_POST_INPUT_SIZE }} B</div>
         <div class="button-group">
-          <button class="btn btn-sm" @click="resetInput">삭제하기</button>
-          <button class="btn btn-sm btn-primary" @click="registerReply">등록하기</button>
+          <button class="btn btn-sm btn-primary" @click="submitReply">등록하기</button>
         </div>
       </div>
     </div>
@@ -23,8 +22,10 @@
       <p>아직 댓글이 없습니다</p>
     </div>
     <ul v-else>
-      <li v-for="(reply, i) in replyList" class="reply-item" :key="i">
-        <img src="@/assets/images/profile-image.png" alt="Profile" class="profile-img" />
+      <li v-for="reply in replyList" class="reply-item" :key="reply.id">
+        <div class="profile-lg profile-rnd" @click="() => openAuthorProfile(reply.author)">
+          <img :src="reply.author.profileImg" alt="Profile" />
+        </div>
         <div class="reply-content">
           <div class="reply-header">
             <span class="author-name">{{ reply.author.nickname }}</span>
@@ -33,7 +34,14 @@
           </div>
           <p class="reply-text">{{ reply.message }}</p>
         </div>
-        <IconButton class="btn-ghost btn-square btn-sm" :prefix-icon="VMoreIcon" />
+        <PostHandleDropdown
+          class="dropdown-end"
+          :is-author="reply.author.ref === userStore.myInfo?.ref"
+          @open-profile="() => openAuthorProfile(reply.author)"
+          @delete-instance="() => emit('removeReply', reply)"
+        >
+          <IconButton class="btn-ghost btn-square btn-sm" :prefix-icon="VMoreIcon" />
+        </PostHandleDropdown>
       </li>
       <!-- TODO: More reply items can be added here -->
     </ul>
@@ -42,19 +50,23 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import { computed, onMounted, ref } from 'vue'
-import type { Reply } from '@/types/general.type'
+import type { Reply, User } from '@/types/general.type'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { tts } from '@/utils/index.util'
 import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
 import IconButton from '@/components/inputs/IconButton.vue'
 import VMoreIcon from '@/assets/icons/VMore.svg'
+import { throttle } from 'lodash-es'
+import PostHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
+import { useUserStore } from '@/stores/user.store'
 
 const props = defineProps<{
   replyList: Reply[]
 }>()
-const emits = defineEmits(['registerReply'])
+const emit = defineEmits(['submitReply', 'openProfile', 'removeReply'])
 const replyInput = ref<HTMLTextAreaElement>()
 const userInput = ref('')
+const userStore = useUserStore()
 const { getTeamNameById } = setupTeamInfo()
 const inputCounter = computed<number>(() => {
   return new Blob([userInput.value]).size
@@ -77,15 +89,25 @@ function resetInput() {
   userInput.value = ''
 }
 
-function registerReply() {
-  // TODO: validation
-  emits('registerReply', userInput)
+const throttleSubmit = throttle(() => {
+  emit('submitReply', userInput.value)
+  resetInput()
+}, 1000)
+
+function submitReply() {
+  if (userInput.value.length > 0) {
+    throttleSubmit()
+  }
 }
 
 function ignoreInput() {
   if (userInput.value.length > maxInputLength) {
     userInput.value = userInput.value.slice(0, maxInputLength)
   }
+}
+
+function openAuthorProfile(author: any) {
+  emit('openProfile', author)
 }
 </script>
 <style scoped>
@@ -129,7 +151,7 @@ function ignoreInput() {
 .input-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-left: 42px;
 }
 

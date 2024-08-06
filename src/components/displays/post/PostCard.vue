@@ -16,9 +16,14 @@
         </span>
       </div>
       <div class="post-action">
-        <UserHandleDropdown class="dropdown-end" :post-reply-id="post.id" is-author>
-          <IconButton class="btn-sm btn-ghost btn-square" :prefix-icon="VMoreIcon" role="button" tabindex="0" />
-        </UserHandleDropdown>
+        <PostHandleDropdown class="dropdown-end" :post-reply-id="post.id" is-author>
+          <IconButton
+            class="btn-sm btn-ghost btn-square"
+            :prefix-icon="VMoreIcon"
+            role="button"
+            tabindex="0"
+          />
+        </PostHandleDropdown>
       </div>
       <div class="post-content">
         <p>{{ post.message }}</p>
@@ -28,14 +33,20 @@
         </div>
       </div>
       <div class="post-stats">
-        <span @click="clickLike">
-          <img class="profile-md" src="@/assets/icons/Like.svg" alt="Like Button" />
+        <span class="post-stats-item" @click="clickLike">
+          <transition :name="likeState ? 'like-expand' : ''" mode="out-in">
+            <span v-if="likeState" class="icon icon-like"></span>
+            <span v-else class="icon icon-unlike"></span>
+          </transition>
           <span>Like {{ post.likes }}</span>
         </span>
-        <span>
+        <RouterLink
+          class="post-stats-item"
+          :to="{ name: 'post_detail', params: { ref: groupRef, id: post.id } }"
+        >
           <img class="profile-md" src="@/assets/icons/Comment.svg" alt="Comment Button" />
           <span>Reply {{ post.comments }}</span>
-        </span>
+        </RouterLink>
       </div>
     </div>
   </Box>
@@ -48,27 +59,35 @@ import { tts } from '@/utils/index.util'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
-import UserHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
+import PostHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
 import VMoreIcon from '@/assets/icons/VMore.svg'
 import '@/assets/card.css'
 
 const props = defineProps<{
   post: Post
+  groupRef: string
 }>()
 const emits = defineEmits(['likePost'])
-const likeState = ref(false)
+const likeState = ref(!!props.post.iLikes)
 const isImageFail = ref(false)
 
 onMounted(() => {
-  likeState.value = !!props.post.iLikes
   isImageFail.value = !props.post.image
 })
 
-function clickLike() {
-  throttle(() => {
+const throttleLike = throttle(
+  () => {
     likeState.value = !likeState.value
+    console.log('likeState', likeState.value)
     emits('likePost', { post: props.post, isLike: likeState })
-  }, 1000)
+  },
+  1000,
+  { trailing: false }
+)
+
+function clickLike() {
+  console.log('click like')
+  throttleLike()
 }
 
 function disableImage(e) {
@@ -128,14 +147,39 @@ const { getTeamNameById } = setupTeamInfo()
   color: #555;
 }
 
-.post-stats span {
+.post-stats-item {
   display: flex;
   gap: 4px;
   align-items: center;
   justify-content: center;
 }
 
-.post-stats span img {
-  display: inline-block;
+.icon-unlike {
+  width: 24px;
+  height: 24px;
+  mask-image: url('@/assets/icons/Like.svg');
+  -webkit-mask-image: url('@/assets/icons/Like.svg');
+  background-color: theme('colors.black');
+}
+
+.icon-like {
+  width: 24px;
+  height: 24px;
+  mask-image: url('@/assets/icons/LikeFill.svg');
+  -webkit-mask-image: url('@/assets/icons/LikeFill.svg');
+  background-color: theme('colors.error');
+}
+
+.like-expand-enter-active {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.like-expand-enter-from {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.like-expand-enter-to {
+  transform: scale(1.2);
 }
 </style>

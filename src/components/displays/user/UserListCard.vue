@@ -76,6 +76,6 @@ function clickUser() {
 
 .member-info {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
 }
 </style>

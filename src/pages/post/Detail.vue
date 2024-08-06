@@ -4,15 +4,20 @@
       <Header />
     </template>
     <template #main>
-      <Container>
+      <Container class="mb-4">
         <Breadcrumb />
       </Container>
       <template v-if="postItem">
-        <Container>
-          <PostCard :post="postItem" />
+        <Container class="mb-4">
+          <PostCard :post="postItem" :group-ref="groupRef" />
         </Container>
-        <Container>
-          <ReplyBox :replyList="replyList" />
+        <Container class="mb-4">
+          <ReplyBox
+            :replyList="replyList"
+            @submit-reply="submitReply"
+            @open-profile="openProfileModal"
+            @remove-reply="removeReply"
+          />
         </Container>
       </template>
     </template>
@@ -20,6 +25,18 @@
       <Footer />
     </template>
   </PageView>
+  <UserProfileModal
+    v-if="profileTarget"
+    :user="profileTarget"
+    :is-show="isProfile"
+    @modal-close="() => (isProfile = false)"
+  />
+  <Modal :is-show="isRemoveReply" title="댓글 삭제됨" @modal-close="reloadPage">
+    <p>댓글이 삭제되었습니다.</p>
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-primary btn-sm btn-block" @click="reloadPage">확인</button>
+    </div>
+  </Modal>
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -32,14 +49,22 @@ import Footer from '@/components/layouts/Footer.vue'
 import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
 import ReplyBox from '@/components/displays/post/ReplyBox.vue'
-import type { Post, Reply } from '@/types/general.type'
+import type { Post, Reply, User } from '@/types/general.type'
 import { setupListPage } from '@/stores/setups/list.composition'
+import { useToastStore } from '@/stores/ui/toast.store'
+import UserProfileModal from '@/components/modals/UserProfileModal.vue'
+import Modal from '@/components/modals/Modal.vue'
 
 const { pageMeta, isFetching } = setupListPage()
 const route = useRoute()
 const postService = new PostService()
+const toastStore = useToastStore()
 const postItem = ref<Post>()
 const replyList = ref<Reply[]>([])
+const groupRef = route.params.ref as string
+const isProfile = ref(false)
+const isRemoveReply = ref(false)
+const profileTarget = ref<User>()
 
 async function getPost() {
   const rpm = route.params.id as string
@@ -73,7 +98,41 @@ async function fetchPage(pageNo = 1) {
 
 onMounted(async () => {
   await getPost()
-  await fetchPage()
 })
+
+async function openProfileModal(user: User) {
+  profileTarget.value = user
+  isProfile.value = true
+}
+
+async function submitReply(message: string) {
+  if (message.length > 0) {
+    try {
+      const res = await postService.createReply(postItem.value!.id, { message })
+      console.log(res)
+      window.location.reload()
+    } catch (e) {
+      console.error(e)
+      toastStore.showToast('댓글을 작성하는 중 오류가 발생했습니다.', 'error')
+    }
+  }
+}
+
+async function removeReply(reply: Reply) {
+  try {
+    const res = await postService.deleteReply(postItem.value!.id, reply.id)
+    console.log(res)
+    isRemoveReply.value = true
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('오류! 잠시 뒤 다시 시도하시기 바랍니다.', 'error')
+  }
+}
+
+async function reloadPage() {
+  isProfile.value = false
+  isRemoveReply.value = false
+  window.location.reload()
+}
 </script>
 <style scoped></style>

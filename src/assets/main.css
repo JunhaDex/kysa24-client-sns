@@ -121,6 +121,13 @@ img {
     mask-position: center;
 }
 
+
+.profile-rnd {
+    border-radius: 50%;
+    background-color: theme('colors.gray.300');
+    overflow: hidden;
+}
+
 .profile-xl {
     width: 48px;
     height: 48px;

@@ -16,11 +16,13 @@
           <SearchEmpty v-if="postList.length === 0" />
           <PostCard
             v-else
-            v-for="(p) in postList"
+            v-for="p in postList"
             :post="p"
+            :group-ref="groupItem.ref"
             class="mb-4"
-            :key="p.id"
             ref="postCards"
+            :key="p.id"
+            @like-post="(pl) => likePost(p, pl)"
           />
         </Container>
       </template>
@@ -90,7 +92,11 @@ onMounted(async () => {
   await fetchPage()
 })
 
-function likePost(payload: any) {}
+async function likePost(post: Post, payload: any) {
+  const isUndo = !payload.isLike ? 'true' : undefined
+  await postService.likePost(payload.post.id, { undo: isUndo })
+  post.likes += payload.isLike ? 1 : -1
+}
 
 async function submitCreatePost(payload: { postText: string; postImageFile?: any }) {
   if (payload.postText) {

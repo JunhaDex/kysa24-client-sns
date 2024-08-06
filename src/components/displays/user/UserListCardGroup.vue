@@ -1,10 +1,19 @@
 <template>
   <h2 class="group-label font-sm mb-2">{{ teamName }}</h2>
   <div class="member-list shadow">
-    <UserListCard v-for="user in users" :user="user" :key="user.ref" @select-user="openProfileModal" />
+    <UserListCard
+      v-for="user in users"
+      :user="user"
+      :key="user.ref"
+      @select-user="openProfileModal"
+    />
   </div>
-  <UserProfileModal :user="userSelected!" :is-show="isProfileModal" @modal-close="() => isProfileModal = false"
-                    @move-chat="moveUserChatRoom" />
+  <UserProfileModal
+    :user="userSelected!"
+    :is-show="isProfileModal"
+    @modal-close="() => (isProfileModal = false)"
+    @move-chat="moveUserChatRoom"
+  />
 </template>
 <script setup lang="ts">
 import UserListCard from '@/components/displays/user/UserListCard.vue'
@@ -23,7 +32,6 @@ const router = useRouter()
 const userSelected = ref<User>(props.users[0])
 const isProfileModal = ref(false)
 
-
 function openProfileModal(user: User) {
   console.log(user)
   userSelected.value = user
@@ -35,7 +43,6 @@ async function moveUserChatRoom(userRef: string) {
   isProfileModal.value = false
   router.push({ name: 'chat_room', params: { ref: roomRef } })
 }
-
 </script>
 <style scoped>
 .group-label {

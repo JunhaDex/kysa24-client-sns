@@ -41,7 +41,7 @@ export class PostService extends ApiService {
     ref: string,
     options?: { page?: PageRequest }
   ): Promise<PageResponse<Post>> {
-    const res = await this.client.get(`/feed/${ref}`, {
+    const res = await this.authOpt().client.get(`/feed/${ref}`, {
       params: {
         page: options?.page?.page,
         size: options?.page?.size
@@ -99,7 +99,7 @@ export class PostService extends ApiService {
 
   async likePost(postId: number, options?: { undo?: 'true' }): Promise<void> {
     await this.auth().client.put(
-      `/${postId}/like`,
+      `like/${postId}`,
       {},
       {
         params: {

@@ -22,9 +22,26 @@
       <Container>
         <UpdatePwd v-if="userStore.myInfo" :user="userStore.myInfo" />
       </Container>
+      <Container>
+        <div class="text-center">
+          <span>정보를 가져오는 중...</span>
+          <progress class="progress progress-primary w-56"></progress>
+        </div>
+        <div class="text-center">
+          <span>요청하신 정보를 찾을 수 없습니다.</span>
+          <div class="btn-group mt-6">
+            <RouterLink to="/" class="btn mr-4">새로고침</RouterLink>
+            <RouterLink to="/" class="btn btn-primary">홈으로</RouterLink>
+          </div>
+        </div>
+        <div class="text-center">
+          <span class="loading loading-spinner text-primary loading-md"></span>
+          <span class="text-sm">마지막 이에요!</span>
+        </div>
+      </Container>
     </template>
   </PageView>
-<!--  <UserProfileModal :is-show="true" />-->
+  <!--  <UserProfileModal :is-show="true" />-->
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -41,6 +58,7 @@ import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 import UpdatePwd from '@/components/displays/user/UpdatePwd.vue'
 import { useUserStore } from '@/stores/user.store'
+import IconButton from '@/components/inputs/IconButton.vue'
 
 const toastStore = useToastStore()
 const userStore = useUserStore()

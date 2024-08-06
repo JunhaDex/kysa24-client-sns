@@ -14,7 +14,6 @@
           :key="i"
           ref="chatRoomCards"
         />
-        <SearchEmpty />
       </Container>
     </template>
     <template #footer>
@@ -30,7 +29,6 @@ import { onMounted, ref } from 'vue'
 import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import ChatSearchInput from '@/components/displays/chat/ChatSearchInput.vue'
-import SearchEmpty from '@/components/displays/SearchEmpty.vue'
 import ChatRoomCard from '@/components/displays/chat/ChatRoomCard.vue'
 import { setupListPage } from '@/stores/setups/list.composition'
 import type { ChatRoom } from '@/types/general.type'

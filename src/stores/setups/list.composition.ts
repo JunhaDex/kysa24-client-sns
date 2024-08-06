@@ -12,6 +12,10 @@ export const setupListPage = () => {
   const onRender = ref(true)
   const isFetching = ref(false)
   const hasMore = computed(() => pageMeta.value.pageNo < pageMeta.value.totalPage)
+  const fetchConfig = {
+    keyword: '',
+    mode: 'replace' as 'replace' | 'append'
+  }
 
   // be sure to remove the event listener onUnmount
   // container.removeEventListener('scroll', handleScroll);
@@ -26,5 +30,5 @@ export const setupListPage = () => {
     }
   }
 
-  return { pageMeta, onRender, isFetching, hasMore, handleScroll }
+  return { pageMeta, onRender, isFetching, hasMore, fetchConfig, handleScroll }
 }

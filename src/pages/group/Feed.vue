@@ -13,9 +13,7 @@
         </Container>
         <Container>
           <CreatePostBox class="mb-4" @submit-post="submitCreatePost" />
-          <SearchEmpty v-if="postList.length === 0" />
           <PostCard
-            v-else
             v-for="p in postList"
             :post="p"
             :group-ref="groupItem.ref"
@@ -46,7 +44,6 @@ import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import GroupProfile from '@/components/displays/group/GroupProfile.vue'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
-import SearchEmpty from '@/components/displays/SearchEmpty.vue'
 import type { Group, Post } from '@/types/general.type'
 import { genRandStr } from '@/utils/index.util'
 import { FileService } from '@/services/file.service'

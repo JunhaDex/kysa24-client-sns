@@ -5,9 +5,11 @@
     </template>
     <template #main>
       <Container>
-        <GroupSearchInput />
+        <GroupSearchInput @search-group="searchGroup" />
       </Container>
-      <Container>
+      <InitialLoad v-if="onRender" />
+      <SearchEmpty v-else-if="groupList.length === 0" @reset-input="() => searchGroup('')" />
+      <Container class="pb-6" v-else>
         <GroupCard
           v-for="(grp, i) in groupList"
           :group="grp"
@@ -17,7 +19,6 @@
           @followGroup="(payload) => followGroup(payload, i)"
           @unfollowGroup="(payload) => unfollowGroup(payload, i)"
         />
-        <SearchEmpty />
       </Container>
     </template>
     <template #footer>
@@ -45,13 +46,14 @@ import { GroupService } from '@/services/group.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import GroupSearchInput from '@/components/displays/home/GroupSearchInput.vue'
 import GroupCard from '@/components/displays/home/GroupCard.vue'
-import SearchEmpty from '@/components/displays/SearchEmpty.vue'
 import type { Group } from '@/types/general.type'
+import InitialLoad from '@/components/layouts/InitialLoad.vue'
+import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
 
 const showWelcomeModal = ref(false)
 const authStore = useAuthStore()
 const groupService = new GroupService()
-const { pageMeta, isFetching, onRender, hasMore, handleScroll } = setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, fetchConfig, handleScroll } = setupListPage()
 const groupList = ref<Group[]>([])
 const scrollView = ref<HTMLDivElement>()
 const groupCards = ref<(typeof GroupCard)[]>([])
@@ -74,10 +76,19 @@ function copyFcm() {
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
-    const res = await groupService.listGroups({ page: { page: pageNo } })
+    const opt = {
+      page: { page: pageNo },
+      name: fetchConfig.keyword ? fetchConfig.keyword : undefined
+    }
+    const res = await groupService.listGroups(opt)
     console.log(res)
     pageMeta.value = res.meta
-    groupList.value.push(...res.list)
+    if (fetchConfig.mode === 'replace') {
+      groupList.value = res.list
+      fetchConfig.mode = 'append'
+    } else if (fetchConfig.mode === 'append') {
+      groupList.value.push(...res.list)
+    }
     isFetching.value = false
   }
 }
@@ -114,5 +125,12 @@ onUnmounted(() => {
     scrollView.value.removeEventListener('scroll', (e) => handleScroll(e, fetchPage))
   }
 })
+
+async function searchGroup(keyword: string) {
+  console.log('user input:', keyword)
+  fetchConfig.keyword = keyword
+  fetchConfig.mode = 'replace'
+  await fetchPage()
+}
 </script>
 <style scoped></style>

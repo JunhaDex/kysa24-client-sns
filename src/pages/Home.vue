@@ -21,6 +21,7 @@
           @followGroup="(payload) => followGroup(payload, i)"
           @unfollowGroup="(payload) => unfollowGroup(payload, i)"
         />
+        <PageLoader :hasMore="hasMore" @load-more="() => fetchPage(nextPage)" />
       </Container>
     </template>
     <template #footer>
@@ -51,11 +52,14 @@ import GroupCard from '@/components/displays/home/GroupCard.vue'
 import type { Group } from '@/types/general.type'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
+import PageLoader from '@/components/layouts/PageLoader.vue'
+import { sleep } from '@/utils/index.util'
 
 const showWelcomeModal = ref(false)
 const authStore = useAuthStore()
 const groupService = new GroupService()
-const { pageMeta, isFetching, onRender, hasMore, fetchConfig, handleScroll } = setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig, handleScroll } =
+  setupListPage()
 const groupList = ref<Group[]>([])
 const scrollView = ref<HTMLDivElement>()
 const groupCards = ref<(typeof GroupCard)[]>([])
@@ -78,6 +82,7 @@ function copyFcm() {
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
+    await sleep(2000)
     const opt = {
       page: { page: pageNo },
       name: fetchConfig.keyword ? fetchConfig.keyword : undefined

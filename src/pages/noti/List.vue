@@ -12,7 +12,7 @@
         <span>새로운 알림이 없습니다.</span>
       </SearchEmpty>
       <Container v-else stretch>
-        <NotiCard v-for="noti in notiList" :key="noti.id" />
+        <NotiCard v-for="noti in notiList" :noti="noti" :key="noti.id" />
       </Container>
     </template>
     <template #footer>

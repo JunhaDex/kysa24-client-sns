@@ -32,7 +32,7 @@ export class GroupService extends ApiService {
     const res = await this.authOpt().client.get('', {
       params: {
         page: options?.page?.page,
-        size: options?.page?.size,
+        size: 3,
         name: options?.name
       }
     })

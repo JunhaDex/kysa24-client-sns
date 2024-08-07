@@ -6,7 +6,7 @@
         <button class="up-close-btn" @click="() => emit('modalClose')">
           <span class="icon-close"></span>
         </button>
-        <div class="flow-sign font-mono">
+        <div class="flow-sign font-mono tracking-wider pb-1">
           <span class="sign-content">
             KYSA2024 MATE APP KYSA2024 MATE APP KYSA2024 MATE APP KYSA2024 MATE APP KYSA2024 MATE
             APP KYSA2024 MATE APP KYSA2024 MATE APP KYSA2024 MATE APP

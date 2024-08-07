@@ -2,6 +2,7 @@ import { ApiService } from '@/services/api.service'
 import type { Group, PageRequest, PageResponse, Post } from '@/types/general.type'
 import { cleanObject, getMention, getProfile } from '@/utils/index.util'
 import { GroupClass, PostClass } from '@/constants/class.constant'
+import { GROUP_PAGE_SIZE } from '@/constants/index.constant'
 
 export class GroupService extends ApiService {
   constructor() {
@@ -11,7 +12,9 @@ export class GroupService extends ApiService {
   private cleanGroup(group: any): Group {
     const clean = cleanObject<Group>(group, GroupClass)
     clean.creator = getMention({ ref: group.creatorRef, nickname: group.creatorNickname })
-    clean.posts = group.posts.map((post: any) => this.cleanPost(post))
+    if (group.posts !== undefined) {
+      clean.posts = group.posts.map((post: any) => this.cleanPost(post))
+    }
     return clean
   }
 
@@ -32,7 +35,7 @@ export class GroupService extends ApiService {
     const res = await this.authOpt().client.get('', {
       params: {
         page: options?.page?.page,
-        size: 3,
+        size: GROUP_PAGE_SIZE,
         name: options?.name
       }
     })

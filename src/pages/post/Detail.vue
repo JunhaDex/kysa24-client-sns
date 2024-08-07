@@ -7,17 +7,19 @@
       <Container class="mb-4">
         <Breadcrumb />
       </Container>
-      <template v-if="postItem">
+      <InitialLoad v-if="onRender" />
+      <template v-else>
         <Container class="mb-4">
-          <PostCard :post="postItem" :group-ref="groupRef" />
+          <PostCard :post="postItem!" :group-ref="groupRef" ref="postCard" @like-post="likePost" />
         </Container>
-        <Container class="mb-4">
+        <Container class="pb-6">
           <ReplyBox
             :replyList="replyList"
             @submit-reply="submitReply"
             @open-profile="openProfileModal"
             @remove-reply="removeReply"
           />
+          <PageLoader class="mt-2" :has-more="hasMore" @load-more="() => fetchPage(nextPage)" />
         </Container>
       </template>
     </template>
@@ -54,8 +56,10 @@ import { setupListPage } from '@/stores/setups/list.composition'
 import { useToastStore } from '@/stores/ui/toast.store'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 import Modal from '@/components/modals/Modal.vue'
+import InitialLoad from '@/components/layouts/InitialLoad.vue'
+import PageLoader from '@/components/layouts/PageLoader.vue'
 
-const { pageMeta, isFetching } = setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const route = useRoute()
 const postService = new PostService()
 const toastStore = useToastStore()
@@ -89,20 +93,31 @@ async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
     const res = await postService.getPostReply(postId, { page: { page: pageNo } })
-    console.log(res)
     pageMeta.value = res.meta
-    replyList.value.push(...res.list)
+    if (fetchConfig.mode === 'replace') {
+      replyList.value = res.list
+      fetchConfig.mode = 'append'
+    } else if (fetchConfig.mode === 'append') {
+      replyList.value.push(...res.list)
+    }
     isFetching.value = false
   }
 }
 
 onMounted(async () => {
   await getPost()
+  onRender.value = false
 })
 
 async function openProfileModal(user: User) {
   profileTarget.value = user
   isProfile.value = true
+}
+
+async function likePost(payload: any) {
+  const isUndo = !payload.isLike ? 'true' : undefined
+  await postService.likePost(payload.post.id, { undo: isUndo })
+  postItem.value!.likes += payload.isLike ? 1 : -1
 }
 
 async function submitReply(message: string) {

@@ -4,10 +4,11 @@
       <Header />
     </template>
     <template #main>
-      <Container>
-        <ChatSearchInput />
+      <Container class="mb-4">
+        <Breadcrumb />
       </Container>
-      <Container>
+      <InitialLoad v-if="onRender" />
+      <Container class="pb-6" v-else>
         <ChatRoomCard
           v-for="(room, i) in chatRoomList"
           :chat-room="room"
@@ -28,10 +29,11 @@ import { ChatService } from '@/services/chat.service'
 import { onMounted, ref } from 'vue'
 import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
-import ChatSearchInput from '@/components/displays/chat/ChatSearchInput.vue'
 import ChatRoomCard from '@/components/displays/chat/ChatRoomCard.vue'
 import { setupListPage } from '@/stores/setups/list.composition'
 import type { ChatRoom } from '@/types/general.type'
+import InitialLoad from '@/components/layouts/InitialLoad.vue'
+import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 
 const chatService = new ChatService()
 const { pageMeta, isFetching, onRender } = setupListPage()
@@ -53,6 +55,7 @@ async function fetchPage(pageNo = 1) {
 
 onMounted(async () => {
   await fetchPage()
+  onRender.value = false
 })
 </script>
 <style scoped></style>

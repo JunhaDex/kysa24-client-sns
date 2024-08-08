@@ -34,13 +34,15 @@ export class UserService extends ApiService {
     page?: PageRequest
     name?: string
     team?: string
+    sex?: number
   }): Promise<PageResponse<User>> {
     const res = await this.auth().client.get('/secure-list', {
       params: {
         page: options?.page?.page,
         size: options?.page?.size,
         name: options?.name,
-        'team-name': options?.team
+        'team-name': options?.team,
+        sex: options?.sex
       }
     })
     const { meta, list } = this.unpackRes(res) as PageResponse<User>

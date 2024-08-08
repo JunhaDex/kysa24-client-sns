@@ -2,7 +2,11 @@
   <div class="dropdown">
     <!--NOTE: Slot comp must be a button with [role="button" tabindex="0"]-->
     <slot name="handle" />
-    <ul tabindex="0" class="dropdown-content dropdown-custom dp-box menu w-52 shadow" ref="dropdownBox">
+    <ul
+      tabindex="0"
+      class="dropdown-content dropdown-custom dp-box menu w-52 shadow"
+      ref="dropdownBox"
+    >
       <slot name="menus" />
     </ul>
   </div>

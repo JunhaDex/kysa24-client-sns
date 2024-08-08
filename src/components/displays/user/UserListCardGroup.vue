@@ -52,6 +52,5 @@ async function moveUserChatRoom(userRef: string) {
 .member-list {
   background-color: theme('colors.gray.300');
   border-radius: 0.5rem;
-  overflow: hidden;
 }
 </style>

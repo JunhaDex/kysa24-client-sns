@@ -68,6 +68,11 @@ const router = createRouter({
       component: () => import('@/pages/user/List.vue')
     },
     {
+      path: '/user/deny',
+      name: 'user_deny',
+      component: () => import('@/pages/user/Deny.vue')
+    },
+    {
       path: '/user/:ref',
       name: 'user_profile',
       component: () => import('@/pages/user/Detail.vue')

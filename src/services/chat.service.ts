@@ -1,5 +1,5 @@
 import { ApiService } from '@/services/api.service'
-import type { ChatMessage, ChatRoom, PageRequest, PageResponse } from '@/types/general.type'
+import type { ChatMessage, ChatRoom, PageRequest, PageResponse, User } from '@/types/general.type'
 import { cleanObject } from '@/utils/index.util'
 import { ChatMessageClass, ChatRoomClass } from '@/constants/class.constant'
 import dayjs from 'dayjs'
@@ -51,6 +51,12 @@ export class ChatService extends ApiService {
       meta,
       list: list.map((room) => this.cleanChatRoom(room))
     }
+  }
+
+  async getChatRoomDetail(ref: string): Promise<User[]> {
+    const res = await this.auth().client.get(`/room/${ref}/detail`)
+    const upk = this.unpackRes(res) as any
+    return upk.result
   }
 
   async countUnreadChats(): Promise<number> {

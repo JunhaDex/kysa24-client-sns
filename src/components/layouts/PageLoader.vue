@@ -12,6 +12,7 @@ const props = defineProps<{
   hasMore: boolean
 }>()
 const emit = defineEmits(['loadMore'])
+defineExpose({ stopInterval })
 const pageLoader = ref<HTMLDivElement>()
 let interval: any = null
 
@@ -33,6 +34,7 @@ const { stop } = useIntersectionObserver(
 
 onUnmounted(() => {
   stop()
+  stopInterval()
 })
 
 function startInterval() {

@@ -54,11 +54,11 @@ function clickUser() {
 }
 
 .member-item:hover,
-.member-item:active:not(:has(.action-button:active)) {
+.member-item:active:not(:has(.dropdown-end:active)) {
   background-color: theme('colors.gray.300');
 }
 
-.member-item:active:not(:has(.action-button:active)) {
+.member-item:active:not(:has(.dropdown-end:active)) {
   transform: scale(0.98);
 }
 

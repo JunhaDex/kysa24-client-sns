@@ -4,7 +4,8 @@
       <ChatHeader />
     </template>
     <template #main>
-      <section class="container chat-container mx-auto">
+      <InitialLoad v-if="!isReady" />
+      <section v-else class="container chat-container mx-auto">
         <div class="chat-messages" ref="pageScroll">
           <ChatBubble v-for="chat in chatList" :message="chat" :key="chat.id" />
         </div>
@@ -17,23 +18,28 @@
 import PageView from '@/components/layouts/PageView.vue'
 import ChatHeader from '@/components/layouts/headers/ChatHeader.vue'
 import { useRoute } from 'vue-router'
-import { nextTick, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
+import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
 import { ChatService } from '@/services/chat.service'
 import { setupListPage } from '@/stores/setups/list.composition'
-import type { ChatMessage } from '@/types/general.type'
+import type { ChatMessage, User } from '@/types/general.type'
 import { reverse } from 'lodash-es'
 import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
 import ChatBubble from '@/components/displays/chat/ChatBubble.vue'
 import { useToastStore } from '@/stores/ui/toast.store'
 import axios from 'axios'
+import { useUserStore } from '@/stores/user.store'
+import InitialLoad from '@/components/layouts/InitialLoad.vue'
 
 const route = useRoute()
 const chatService = new ChatService()
 const toastStore = useToastStore()
+const userStore = useUserStore()
 const { pageMeta, isFetching, onRender } = setupListPage()
+const isReady = computed(() => !onRender.value && userStore.myInfo)
 const pageScroll = ref<HTMLDivElement>()
 
 const chatList = ref<ChatMessage[]>([])
+const participants = ref<User[]>([])
 let chatSocket: WebSocket
 
 async function fetchPage(pageNo = 1) {
@@ -48,21 +54,18 @@ async function fetchPage(pageNo = 1) {
   }
 }
 
-function scrollToBottom() {
+async function scrollToBottom() {
+  const roomRef = route.params.ref as string
   if (pageScroll.value) {
     pageScroll.value.scrollTop = pageScroll.value.scrollHeight
   }
+  await chatService.markAsRead(roomRef)
 }
-
-onBeforeMount(async () => {
-  const test = await axios.post(`${import.meta.env.VITE_API_WS_URL}/healthz`)
-  console.log(test.data)
-  // TODO: load chat user (/room/:ref/users)
-})
 onMounted(async () => {
   const roomRef = route.params.ref as string
+  // const res = await chatService.getChatRoomDetail(roomRef)
+  // participants.value.push(...res.filter((u) => u.id !== userStore.myInfo!.id))
   await fetchPage()
-
   try {
     chatSocket = chatService.getSocket(roomRef)
     console.log('socket connected')
@@ -83,6 +86,7 @@ onMounted(async () => {
     console.log('socket closed')
     toastStore.showToast('채팅서버 수신불가 새로고침 하세요.', 'error')
   }
+  onRender.value = false
   scrollToBottom()
   // TODO: mark as read
 })

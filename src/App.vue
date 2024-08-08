@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import SideNav from '@/components/navigations/SideNav.vue'
-import { onMounted } from 'vue'
+import { onBeforeMount, onMounted } from 'vue'
 import { FirebaseProvider } from '@/providers/firebase.provider'
 import { useAuthStore } from '@/stores/auth.store'
 import { useUserStore } from '@/stores/user.store'
@@ -24,6 +24,7 @@ const firebase = new FirebaseProvider()
 const favicon = document.querySelector('favicon-badge') as any
 onMounted(async () => {
   console.log('App.vue mounted')
+  await initUserInfo()
   try {
     const fcm = await firebase.getUserToken()
     console.log('fcm', fcm)
@@ -43,9 +44,6 @@ onMounted(async () => {
   //   console.log('favicon badge')
   //   setAppBadgeFavicon(1)
   // }
-
-  // init app
-  await initUserInfo()
 })
 
 function setAppBadgeFavicon(value: number) {

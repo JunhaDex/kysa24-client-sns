@@ -18,18 +18,5 @@ export const setupListPage = () => {
     mode: 'replace' as 'replace' | 'append'
   }
 
-  // be sure to remove the event listener onUnmount
-  // container.removeEventListener('scroll', handleScroll);
-  async function handleScroll(event: Event, moreFunc: (page: number) => Promise<void>) {
-    const target = event.target as HTMLElement
-    if (
-      target.scrollHeight - target.scrollTop <= target.clientHeight + 100 &&
-      !isFetching.value &&
-      hasMore.value
-    ) {
-      await moreFunc(pageMeta.value.pageNo + 1)
-    }
-  }
-
-  return { pageMeta, onRender, isFetching, hasMore, nextPage, fetchConfig, handleScroll }
+  return { pageMeta, onRender, isFetching, hasMore, nextPage, fetchConfig }
 }

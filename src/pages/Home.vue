@@ -1,5 +1,5 @@
 <template>
-  <PageView @scroll="handleScroll($event, fetchPage)" ref="scrollView" white>
+  <PageView white>
     <template #header>
       <Header />
     </template>
@@ -28,13 +28,6 @@
       <Footer />
     </template>
   </PageView>
-  <Modal :isShow="showWelcomeModal" title="Modal" @modal-close="closeWelcomeModal">
-    <p>Modal content</p>
-    <div class="flex justify-end">
-      <button class="btn btn-ghost" @click="closeWelcomeModal">Close</button>
-      <button class="btn btn-primary" @click="closeWelcomeModal">Save</button>
-    </div>
-  </Modal>
 </template>
 <script setup lang="ts">
 import Container from '@/components/layouts/Container.vue'
@@ -58,20 +51,11 @@ import { sleep } from '@/utils/index.util'
 const showWelcomeModal = ref(false)
 const authStore = useAuthStore()
 const groupService = new GroupService()
-const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig, handleScroll } =
+const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } =
   setupListPage()
 const groupList = ref<Group[]>([])
-const scrollView = ref<HTMLDivElement>()
 const groupCards = ref<(typeof GroupCard)[]>([])
 const toastStore = useToastStore()
-
-function openWelcomeModal() {
-  showWelcomeModal.value = true
-}
-
-function closeWelcomeModal() {
-  showWelcomeModal.value = false
-}
 
 function copyFcm() {
   const fcm = authStore.fcm
@@ -82,13 +66,11 @@ function copyFcm() {
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
-    await sleep(2000)
     const opt = {
       page: { page: pageNo },
       name: fetchConfig.keyword ? fetchConfig.keyword : undefined
     }
     const res = await groupService.listGroups(opt)
-    console.log(res)
     pageMeta.value = res.meta
     if (fetchConfig.mode === 'replace') {
       groupList.value = res.list
@@ -125,12 +107,6 @@ async function unfollowGroup(group: Group, index: number) {
 onMounted(async () => {
   await fetchPage()
   onRender.value = false
-})
-
-onUnmounted(() => {
-  if (scrollView.value) {
-    scrollView.value.removeEventListener('scroll', (e) => handleScroll(e, fetchPage))
-  }
 })
 
 async function searchGroup(keyword: string) {

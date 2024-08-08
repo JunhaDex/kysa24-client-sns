@@ -7,21 +7,23 @@
       <Container class="mb-4">
         <Breadcrumb />
       </Container>
-      <template v-if="groupItem">
+      <InitialLoad v-if="onRender" />
+      <template v-else>
         <Container stretch class="mb-4">
-          <GroupProfile :group="groupItem" />
+          <GroupProfile :group="groupItem!" />
         </Container>
-        <Container>
+        <Container class="pb-6">
           <CreatePostBox class="mb-4" @submit-post="submitCreatePost" />
           <PostCard
             v-for="p in postList"
             :post="p"
-            :group-ref="groupItem.ref"
+            :group-ref="groupItem!.ref"
             class="mb-4"
             ref="postCards"
             :key="p.id"
             @like-post="(pl) => likePost(p, pl)"
           />
+          <PageLoader :has-more="hasMore" @load-more="() => fetchPage(nextPage)" />
         </Container>
       </template>
     </template>
@@ -48,9 +50,10 @@ import type { Group, Post } from '@/types/general.type'
 import { genRandStr } from '@/utils/index.util'
 import { FileService } from '@/services/file.service'
 import { useToastStore } from '@/stores/ui/toast.store'
+import InitialLoad from '@/components/layouts/InitialLoad.vue'
+import PageLoader from '@/components/layouts/PageLoader.vue'
 
-const { pageMeta, isFetching } = setupListPage()
-const scrollView = ref<HTMLDivElement>()
+const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const groupService = new GroupService()
 const postService = new PostService()
 const fileService = new FileService()
@@ -70,9 +73,13 @@ async function fetchPage(pageNo = 1) {
     isFetching.value = true
     const groupRef = route.params.ref as string
     const res = await postService.listPostsByGroup(groupRef, { page: { page: pageNo } })
-    console.log(res)
     pageMeta.value = res.meta
-    postList.value.push(...res.list)
+    if (fetchConfig.mode === 'replace') {
+      postList.value = res.list
+      fetchConfig.mode = 'append'
+    } else if (fetchConfig.mode === 'append') {
+      postList.value.push(...res.list)
+    }
     isFetching.value = false
   }
 }
@@ -87,10 +94,10 @@ async function resetPostList() {
 onMounted(async () => {
   await fetchGroup()
   await fetchPage()
+  onRender.value = false
 })
 
 async function likePost(post: Post, payload: any) {
-  console.log('likePost', payload)
   const isUndo = !payload.isLike ? 'true' : undefined
   await postService.likePost(payload.post.id, { undo: isUndo })
   post.likes += payload.isLike ? 1 : -1

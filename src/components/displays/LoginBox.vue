@@ -1,12 +1,15 @@
 <template>
-  <Box>
-    <h1 class="text-xl font-bold text-primary mb-2">2024 KYSA</h1>
-    <h2 class="text-md font-bold mb-2">로그인</h2>
-    <p class="text-sm mb-2">청년대회에 오신 여러분들을 환영합니다!</p>
+  <Box class="login-box">
+    <h1 class="login-title text-xl font-bold mb-2">
+      <a href="/">
+        <img src="@/assets/images/logo_mate.png" alt="logo" class="login-logo" />
+      </a>
+      <b class="mt-1">로그인</b>
+    </h1>
     <form>
       <div class="form-control">
         <div class="label">
-          <label class="label-text" for="username">아이디</label>
+          <label class="label-text text-xs font-bold" for="username">아이디</label>
         </div>
         <input
           v-model="userInput.id"
@@ -18,7 +21,7 @@
       </div>
       <div class="form-control mb-4">
         <div class="label">
-          <label class="label-text" for="password">비밀번호</label>
+          <label class="label-text text-xs font-bold" for="password">비밀번호</label>
         </div>
         <input
           v-model="userInput.pwd"
@@ -63,6 +66,26 @@ function releaseLogin() {
 }
 </script>
 <style scoped>
+.login-box {
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 32px 0 rgba(251, 86, 7, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid theme('colors.gray.50');
+}
+
+.login-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-logo {
+  display: inline-block;
+  width: 30px;
+  height: 28px;
+}
+
 .links {
   text-align: center;
   margin-top: 1rem;
@@ -70,7 +93,7 @@ function releaseLogin() {
 }
 
 .links {
-  color: theme('colors.gray.600');
+  color: theme('colors.gray.900');
   text-decoration: none;
 }
 

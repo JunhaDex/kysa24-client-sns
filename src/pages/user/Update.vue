@@ -52,12 +52,4 @@ function reloadPage() {
 }
 </script>
 <style scoped>
-.fixed-wrap {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  bottom: 1rem;
-  width: 100%;
-  z-index: 5;
-}
 </style>

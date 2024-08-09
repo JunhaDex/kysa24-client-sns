@@ -1,5 +1,5 @@
 <template>
-  <PageView white>
+  <PageView beige>
     <template #header>
       <Header />
     </template>
@@ -116,4 +116,8 @@ async function searchGroup(keyword: string) {
   await fetchPage()
 }
 </script>
-<style scoped></style>
+<style scoped>
+main {
+  background-color: theme('colors.beige');
+}
+</style>

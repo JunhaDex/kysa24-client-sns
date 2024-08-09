@@ -3,7 +3,7 @@
     <template #prefix>
       <RouterLink to="/" class="text-lg font-gsans header-brand">
         <img src="@/assets/images/logo_mate.png" alt="logo" class="header-logo" />
-        <span>mate</span>
+        <span class="text-green-600">mate</span>
       </RouterLink>
     </template>
   </BaseHeader>

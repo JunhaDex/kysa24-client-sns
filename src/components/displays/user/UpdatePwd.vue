@@ -1,5 +1,5 @@
 <template>
-  <div class="dp-box my-4">
+  <div class="dp-box my-4 shadow">
     <form class="form-wrap">
       <div class="form-control">
         <div class="label">

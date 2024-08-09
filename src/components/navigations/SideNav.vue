@@ -69,14 +69,14 @@
           <img class="profile-sm mr-2" src="@/assets/icons/Support.svg" alt="Support Icon">
           <span class="flex-1">대회 지원센터</span>
         </a>
-        <span v-if="isAuth" class="support-item">
+        <span v-if="isAuth" class="support-item" @click="logOut">
           <img class="profile-sm mr-2" src="@/assets/icons/Logout.svg" alt="Logout Icon">
           <span class="flex-1">로그아웃</span>
         </span>
-        <span v-else class="support-item">
+        <RouterLink v-else to="/login" class="support-item" @click="closeSidebar">
           <img class="profile-sm mr-2" src="@/assets/icons/Login.svg" alt="Login Icon">
           <span class="flex-1">로그인</span>
-        </span>
+        </RouterLink>
       </div>
 
       <div class="nav-footer">
@@ -101,22 +101,33 @@
       </div>
     </div>
   </nav>
-  <Backdrop :is-open="isOpen" />
+  <Backdrop :is-open="isOpen" @bg-click="closeSidebar" />
 </template>
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/ui/sidebar.store'
 import { computed } from 'vue'
 import Backdrop from '@/components/feedbacks/Backdrop.vue'
 import { useUserStore } from '@/stores/user.store'
+import { useAuthStore } from '@/stores/auth.store'
+import { useToastStore } from '@/stores/ui/toast.store'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
 const userStore = useUserStore()
+const authStore = useAuthStore()
+const toastStore = useToastStore()
 
 const isAuth = computed(() => userStore.myInfo !== undefined)
 
-const closeSidebar = () => {
+function closeSidebar() {
   sidebar.isOpen = false
+}
+
+function logOut() {
+  authStore.setJwt('')
+  userStore.myInfo = undefined
+  closeSidebar()
+  toastStore.showToast('로그아웃 되었습니다.', 'info')
 }
 </script>
 <style scoped>

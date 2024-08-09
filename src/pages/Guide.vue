@@ -11,6 +11,9 @@
         <button class="btn" @click="showToast">Show Toast</button>
       </Container>
       <Container>
+        <UpdateExtra :extra-info="{}" />
+      </Container>
+      <Container>
         <CreatePostBox class="mb-4" />
       </Container>
       <Container class="mb-8">
@@ -41,7 +44,8 @@
       </Container>
     </template>
   </PageView>
-  <!--  <UserProfileModal :is-show="true" />-->
+  <!--<UserProfileModal :is-show="true" />-->
+  <SendTicketModal step="before" />
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -59,6 +63,8 @@ import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 import UpdatePwd from '@/components/displays/user/UpdatePwd.vue'
 import { useUserStore } from '@/stores/user.store'
 import IconButton from '@/components/inputs/IconButton.vue'
+import UpdateExtra from '@/components/displays/user/UpdateExtra.vue'
+import SendTicketModal from '@/components/modals/SendTicketModal.vue'
 
 const toastStore = useToastStore()
 const userStore = useUserStore()

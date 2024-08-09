@@ -1,6 +1,6 @@
 <template>
   <slot name="header" />
-  <main :class="{ headless, footless, splash, 'bg-white': white }">
+  <main :class="{ headless, footless, 'bg-beige': beige }">
     <slot name="main" />
   </main>
   <slot name="footer" />
@@ -10,13 +10,12 @@ const props = withDefaults(
   defineProps<{
     headless?: boolean
     footless?: boolean
-    white?: boolean
-    splash?: boolean
+    beige?: boolean
   }>(),
   {
     headless: false,
     footless: false,
-    white: false
+    beige: false
   }
 )
 </script>
@@ -25,6 +24,7 @@ main {
   padding-top: var(--header-height);
   min-height: calc(100vh - var(--footer-height));
   position: relative;
+  background-color: theme('colors.gray.50');
 }
 
 .headless {
@@ -35,9 +35,7 @@ main {
   height: 100vh;
 }
 
-.splash {
-  background-image: url('@/assets/images/app_splash.png');
-  background-size: cover;
-  background-position: center;
+.bg-beige {
+  background-color: theme('colors.beige');
 }
 </style>

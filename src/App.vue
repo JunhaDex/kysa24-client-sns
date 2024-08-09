@@ -1,20 +1,21 @@
 <template>
-  <RouterView />
+  <RouterView :key="jwt" />
   <div class="teleport">
     <!--SideBar, Alert, Toast, No Modal-->
     <!--Component here controlled by ui store (not main logic)-->
-    <SideNav />
+    <SideNav :key="jwt" />
   </div>
 </template>
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import SideNav from '@/components/navigations/SideNav.vue'
-import { onBeforeMount, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { FirebaseProvider } from '@/providers/firebase.provider'
 import { useAuthStore } from '@/stores/auth.store'
 import { useUserStore } from '@/stores/user.store'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
+import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -22,6 +23,7 @@ const authService = new AuthService()
 const userService = new UserService()
 const firebase = new FirebaseProvider()
 const favicon = document.querySelector('favicon-badge') as any
+const { jwt } = storeToRefs(authStore)
 onMounted(async () => {
   console.log('App.vue mounted')
   await initUserInfo()

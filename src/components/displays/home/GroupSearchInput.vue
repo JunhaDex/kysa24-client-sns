@@ -13,7 +13,7 @@
       :prefix-icon="SearchIcon"
     />
     <RouterLink to="/group/new">
-      <IconButton class="btn-sm btn-square ml-2" :prefix-icon="PlusIcon" />
+      <IconButton class="btn-secondary btn-sm btn-square ml-2" :prefix-icon="PlusIcon" />
     </RouterLink>
   </div>
 </template>

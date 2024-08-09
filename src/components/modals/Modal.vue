@@ -3,7 +3,7 @@
     <div class="box-wrap">
       <div class="modal-header">
         <h2 class="font-bold">{{ title }}</h2>
-        <button class="btn btn-ghost" @click="$emit('modalClose')">X</button>
+        <IconButton class="btn-ghost btn-square" :prefix-icon="CloseIcon" @click="$emit('modalClose')"></IconButton>
       </div>
       <div class="modal-content">
         <slot />
@@ -13,6 +13,8 @@
 </template>
 <script setup lang="ts">
 import ModalBase from '@/components/feedbacks/ModalBase.vue'
+import CloseIcon from '@/assets/icons/Close.svg'
+import IconButton from '@/components/inputs/IconButton.vue'
 
 const props = withDefaults(
   defineProps<{

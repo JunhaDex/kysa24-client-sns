@@ -2,7 +2,7 @@
   <div
     class="backdrop backdrop-blur-sm prevent-scroll"
     v-show="isOpen"
-    @click="$emit('bgClick')"
+    @click="() => emit('bgClick')"
   ></div>
 </template>
 <script lang="ts" setup>

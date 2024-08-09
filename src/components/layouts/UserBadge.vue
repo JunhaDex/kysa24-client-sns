@@ -1,5 +1,5 @@
 <template>
-  <span class="badge badge-primary badge-custom text-xs">
+  <span class="badge badge-accent badge-custom text-xs">
     <i class="pre-icon mr-1"></i>
     <slot />
   </span>
@@ -11,6 +11,7 @@
   text-decoration: underline;
   font-weight: bold;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: theme('colors.white');
 }
 
 .badge-custom:active {

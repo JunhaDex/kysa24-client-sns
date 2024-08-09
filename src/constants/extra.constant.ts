@@ -10,5 +10,10 @@ export const USER_EXTRA_LIST = {
     key: 'movie',
     alias: '좋이하는 영화',
     icon: 'icon-movie'
+  },
+  travel: {
+    key: 'travel',
+    alias: '기억에 남는 여행지',
+    icon: 'icon-travel'
   }
 } as const

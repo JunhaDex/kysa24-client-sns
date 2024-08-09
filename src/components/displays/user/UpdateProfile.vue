@@ -1,5 +1,5 @@
 <template>
-  <div class="dp-box my-4">
+  <div class="dp-box my-4 shadow">
     <div class="box-header" id="header-container" @click="openCoverInput">
       <img v-if="userInput.coverImage" id="cover-preview" :src="userInput.coverImage" alt="" />
       <div v-else class="box-header-text text-xs">클릭해서 커버 이미지를 등록하세요</div>

@@ -31,6 +31,8 @@
 </script>
 <style>
 .app-footer {
+  position: relative;
+  z-index: 3;
   display: block;
   background-color: theme('colors.white');
   border-top: 1px solid theme('colors.gray.300');
@@ -40,7 +42,7 @@
 
 .app-footer ul li:not(:last-child)::after {
   content: '|';
-  margin: 0 10px;
+  margin: 0 8px;
 }
 
 .app-footer-link-group {

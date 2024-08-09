@@ -3,15 +3,24 @@
     <div class="form-wrap">
       <div class="form-box-header mb-4">
         <span class="text-xs">항목추가를 눌러 내 정보를 추가하세요!</span>
-        <IconButton class="btn-xs btn-primary" :prefix-icon="PlusIcon" @click="addInfoItem">항목추가</IconButton>
+        <IconButton class="btn-xs btn-primary" :prefix-icon="PlusIcon" @click="addInfoItem"
+          >항목추가
+        </IconButton>
       </div>
       <div class="form-box-content">
         <div v-for="(info, idx) in infoList" class="form-row" :key="idx">
           <select v-model="info.key" class="select select-bordered select-sm">
             <option value="" disabled selected>선택</option>
-            <option v-for="item in extraList" :value="item.key" :key="item.key">{{ item.alias }}</option>
+            <option v-for="item in extraList" :value="item.key" :key="item.key">
+              {{ item.alias }}
+            </option>
           </select>
-          <input v-model="info.value" class="input input-bordered input-sm" type="text" placeholder="내용을 입력하세요" />
+          <input
+            v-model="info.value"
+            class="input input-bordered input-sm"
+            type="text"
+            placeholder="내용을 입력하세요"
+          />
           <span class="icon icon-x" @click="() => removeInfoItem(idx)"></span>
         </div>
       </div>
@@ -32,12 +41,20 @@ import PlusIcon from '@/assets/icons/Plus.svg'
 import ProcessButton from '@/components/inputs/ProcessButton.vue'
 import { USER_EXTRA_LIST } from '@/constants/extra.constant'
 import { onMounted, ref } from 'vue'
+import { UserService } from '@/services/user.service'
+import type { User } from '@/types/general.type'
+import { useToastStore } from '@/stores/ui/toast.store'
 
+const userService = new UserService()
+const toastStore = useToastStore()
 const extraList = Object.values(USER_EXTRA_LIST)
+const emit = defineEmits(['updateDone'])
 const props = defineProps<{
+  user: User
   extraInfo: any
 }>()
 const infoList = ref<any[]>(parseInfo())
+const isProgress = ref(false)
 
 onMounted(() => {
   if (infoList.value.length === 0) {
@@ -73,8 +90,20 @@ function cleanInfo() {
   return Object.fromEntries(cleaned)
 }
 
-function saveInfo() {
-  const inst = cleanInfo()
+async function saveInfo() {
+  if (!isProgress.value) {
+    isProgress.value = true
+    try {
+      const inst = cleanInfo()
+      console.log(inst)
+      await userService.updateUserExtra(props.user.ref, inst)
+      emit('updateDone')
+    } catch (e) {
+      console.error(e)
+      toastStore.showToast('변경 실패', 'error')
+    }
+    isProgress.value = false
+  }
 }
 </script>
 <style scoped>

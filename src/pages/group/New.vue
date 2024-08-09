@@ -1,11 +1,14 @@
 <template>
-  <PageView>
+  <PageView beige>
     <template #header>
       <Header />
     </template>
     <template #main>
       <Container>
-        <div class="dp-box my-4">
+        <Breadcrumb :router-stack="routerStack" />
+      </Container>
+      <Container>
+        <div class="dp-box my-4 shadow">
           <div class="box-header" id="header-container" @click="openCoverInput">
             <img
               v-if="userInput.coverImage"
@@ -105,7 +108,22 @@ import { GroupService } from '@/services/group.service'
 import { FileService } from '@/services/file.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import { genRandStr } from '@/utils/index.util'
+import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 
+const routerStack = [
+  {
+    alias: '홈',
+    path: {
+      name: 'home'
+    }
+  },
+  {
+    alias: '그룹 만들기',
+    path: {
+      name: 'group_new'
+    }
+  }
+]
 const coverInput = ref<HTMLInputElement>()
 const profileInput = ref<HTMLInputElement>()
 const groupService = new GroupService()
@@ -138,8 +156,7 @@ const validateSubmit = computed(() => {
 })
 const isProgress = ref(false)
 
-onMounted(async () => {
-})
+onMounted(async () => {})
 
 function openCoverInput() {
   coverInput.value!.click()

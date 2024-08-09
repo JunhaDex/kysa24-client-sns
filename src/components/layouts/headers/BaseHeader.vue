@@ -56,6 +56,7 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import NotiIcon from '@/assets/icons/Notification.svg'
 import MenuIcon from '@/assets/icons/Menu.svg'
 import ArrowRightIcon from '@/assets/icons/ArrowRight.svg'
+import { ChatService } from '@/services/chat.service'
 
 const H_HI = 66 - 4 // 4px is the border width
 const isScrollingUp = ref(true)
@@ -119,7 +120,9 @@ function openSideNav() {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: top 0.3s ease-in-out 0s, top 0.2s ease-in-out 0s;
+  transition:
+    top 0.3s ease-in-out 0s,
+    top 0.2s ease-in-out 0s;
   z-index: 9;
 }
 

@@ -78,7 +78,7 @@ const router = createRouter({
       component: () => import('@/pages/user/Detail.vue')
     },
     {
-      path: '/settings',
+      path: '/setting/:ref',
       name: 'user_update',
       component: () => import('@/pages/user/Update.vue')
     },

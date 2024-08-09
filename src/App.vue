@@ -4,6 +4,11 @@
     <!--SideBar, Alert, Toast, No Modal-->
     <!--Component here controlled by ui store (not main logic)-->
     <SideNav :key="jwt" />
+    <SendTicketModal
+      :step="stage"
+      :target="target"
+      @close-ticket-prompt="() => ticketStore.closeTicketModal()"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -16,14 +21,18 @@ import { useUserStore } from '@/stores/user.store'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
 import { storeToRefs } from 'pinia'
+import SendTicketModal from '@/components/modals/SendTicketModal.vue'
+import { useTicketStore } from '@/stores/ui/ticket.store'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const ticketStore = useTicketStore()
 const authService = new AuthService()
 const userService = new UserService()
 const firebase = new FirebaseProvider()
 const favicon = document.querySelector('favicon-badge') as any
 const { jwt } = storeToRefs(authStore)
+const { stage, target } = storeToRefs(ticketStore)
 onMounted(async () => {
   console.log('App.vue mounted')
   await initUserInfo()

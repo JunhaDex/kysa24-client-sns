@@ -1,4 +1,7 @@
 <template>
+  <div class="login-toast-area" :class="{ 'toast-area--show': toastStore.isShow }">
+    <Toast :toast-msg="toastStore.message" :prefix-icon="Close" icon-color="error" />
+  </div>
   <PageView headless splash>
     <template #main>
       <div class="splash"></div>
@@ -17,9 +20,13 @@ import Footer from '@/components/layouts/Footer.vue'
 import LoginBox from '@/components/displays/LoginBox.vue'
 import { ref } from 'vue'
 import { AuthService } from '@/services/auth.service'
+import { useToastStore } from '@/stores/ui/toast.store'
+import Close from '@/assets/icons/Close.svg'
+import Toast from '@/components/feedbacks/Toast.vue'
 
 const loginBox = ref()
 const authSvc = new AuthService()
+const toastStore = useToastStore()
 
 async function processLogin(payload: { id: string; pwd: string }) {
   try {
@@ -27,11 +34,30 @@ async function processLogin(payload: { id: string; pwd: string }) {
     window.location.href = '/'
   } catch (error) {
     console.error(error)
+    toastStore.showToast('아이디 / 비밀번호가 올바르지 않습니다.', 'error')
   }
   loginBox.value.releaseLogin()
 }
 </script>
 <style scoped>
+.login-toast-area {
+  position: fixed;
+  top: -36px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition:
+    top 0.3s ease-in-out 0s,
+    top 0.2s ease-in-out 0s;
+  z-index: 9;
+}
+
+.toast-area--show {
+  top: 1.2rem;
+}
+
 .container {
   padding-top: 50%;
   height: calc(100vh - var(--footer-height));

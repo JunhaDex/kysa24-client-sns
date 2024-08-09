@@ -1,5 +1,5 @@
 <template>
-  <PageView>
+  <PageView beige>
     <template #header>
       <Header />
     </template>

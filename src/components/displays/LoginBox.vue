@@ -62,6 +62,8 @@ function pressLogin() {
 }
 
 function releaseLogin() {
+  userInput.value.id = ''
+  userInput.value.pwd = ''
   isPress.value = false
 }
 </script>
@@ -69,8 +71,8 @@ function releaseLogin() {
 .login-box {
   background: rgba(255, 255, 255, 0.45);
   box-shadow: 0 8px 32px 0 rgba(251, 86, 7, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border: 1px solid theme('colors.gray.50');
 }
 

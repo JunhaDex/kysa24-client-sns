@@ -5,7 +5,7 @@
     </template>
     <template #main>
       <Container class="mb-4">
-        <Breadcrumb />
+        <Breadcrumb :router-stack="routerStack" />
       </Container>
       <InitialLoad v-if="onRender" />
       <template v-else>
@@ -52,6 +52,7 @@ import { FileService } from '@/services/file.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
+import router from '@/router'
 
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const groupService = new GroupService()
@@ -62,6 +63,22 @@ const route = useRoute()
 const groupItem = ref<Group>()
 const postList = ref<Post[]>([])
 const postCards = ref<(typeof PostCard)[]>([])
+const routerStack = ref([
+  {
+    alias: '홈',
+    path: {
+      name: 'home'
+    }
+  },
+  {
+    alias: '',
+    path: {
+      name: 'group_feed',
+      params: { ref: route.params.ref },
+      profile: ''
+    }
+  }
+])
 
 async function fetchGroup() {
   const groupRef = route.params.ref as string
@@ -94,6 +111,8 @@ async function resetPostList() {
 onMounted(async () => {
   await fetchGroup()
   await fetchPage()
+  routerStack.value[1].alias = groupItem.value!.groupName
+  routerStack.value[1].path.profile = groupItem.value!.profileImg
   onRender.value = false
 })
 

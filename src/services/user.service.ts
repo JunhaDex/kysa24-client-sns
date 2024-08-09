@@ -58,6 +58,10 @@ export class UserService extends ApiService {
     }
   }
 
+  async updateUserExtra(ref: string, params: UserExtra): Promise<void> {
+    await this.auth().client.patch(`/my/extra/${ref}`, params)
+  }
+
   async listTeams(): Promise<Team[]> {
     const teamUrl = import.meta.env.VITE_API_BASE_URL + '/team'
     const res = await this.client.get(teamUrl)

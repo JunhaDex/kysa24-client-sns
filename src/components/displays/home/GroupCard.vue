@@ -1,10 +1,14 @@
 <template>
   <div class="group-info">
     <RouterLink class="cover-image" :to="{ name: 'group_feed', params: { ref: group.ref } }">
-      <img :src="group.coverImg" alt="Group Cover" class="cover-pic" />
+      <img v-if="group.coverImg" :src="group.coverImg" alt="Group Cover" class="cover-pic" />
+      <p v-else class="group-header-default p-4">
+        '주의 영이... 우리마음 가운데 <br />
+        큰 변화를 이루셨음으로'
+      </p>
     </RouterLink>
     <div class="profile">
-      <img :src="group.profileImg" alt="Group Profile" class="profile-pic" />
+      <img :src="profileImg" alt="Group Profile" class="profile-pic" />
       <div class="group-details">
         <h2 class="text-lg">
           <RouterLink class="font-bold" :to="{ name: 'group_feed', params: { ref: group.ref } }">
@@ -31,7 +35,7 @@
     </div>
     <PostCarousel :item-count="group.posts.length">
       <div v-for="post in group.posts" class="post mb-2 post-carousel-item" :key="post.id">
-        <img :src="post.author.profileImg" alt="User" class="user-avatar" />
+        <img :src="postProfile(post.author.profileImg)" alt="User" class="user-avatar" />
         <div class="post-content">
           <h3 class="mr-2">{{ post.author.nickname }}</h3>
           <span class="post-time">
@@ -82,6 +86,7 @@ import CaretDown from '@/assets/icons/CaretDown.svg'
 import Notification from '@/assets/icons/Notification.svg'
 import { useUserStore } from '@/stores/user.store'
 import UserBadge from '@/components/layouts/UserBadge.vue'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const props = defineProps<{
   group: Group
@@ -92,6 +97,7 @@ defineExpose({ updateFollowState })
 const userStore = useUserStore()
 const { getTeamNameById } = setupTeamInfo()
 const followState = ref(false)
+const profileImg = computed(() => props.group.profileImg ? props.group.profileImg : ProfileEmpty)
 const unfollowBlocked = computed(() => {
   return props.group.id === 1 || props.group.creator.ref === userStore.myInfo?.ref
 })
@@ -99,23 +105,28 @@ const unfollowBlocked = computed(() => {
 onMounted(() => {
   followState.value = !!props.group.already
 })
+const followCaller = throttle(() => {
+  emits('followGroup', props.group)
+}, 1000)
 
 function followGroup() {
-  const caller = throttle(() => {
-    emits('followGroup', props.group)
-  }, 1000)
-  caller()
+  followCaller()
 }
 
+const unfollowCaller = throttle(() => {
+  emits('unfollowGroup', props.group)
+}, 1000)
+
 async function unfollowGroup() {
-  const caller = throttle(() => {
-    emits('unfollowGroup', props.group)
-  }, 1000)
-  caller()
+  unfollowCaller()
 }
 
 function updateFollowState(state: boolean) {
   followState.value = state
+}
+
+function postProfile(img: string) {
+  return img ? img : ProfileEmpty
 }
 </script>
 <style scoped>
@@ -124,11 +135,20 @@ function updateFollowState(state: boolean) {
   position: relative;
 }
 
+.group-header-default {
+  color: theme('colors.gray.50');
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .cover-image {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: #dddddd;
+  background-color: theme('colors.gray.300');
   border-radius: 12px;
   overflow: hidden;
 }

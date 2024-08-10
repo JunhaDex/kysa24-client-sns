@@ -1,16 +1,22 @@
 <template>
-  <PageView beige>
+  <PageView>
     <template #header>
       <Header />
     </template>
     <template #main>
       <Container class="mb-4">
-        <Breadcrumb />
+        <Breadcrumb :router-stack="routerStack" />
       </Container>
       <InitialLoad v-if="onRender" />
       <template v-else>
         <Container class="mb-4">
-          <PostCard :post="postItem!" :group-ref="groupRef" ref="postCard" @like-post="likePost" />
+          <PostCard
+            :post="postItem!"
+            :group-ref="groupRef"
+            ref="postCard"
+            @like-post="likePost"
+            @open-profile="openProfileModal"
+          />
         </Container>
         <Container class="pb-6">
           <ReplyBox
@@ -51,24 +57,50 @@ import Footer from '@/components/layouts/Footer.vue'
 import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
 import ReplyBox from '@/components/displays/post/ReplyBox.vue'
-import type { Post, Reply, User } from '@/types/general.type'
+import type { Group, Post, Profile, Reply } from '@/types/general.type'
 import { setupListPage } from '@/stores/setups/list.composition'
 import { useToastStore } from '@/stores/ui/toast.store'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 import Modal from '@/components/modals/Modal.vue'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
+import { GroupService } from '@/services/group.service'
 
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const route = useRoute()
 const postService = new PostService()
+const groupService = new GroupService()
 const toastStore = useToastStore()
+const groupItem = ref<Group>()
 const postItem = ref<Post>()
 const replyList = ref<Reply[]>([])
 const groupRef = route.params.ref as string
 const isProfile = ref(false)
 const isRemoveReply = ref(false)
-const profileTarget = ref<User>()
+const profileTarget = ref<Profile>()
+const routerStack = ref([
+  {
+    alias: '홈',
+    path: {
+      name: 'home'
+    }
+  },
+  {
+    alias: '',
+    path: {
+      name: 'group_feed',
+      params: { ref: route.params.ref },
+      profile: ''
+    }
+  },
+  {
+    alias: '게시글 상세',
+    path: {
+      name: 'post_detail',
+      params: { id: route.params.id }
+    }
+  }
+])
 
 async function getPost() {
   const rpm = route.params.id as string
@@ -106,10 +138,13 @@ async function fetchPage(pageNo = 1) {
 
 onMounted(async () => {
   await getPost()
+  groupItem.value = await groupService.getGroupByRef(groupRef)
   onRender.value = false
+  routerStack.value[1].alias = groupItem.value!.groupName
+  routerStack.value[1].path.profile = groupItem.value!.profileImg ?? ''
 })
 
-async function openProfileModal(user: User) {
+async function openProfileModal(user: Profile) {
   profileTarget.value = user
   isProfile.value = true
 }

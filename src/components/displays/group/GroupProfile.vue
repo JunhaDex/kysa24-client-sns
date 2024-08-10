@@ -19,12 +19,15 @@
         </ul>
       </div>
       <div class="action-area">
-        <IconButton v-if="!followState" class="btn-primary btn-sm btn-block"> 팔로우</IconButton>
+        <IconButton v-if="!followState" class="btn-primary btn-sm btn-block" @click="followGroup">
+          팔로우
+        </IconButton>
         <UnfollowDropdown
           v-else
           class="dropdown-end block"
           :group-ref="group.ref"
-          :disabled="false"
+          :disabled="unfollowBlocked"
+          @unfollow-group="unfollowGroup"
         >
           <IconButton class="btn-sm btn-white btn-block text-xs" :suffix-icon="CaretDown">
             팔로잉
@@ -45,21 +48,39 @@ import Profile from '@/components/displays/Profile.vue'
 import Container from '@/components/layouts/Container.vue'
 import Box from '@/components/layouts/Box.vue'
 import type { Group } from '@/types/general.type'
-import { onMounted, ref } from 'vue'
-import { unfollowMenu } from '@/constants/menu.constant'
+import { computed } from 'vue'
 import UserBadge from '@/components/layouts/UserBadge.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import CaretDown from '@/assets/icons/CaretDown.svg'
 import UnfollowDropdown from '@/components/inputs/dropdowns/UnfollowDropdown.vue'
+import { throttle } from 'lodash-es'
+import { useUserStore } from '@/stores/user.store'
 
+const emit = defineEmits(['followGroup', 'unfollowGroup'])
 const props = defineProps<{
   group: Group
 }>()
-const followState = ref(false)
-
-onMounted(() => {
-  followState.value = !!props.group.already
+const userStore = useUserStore()
+const followState = computed(() => !!props.group.already)
+const unfollowBlocked = computed(() => {
+  return props.group.id === 1 || props.group.creator.ref === userStore.myInfo?.ref
 })
+
+const followCaller = throttle(() => {
+  emit('followGroup', props.group)
+}, 1000)
+
+function followGroup() {
+  followCaller()
+}
+
+const unfollowCaller = throttle(() => {
+  emit('unfollowGroup', props.group)
+}, 1000)
+
+async function unfollowGroup() {
+  unfollowCaller()
+}
 </script>
 <style scoped>
 .group-profile-wrap {

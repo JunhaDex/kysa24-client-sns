@@ -1,9 +1,14 @@
 <template>
-  <RouterView />
+  <RouterView :key="jwt" />
   <div class="teleport">
     <!--SideBar, Alert, Toast, No Modal-->
     <!--Component here controlled by ui store (not main logic)-->
-    <SideNav />
+    <SideNav :key="jwt" />
+    <SendTicketModal
+      :step="stage"
+      :target="target"
+      @close-ticket-prompt="() => ticketStore.closeTicketModal()"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -12,12 +17,25 @@ import SideNav from '@/components/navigations/SideNav.vue'
 import { onMounted } from 'vue'
 import { FirebaseProvider } from '@/providers/firebase.provider'
 import { useAuthStore } from '@/stores/auth.store'
+import { useUserStore } from '@/stores/user.store'
+import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
+import { storeToRefs } from 'pinia'
+import SendTicketModal from '@/components/modals/SendTicketModal.vue'
+import { useTicketStore } from '@/stores/ui/ticket.store'
 
 const authStore = useAuthStore()
+const userStore = useUserStore()
+const ticketStore = useTicketStore()
+const authService = new AuthService()
+const userService = new UserService()
 const firebase = new FirebaseProvider()
 const favicon = document.querySelector('favicon-badge') as any
+const { jwt } = storeToRefs(authStore)
+const { stage, target } = storeToRefs(ticketStore)
 onMounted(async () => {
   console.log('App.vue mounted')
+  await initUserInfo()
   try {
     const fcm = await firebase.getUserToken()
     console.log('fcm', fcm)
@@ -30,13 +48,13 @@ onMounted(async () => {
   // app badge
   const supportAppBadge = 'setAppBadge' in navigator
   console.log('supportAppBadge', supportAppBadge)
-  if (matchMedia('(display-mode: standalone)').matches && supportAppBadge) {
-    console.log('native badge')
-    setAppBadgeNative(1)
-  } else {
-    console.log('favicon badge')
-    setAppBadgeFavicon(1)
-  }
+  // if (matchMedia('(display-mode: standalone)').matches && supportAppBadge) {
+  //   console.log('native badge')
+  //   setAppBadgeNative(1)
+  // } else {
+  //   console.log('favicon badge')
+  //   setAppBadgeFavicon(1)
+  // }
 })
 
 function setAppBadgeFavicon(value: number) {
@@ -45,6 +63,16 @@ function setAppBadgeFavicon(value: number) {
 
 function setAppBadgeNative(value: number) {
   navigator.setAppBadge(value)
+}
+
+async function initUserInfo() {
+  if (userStore.teams.length === 0) {
+    userStore.teams = await userService.listTeams()
+    console.log('teams', userStore.teams)
+  }
+  if (authStore.jwt && userStore.myInfo === undefined) {
+    userStore.myInfo = await authService.getMy()
+  }
 }
 </script>
 <style scoped></style>

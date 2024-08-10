@@ -1,14 +1,20 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ['suite', ...defaultTheme.fontFamily.sans],
+      gsans: ['gsans']
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
       black: '#000',
       white: '#fff',
+      beige: '#fefee5',
       magenta: {
         50: '#feeff9',
         100: '#fedff3',
@@ -46,28 +52,28 @@ export default {
         900: '#002661'
       },
       teal: {
-        50: '#e2f8fb',
-        100: '#cdeef3',
-        200: '#b0e7ef',
-        300: '#77d5e3',
-        400: '#01b8ca',
-        500: '#0095a4',
-        600: '#007f8c',
-        700: '#016974',
-        800: '#1a535a',
-        900: '#002f14'
+        50: '#E6EFF1',
+        100: '#CCDFE3',
+        200: '#99BFC7',
+        300: '#669FAB',
+        400: '#004E64',
+        500: '#004558',
+        600: '#003C4C',
+        700: '#003340',
+        800: '#002A34',
+        900: '#002028'
       },
       green: {
-        50: '#eaf6ed',
-        100: '#d3efda',
-        200: '#b1eac2',
-        300: '#7fd99a',
-        400: '#06c167',
-        500: '#009a51',
-        600: '#0e8345',
-        700: '#166c3b',
-        800: '#0d572d',
-        900: '#002f14'
+        50: '#F5FAF6',
+        100: '#EBF5ED',
+        200: '#D7EBDB',
+        300: '#C3E1C9',
+        400: '#AFD7B7',
+        500: '#9BCDA5',
+        600: '#3D844B',
+        700: '#326E3E',
+        800: '#275831',
+        900: '#1C4224'
       },
       lime: {
         50: '#eef6e3',
@@ -143,8 +149,9 @@ export default {
       {
         light: {
           ...require('daisyui/src/theming/themes')['light'],
-          primary: '#007599',
-          accent: '#698fdb',
+          primary: '#326E3E',
+          secondary: '#7c7287',
+          accent: '#669FAB',
           error: '#de1135',
           warning: '#f6bc2f',
           success: '#0e8345'

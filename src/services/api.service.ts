@@ -13,6 +13,14 @@ export abstract class ApiService {
         'Content-Type': 'application/json'
       }
     })
+    this.client.interceptors.response.use((res) => {
+      return res
+    }, (err) => {
+      if (err.response.status === 401) {
+        this.authStore.setJwt('')
+      }
+      return Promise.reject(err)
+    })
   }
 
   auth(): this {
@@ -21,9 +29,17 @@ export abstract class ApiService {
       this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`
       return this
     }
-    window.alert('로그인이 필요한 서비스 입니다.')
-    window.location.href = '/login'
+    // window.alert('로그인이 필요한 서비스 입니다.')
+    // window.location.href = '/login'
     throw new Error('token not found')
+  }
+
+  authOpt() {
+    const token = this.authStore.jwt
+    if (token) {
+      this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    }
+    return this
   }
 
   unpackRes(res: AxiosResponse): unknown {

@@ -1,23 +1,30 @@
 <template>
   <slot name="header" />
-  <main :class="{headless, footless}">
+  <main :class="{ headless, footless, 'bg-beige': beige }">
     <slot name="main" />
   </main>
   <slot name="footer" />
 </template>
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  headless: boolean
-  footless: boolean
-}>(), {
-  headless: false,
-  footless: false
-})
+const props = withDefaults(
+  defineProps<{
+    headless?: boolean
+    footless?: boolean
+    beige?: boolean
+  }>(),
+  {
+    headless: false,
+    footless: false,
+    beige: false
+  }
+)
 </script>
 <style scoped>
 main {
   padding-top: var(--header-height);
-  height: calc(100vh - var(--footer-height));
+  min-height: calc(100vh - var(--footer-height));
+  position: relative;
+  background-color: theme('colors.gray.50');
 }
 
 .headless {
@@ -26,5 +33,10 @@ main {
 
 .footless {
   height: 100vh;
+}
+
+.bg-beige {
+  //background-color: theme('colors.beige');
+  background-color: theme('colors.white');
 }
 </style>

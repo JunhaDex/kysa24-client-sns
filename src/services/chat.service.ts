@@ -1,9 +1,38 @@
 import { ApiService } from '@/services/api.service'
-import type { ChatMessage, ChatRoom, PageRequest, PageResponse } from '@/types/general.type'
+import type { ChatMessage, ChatRoom, PageRequest, PageResponse, User } from '@/types/general.type'
+import { cleanObject } from '@/utils/index.util'
+import { ChatMessageClass, ChatRoomClass } from '@/constants/class.constant'
+import dayjs from 'dayjs'
 
 export class ChatService extends ApiService {
   constructor() {
     super('chat')
+  }
+
+  private cleanChatRoom(room: any): ChatRoom {
+    const clean = cleanObject(room, ChatRoomClass)
+    clean.lastChat = this.cleanChatMessage(room.lastChat)
+    return clean
+  }
+
+  private cleanChatMessage(message: any): ChatMessage {
+    const clean = cleanObject(message, ChatMessageClass)
+    clean.createdAt = dayjs(message.createdAt).tz().format('YYYY-MM-DD HH:mm:ss')
+    return clean
+  }
+
+  async openChatRoom(userRef: string): Promise<string> {
+    const res = await this.auth().client.get(`/user/${userRef}`)
+    const upk = this.unpackRes(res) as any
+    return upk.ref
+  }
+
+  checkChatType(obj: any): ChatMessage {
+    const reqKeys = ['id', 'sender', 'message', 'encoded', 'createdAt']
+    if (reqKeys.every((key) => Object.keys(obj).includes(key))) {
+      return this.cleanChatMessage(obj)
+    }
+    throw new Error('Invalid chat object')
   }
 
   async listRecentChatRooms(options?: {
@@ -17,7 +46,19 @@ export class ChatService extends ApiService {
         'is-block': options?.isBlock
       }
     })
-    return this.unpackRes(res) as PageResponse<ChatRoom>
+    const { meta, list } = this.unpackRes(res) as PageResponse<ChatRoom>
+    return {
+      meta,
+      list: list.map((room) => this.cleanChatRoom(room))
+    }
+  }
+
+  async getChatRoomDetail(ref: string): Promise<{
+    chatRoom: ChatRoom,
+    users: User[]
+  }> {
+    const res = await this.auth().client.get(`/room/${ref}/detail`)
+    return this.unpackRes(res) as any
   }
 
   async countUnreadChats(): Promise<number> {
@@ -36,7 +77,11 @@ export class ChatService extends ApiService {
         size: options?.page?.size
       }
     })
-    return this.unpackRes(res) as PageResponse<ChatMessage>
+    const { meta, list } = this.unpackRes(res) as PageResponse<ChatMessage>
+    return {
+      meta,
+      list: list.map(this.cleanChatMessage)
+    }
   }
 
   async markAsRead(ref: string): Promise<void> {
@@ -57,5 +102,8 @@ export class ChatService extends ApiService {
     await this.auth().client.post(`/deny/${user}`, params)
   }
 
-  async sendChatSocket() {}
+  getSocket(roomRef: string) {
+    const jwt = this.authStore.jwt
+    return new WebSocket(`${import.meta.env.VITE_API_WS_URL}/chat/${roomRef}`, [jwt])
+  }
 }

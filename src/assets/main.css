@@ -3,16 +3,71 @@
 @tailwind utilities;
 
 :root {
-    --footer-height: 95px;
+    --footer-height: 75px;
     --header-height: 66px;
+}
+
+@font-face {
+    font-family: 'gsans';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'suite';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'suite';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Medium.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'suite';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-SemiBold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'suite';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'suite';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-ExtraBold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
 }
 
 body {
     background-color: theme('colors.gray.50');
 }
 
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .container {
-    margin: 0 auto 2rem auto;
     max-width: 327px; /* margin 24px gutter 20px 1col */
 }
 
@@ -30,4 +85,76 @@ body {
 
 .prevent-scroll {
     overflow: hidden;
+}
+
+.dp-box {
+    background-color: theme('colors.white');
+    width: 100%;
+    border-radius: 0.5rem;
+}
+
+.btn-white {
+    --btn-color: theme('colors.white');
+    background-color: theme('colors.white');
+    border-color: transparent;
+}
+
+/* TODO: btn-custom -> btn-md */
+.btn-custom {
+    height: 2.25rem;
+    width: 2.25rem;
+    min-height: 2.25rem;
+}
+
+.btn-md {
+    height: 2.5rem;
+    min-height: 2.5rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-height {
+    height: 2.25rem;
+}
+
+.icon {
+    display: inline-block;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+
+.profile-rnd {
+    border-radius: 50%;
+    background-color: theme('colors.gray.300');
+    overflow: hidden;
+}
+
+.profile-xl {
+    width: 48px;
+    height: 48px;
+}
+
+.profile-lg {
+    width: 36px;
+    height: 36px;
+}
+
+.profile-md {
+    width: 24px;
+    height: 24px;
+}
+
+.profile-sm {
+    width: 18px;
+    height: 18px;
+}
+
+.profile-xxs {
+    width: 12px;
+    height: 12px;
 }

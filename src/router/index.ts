@@ -26,12 +26,12 @@ const router = createRouter({
       path: '/chat',
       children: [
         {
-          path: '/list',
+          path: 'list',
           name: 'chat_list',
           component: () => import('@/pages/chat/List.vue')
         },
         {
-          path: '/:ref',
+          path: ':ref',
           name: 'chat_room',
           component: () => import('@/pages/chat/Detail.vue')
         }
@@ -41,24 +41,24 @@ const router = createRouter({
       path: '/group',
       children: [
         {
-          path: '/:ref',
+          path: ':ref',
           name: 'group_feed',
           component: () => import('@/pages/group/Feed.vue')
         },
         {
-          path: '/new',
+          path: 'new',
           name: 'group_new',
           component: () => import('@/pages/group/New.vue')
         }
       ]
     },
     {
-      path: '/alart',
+      path: '/alert',
       name: 'notification',
       component: () => import('@/pages/noti/List.vue')
     },
     {
-      path: '/post/:id',
+      path: '/group/:ref/post/:id',
       name: 'post_detail',
       component: () => import('@/pages/post/Detail.vue')
     },
@@ -66,6 +66,21 @@ const router = createRouter({
       path: '/user-all',
       name: 'user_all',
       component: () => import('@/pages/user/List.vue')
+    },
+    {
+      path: '/user/deny',
+      name: 'user_deny',
+      component: () => import('@/pages/user/Deny.vue')
+    },
+    {
+      path: '/user/:ref',
+      name: 'user_profile',
+      component: () => import('@/pages/user/Detail.vue')
+    },
+    {
+      path: '/setting/:ref',
+      name: 'user_update',
+      component: () => import('@/pages/user/Update.vue')
     },
     {
       path: '/404',

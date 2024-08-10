@@ -1,32 +1,12 @@
 <template>
-  <PageView headless>
+  <div class="login-toast-area" :class="{ 'toast-area--show': toastStore.isShow }">
+    <Toast :toast-msg="toastStore.message" :prefix-icon="Close" icon-color="error" />
+  </div>
+  <PageView headless splash>
     <template #main>
-      <div class="container h-full flex flex-col justify-center align-middle">
-        <div class="login-box rounded shadow">
-          <h1 class="text-xl font-bold text-primary mb-2">2024 KYSA</h1>
-          <h2 class="text-md font-bold mb-2">로그인</h2>
-          <p class="text-sm mb-2">청년대회에 오신 여러분들을 환영합니다!</p>
-          <form>
-            <div class="input-group">
-              <div class="label">
-                <label class="label-text" for="username">아이디</label>
-              </div>
-              <input class="input input-bordered w-full" type="text" id="username" name="username"
-                     placeholder="john.doe">
-            </div>
-            <div class="input-group">
-              <div class="label">
-                <label class="label-text" for="password">비밀번호</label>
-              </div>
-              <input class="input input-bordered w-full" type="password" id="password" name="password"
-                     placeholder="********">
-            </div>
-            <button class="btn btn-primary btn-block" type="button">로그인</button>
-          </form>
-          <div class="links mt-2">
-            <a href="#">이용약관</a> | <a href="#">사용 설명서</a>
-          </div>
-        </div>
+      <div class="splash"></div>
+      <div class="container relative mx-auto">
+        <LoginBox @login="processLogin" ref="loginBox" />
       </div>
     </template>
     <template #footer>
@@ -37,32 +17,64 @@
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
 import Footer from '@/components/layouts/Footer.vue'
+import LoginBox from '@/components/displays/LoginBox.vue'
+import { ref } from 'vue'
+import { AuthService } from '@/services/auth.service'
+import { useToastStore } from '@/stores/ui/toast.store'
+import Close from '@/assets/icons/Close.svg'
+import Toast from '@/components/feedbacks/Toast.vue'
+
+const loginBox = ref()
+const authSvc = new AuthService()
+const toastStore = useToastStore()
+
+async function processLogin(payload: { id: string; pwd: string }) {
+  try {
+    await authSvc.login(payload) // TODO: add fcm
+    window.location.href = '/'
+  } catch (error) {
+    console.error(error)
+    toastStore.showToast('아이디 / 비밀번호가 올바르지 않습니다.', 'error')
+  }
+  loginBox.value.releaseLogin()
+}
 </script>
 <style scoped>
-
-.login-box {
-  background-color: theme('colors.white');
-  padding: 1.5rem;
+.login-toast-area {
+  position: fixed;
+  top: -36px;
+  left: 0;
   width: 100%;
-  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition:
+    top 0.3s ease-in-out 0s,
+    top 0.2s ease-in-out 0s;
+  z-index: 9;
 }
 
-.input-group {
-  margin-bottom: 1rem;
+.toast-area--show {
+  top: 1.2rem;
 }
 
-.links {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+.container {
+  padding-top: 50%;
+  height: calc(100vh - var(--footer-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 }
 
-.links {
-  color: theme('colors.gray.600');
-  text-decoration: none;
-}
-
-.links a:hover, a:active {
-  text-decoration: underline;
+.splash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - var(--footer-height) + 16px);
+  background-image: url('@/assets/images/app_splash.png');
+  background-size: cover;
+  background-position: center;
 }
 </style>

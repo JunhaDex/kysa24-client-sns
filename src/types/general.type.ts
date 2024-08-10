@@ -1,16 +1,24 @@
 export interface PageResponse<T> {
-  meta: {
-    pageNo: number
-    pageSize: number
-    totalPage: number
-    totalCount: number
-  }
+  meta: PageMeta
   list: T[]
 }
 
+export interface PageMeta {
+  pageNo: number
+  pageSize: number
+  totalPage: number
+  totalCount: number
+}
+
 export interface PageRequest {
-  page: number
-  size: number
+  page?: number
+  size?: number
+}
+
+export interface PageBreadcrumb {
+  name: string
+  path: string
+  image?: string
 }
 
 export interface UserAuth {
@@ -40,6 +48,13 @@ export interface User extends Profile {
   actStatus: number
 }
 
+export interface UserExtra {}
+
+export interface Team {
+  id: number
+  teamName: string
+}
+
 export interface Group {
   id: number
   ref: string
@@ -52,6 +67,7 @@ export interface Group {
   priority: number
   posts: Post[]
   followers: number
+  already?: boolean
 }
 
 export interface Post {
@@ -61,12 +77,16 @@ export interface Post {
   message: string
   likes: number
   comments: number
+  createdAt: string
+  already?: boolean
 }
 
 export interface Reply {
   id: number
   author: Profile
   message: string
+  createdAt: string
+  deletedAt: string | null
 }
 
 export interface UserNoti {
@@ -84,14 +104,14 @@ export interface ChatMessage {
   sender: number
   message: string
   encoded: boolean
-  createdAt: Date
+  createdAt: string
 }
 
 export interface ChatRoom {
   id: number
-  roomRef: string
+  ref: string
   title: string
   isBlock: boolean
   lastRead: number
-  latestMessage: ChatMessage
+  lastChat: ChatMessage
 }

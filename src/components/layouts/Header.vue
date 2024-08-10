@@ -1,81 +1,26 @@
 <template>
-  <header class="header" :class="{ 'header--scrolling-up': isScrollingUp }">
-    <div class="container flex justify-between items-center py-2">
-      <router-link to="/" class="text-lg font-bold">Crewz</router-link>
-      <nav>
-        <ul class="flex space-x-2">
-          <li>
-            <IconButton image="Notification" />
-          </li>
-          <li>
-            <!--<button class="btn btn-ghost" @click="openSideNav">Menu</button>-->
-            <IconButton image="Menu" @click="openSideNav" />
-          </li>
-        </ul>
-      </nav>
-      <slot />
-    </div>
-  </header>
+  <BaseHeader>
+    <template #prefix>
+      <RouterLink to="/" class="text-lg font-gsans header-brand">
+        <img src="@/assets/images/logo_mate.png" alt="logo" class="header-logo" />
+        <span class="text-green-600">mate</span>
+      </RouterLink>
+    </template>
+  </BaseHeader>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useSidebarStore } from '@/stores/ui/sidebar.store'
-import IconButton from '@/components/inputs/IconButton.vue'
-
-const H_HI = 64
-const isScrollingUp = ref(true)
-const sideBar = useSidebarStore()
-let lastScrollPosition = 0
-let isFixed = false
-const handleScroll = () => {
-  const currentScrollPosition = window.scrollY || document.documentElement.scrollTop
-  console.log('current ', currentScrollPosition, 'last: ', lastScrollPosition)
-  const headerElement = document.querySelector<HTMLElement>('.header')!
-  if (currentScrollPosition === 0) {
-    headerElement.style.position = 'absolute'
-    isFixed = false
-  } else if (currentScrollPosition < H_HI && !isFixed) {
-    headerElement.style.position = 'absolute'
-    isScrollingUp.value = true
-  } else if (currentScrollPosition < lastScrollPosition) {
-    headerElement.style.position = 'fixed'
-    isFixed = true
-    isScrollingUp.value = true
-  } else {
-    isScrollingUp.value = false
-  }
-  lastScrollPosition = currentScrollPosition
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
-
-function openSideNav() {
-  sideBar.isOpen = !sideBar.isOpen
-  console.log(sideBar.isOpen)
-}
+import BaseHeader from '@/components/layouts/headers/BaseHeader.vue'
 </script>
 <style scoped>
-.container {
-  margin: auto;
+.header-logo {
+  display: inline-block;
+  width: 26px;
+  height: 24px;
 }
 
-.header {
-  position: absolute;
-  background-color: theme('colors.white');
-  border-bottom: 1px solid theme('colors.gray.300');
-  top: calc(var(--header-height) * -1);
-  width: 100%;
-  transition: top 0.3s ease-in-out;
-  z-index: 10;
-}
-
-.header--scrolling-up {
-  top: 0;
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 </style>

@@ -15,6 +15,9 @@ jobs:
       - env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_CONFIG_KYSA24_SNS }}
         run: mkdir secret && echo $FIREBASE_TOKEN > ./secret/firebase-config.json
+      - env:
+          ENV_FILE: ${{ secrets.ENV_LIVE }}
+        run: echo $ENV_FILE > .env
       - run: yarn && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

@@ -5,11 +5,12 @@
     </template>
     <template #main>
       <Container class="mb-4">
-        <Breadcrumb />
+        <Breadcrumb :router-stack="routerStack" />
       </Container>
       <InitialLoad v-if="onRender" />
       <Container class="pb-6" v-else>
         <ChatRoomCard
+          class="mb-2"
           v-for="(room, i) in chatRoomList"
           :chat-room="room"
           :key="i"
@@ -35,6 +36,20 @@ import type { ChatRoom } from '@/types/general.type'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 
+const routerStack = ref([
+  {
+    alias: '홈',
+    path: {
+      name: 'home'
+    }
+  },
+  {
+    alias: '최근 메세지',
+    path: {
+      name: 'chat_list'
+    }
+  }
+])
 const chatService = new ChatService()
 const { pageMeta, isFetching, onRender } = setupListPage()
 const chatRoomList = ref<ChatRoom[]>([])

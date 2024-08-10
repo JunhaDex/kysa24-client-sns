@@ -32,9 +32,9 @@
         취소
       </button>
       <ProcessButton
-        :is-loading="false"
-        :is-disabled="false"
-        class="btn-md btn-primary"
+        :is-loading="isProgress"
+        :is-disabled="isProgress"
+        class="btn btn-md btn-primary"
         @click="sendTicket"
       >
         호감 표현하기
@@ -48,7 +48,7 @@
   >
     <p>{{ target?.nickname }}님에게 호감 표현을 보냈습니다! 좋은 소식이 있을지도?</p>
     <div>오늘 남은 호감 표현 {{ userStore.ticketCount }}개</div>
-    <div>
+    <div class="mt-4 flex justify-end">
       <button class="btn btn-md btn-primary" @click="() => emit('closeTicketPrompt')">확인</button>
     </div>
   </Modal>
@@ -61,10 +61,12 @@ import { storeToRefs } from 'pinia'
 import { useTicketStore } from '@/stores/ui/ticket.store'
 import { ChatService } from '@/services/chat.service'
 import ProcessButton from '@/components/inputs/ProcessButton.vue'
+import { ref } from 'vue'
 
 const chatService = new ChatService()
 const userStore = useUserStore()
 const ticketStore = useTicketStore()
+const isProgress = ref(false)
 const { myInfo } = storeToRefs(userStore)
 const emit = defineEmits(['closeTicketPrompt'])
 const props = defineProps<{
@@ -74,10 +76,14 @@ const props = defineProps<{
 
 async function sendTicket() {
   if (props.target) {
-    await chatService.sendTicket(props.target.ref)
-    const remain = await chatService.countTicketRemain()
-    ticketStore.stage = 'after'
-    userStore.ticketCount = remain
+    if (!isProgress.value) {
+      isProgress.value = true
+      await chatService.sendTicket(props.target.ref)
+      const remain = await chatService.countTicketRemain()
+      ticketStore.stage = 'after'
+      userStore.ticketCount = remain
+      isProgress.value = false
+    }
   }
 }
 </script>
@@ -109,10 +115,5 @@ async function sendTicket() {
 
 .ticket-send-start {
   border-radius: 1rem 1rem 1rem 0;
-}
-
-.btn-md {
-  height: 2.5rem;
-  min-height: 2.5rem;
 }
 </style>

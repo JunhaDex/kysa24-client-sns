@@ -72,7 +72,6 @@ async function initUserInfo() {
   }
   if (authStore.jwt && userStore.myInfo === undefined) {
     userStore.myInfo = await authService.getMy()
-    console.log('myInfo', userStore.myInfo)
   }
 }
 </script>

@@ -10,17 +10,25 @@
       <InitialLoad v-if="onRender" />
       <template v-else>
         <Container stretch class="mb-4">
-          <UserProfile v-if="user" :user="user" :is-me="isMe" @send-ticket="openTicketModal" />
+          <UserProfile
+            v-if="user"
+            :user="user"
+            :is-me="isMe"
+            @send-ticket="openTicketModal"
+            @go-chat="moveUserChatRoom"
+          />
         </Container>
-        <Container>
-          <Box v-if="extra">
+        <Container class="pb-6">
+          <Box class="extra-min">
             <h2 class="font-bold text-sm mb-2">내 정보</h2>
-            <ul>
-              <li>좋아하는 영화</li>
-              <li>가보고 싶은 여행지</li>
-              <li>감명깊게 읽은 책</li>
-              <li>좋아하는 음악</li>
-              <li>...</li>
+            <div v-if="extraEmpty" class="no-extra">
+              <p>등록된 정보가 없습니다.</p>
+            </div>
+            <ul v-else>
+              <li v-for="key in Object.keys(extra!)" :key="key">
+                <span class="text-sm font-bold">{{ USER_EXTRA_LIST[key].alias }}: </span>
+                <span>{{ extra![key] }}</span>
+              </li>
             </ul>
           </Box>
         </Container>
@@ -40,20 +48,24 @@ import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import UserProfile from '@/components/displays/user/UserProfile.vue'
 import Box from '@/components/layouts/Box.vue'
 import { UserService } from '@/services/user.service'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
-import type { UserExtra, User } from '@/types/general.type'
+import type { User } from '@/types/general.type'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import { useUserStore } from '@/stores/user.store'
 import { useTicketStore } from '@/stores/ui/ticket.store'
+import { USER_EXTRA_LIST } from '@/constants/extra.constant'
+import { ChatService } from '@/services/chat.service'
 
 const route = useRoute()
+const router = useRouter()
 const userService = new UserService()
+const chatService = new ChatService()
 const userStore = useUserStore()
 const ticketStore = useTicketStore()
 const uRef = route.params.ref as string
 const user = ref<User>()
-const extra = ref<UserExtra>()
+const extra = ref()
 const onRender = ref(true)
 const isMe = computed(() => userStore.myInfo?.ref === uRef)
 
@@ -74,6 +86,13 @@ const routerStack = ref([
   }
 ])
 
+const extraEmpty = computed(() => {
+  if (extra.value) {
+    return Object.keys(extra.value).length === 0
+  }
+  return true
+})
+
 async function fetchPage() {
   const res = await userService.getUserByRef(uRef)
   user.value = res.user
@@ -90,4 +109,21 @@ onMounted(async () => {
 function openTicketModal() {
   ticketStore.openTicketModal(user.value!)
 }
+
+async function moveUserChatRoom(userRef: string) {
+  const roomRef = await chatService.openChatRoom(userRef)
+  router.push({ name: 'chat_room', params: { ref: roomRef } })
+}
 </script>
+<style>
+.no-extra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.extra-min {
+  min-height: 320px;
+}
+</style>

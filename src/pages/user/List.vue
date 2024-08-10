@@ -1,5 +1,5 @@
 <template>
-  <PageView @scroll="handleScroll($event, fetchPage)" ref="scrollView">
+  <PageView ref="scrollView">
     <template #header>
       <Header />
     </template>
@@ -42,7 +42,6 @@ import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
 import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
 
-const { handleScroll } = setupListPage()
 const scrollView = ref<HTMLDivElement>()
 const userService = new UserService()
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()

@@ -21,13 +21,17 @@
         </ul>
       </div>
       <div v-if="!isMe" class="action-area">
-        <button class="btn btn-sm btn-primary btn-block mb-2" @click="() => emit('sendTicket')">
+        <button class="btn btn-md btn-primary btn-block mb-2" @click="() => emit('sendTicket')">
           관심 보내기
         </button>
-        <button class="btn btn-sm btn-block">메세지</button>
+        <button class="btn btn-md btn-secondary btn-block" @click="() => emit('goChat')">
+          메세지
+        </button>
       </div>
       <div v-else class="action-area">
-        <button class="btn btn-sm btn-primary btn-block mb-2">프로필 수정</button>
+        <button class="btn btn-sm btn-primary btn-block mb-2" @click="gotoProfile">
+          프로필 수정
+        </button>
       </div>
     </div>
   </Profile>
@@ -48,13 +52,15 @@ import type { User } from '@/types/general.type'
 import { computed } from 'vue'
 import { sfx } from '@/utils/index.util'
 import { useUserStore } from '@/stores/user.store'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   user: User
   isMe: boolean
 }>()
-const emit = defineEmits(['sendTicket'])
+const emit = defineEmits(['sendTicket', 'goChat'])
 const userStore = useUserStore()
+const router = useRouter()
 const subfix = computed(() => {
   return sfx(props.user.sex)
 })
@@ -65,6 +71,10 @@ const team = computed(() => {
   }
   return ''
 })
+
+function gotoProfile() {
+  router.push({ name: 'user_update', params: { ref: userStore.myInfo?.ref } })
+}
 </script>
 <style scoped>
 .user-profile-wrap {

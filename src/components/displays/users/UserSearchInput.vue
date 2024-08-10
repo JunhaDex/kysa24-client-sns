@@ -5,7 +5,7 @@
       class="input input-bordered input-md input-height w-full"
       type="text"
       name="userSearch"
-      placeholder="그룹 이름으로 검색하기"
+      placeholder="조 이름 혹은 참가자명으로 검색"
     />
     <IconButton
       class="ml-2 btn-sm btn-primary btn-square"

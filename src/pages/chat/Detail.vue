@@ -7,9 +7,14 @@
       <InitialLoad v-if="!isReady" />
       <section v-else class="container chat-container mx-auto">
         <div class="chat-messages" ref="pageScroll">
-          <ChatBubble v-for="chat in chatList" :user-list="participants" :message="chat" :key="chat.id" />
+          <ChatBubble
+            v-for="chat in chatList"
+            :user-list="participants"
+            :message="chat"
+            :key="chat.id"
+          />
         </div>
-        <ChatMessageInput @send-message="sendMessage" />
+        <ChatMessageInput @send-message="sendMessage" @open-ticket="openTicketSend" />
       </section>
     </template>
   </PageView>
@@ -26,13 +31,14 @@ import { reverse } from 'lodash-es'
 import ChatMessageInput from '@/components/displays/chat/ChatMessageInput.vue'
 import ChatBubble from '@/components/displays/chat/ChatBubble.vue'
 import { useToastStore } from '@/stores/ui/toast.store'
-import axios from 'axios'
 import { useUserStore } from '@/stores/user.store'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
+import { useTicketStore } from '@/stores/ui/ticket.store'
 
 const route = useRoute()
 const chatService = new ChatService()
 const toastStore = useToastStore()
+const ticketStore = useTicketStore()
 const userStore = useUserStore()
 const { pageMeta, isFetching, onRender } = setupListPage()
 const isReady = computed(() => !onRender.value && userStore.myInfo)
@@ -41,7 +47,9 @@ const pageScroll = ref<HTMLDivElement>()
 const chatList = ref<ChatMessage[]>([])
 const chatRoomDetail = ref()
 const participants = ref<User[]>([])
-const userProfiles = computed(() => participants.value.filter((p) => p.ref !== userStore.myInfo?.ref).map((user) => user.profileImg))
+const userProfiles = computed(() =>
+  participants.value.filter((p) => p.ref !== userStore.myInfo?.ref).map((user) => user.profileImg)
+)
 const chatRoomTitle = computed(() => chatRoomDetail.value?.title ?? '')
 let chatSocket: WebSocket
 
@@ -103,12 +111,20 @@ onUpdated(() => {
 })
 
 onBeforeUnmount(() => {
+  chatSocket.onclose = () => {}
   chatSocket.close()
 })
 
 function sendMessage(payload: string) {
   console.log(payload)
   chatSocket.send(JSON.stringify({ message: payload, encoded: false }))
+}
+
+function openTicketSend() {
+  const target = participants.value.filter((p) => p.ref !== userStore.myInfo?.ref)[0]
+  if (target) {
+    ticketStore.openTicketModal(target)
+  }
 }
 </script>
 <style scoped>

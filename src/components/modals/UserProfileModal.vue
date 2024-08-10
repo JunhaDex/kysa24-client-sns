@@ -2,7 +2,11 @@
   <ModalBase :is-show="isShow">
     <div class="up-modal">
       <div class="up-header">
-        <img :src="user.coverImg" alt="Group Cover" />
+        <img v-if="user.coverImg" :src="user.coverImg" alt="Group Cover" />
+        <p v-else class="up-header-default p-4">
+          '주의 영이... 우리마음 가운데 <br />
+          큰 변화를 이루셨음으로'
+        </p>
         <button class="up-close-btn" @click="() => emit('modalClose')">
           <span class="icon-close"></span>
         </button>
@@ -18,7 +22,7 @@
         </div>
       </div>
       <div class="up-profile">
-        <img :src="user.profileImg" alt="User Profile" />
+        <img :src="profileImg" alt="User Profile" />
       </div>
     </div>
     <div class="up-content">
@@ -28,9 +32,9 @@
       </div>
       <div class="up-content-button-group">
         <RouterLink :to="{ name: 'user_profile', params: { ref: user.ref } }">
-          <IconButton class="btn-sm">프로필 보기</IconButton>
+          <IconButton class="btn-md btn-secondary">프로필 보기</IconButton>
         </RouterLink>
-        <IconButton class="btn-sm btn-primary" @click="moveToChat">메세지</IconButton>
+        <IconButton class="btn-md btn-primary" @click="moveToChat">메세지</IconButton>
       </div>
     </div>
   </ModalBase>
@@ -40,12 +44,15 @@ import ModalBase from '@/components/feedbacks/ModalBase.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import type { User } from '@/types/general.type'
 import { ChatService } from '@/services/chat.service'
+import { computed } from 'vue'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const props = defineProps<{
   isShow: boolean
   user: User
 }>()
 const emit = defineEmits(['modalClose', 'moveChat'])
+const profileImg = computed(() => (props.user.profileImg ? props.user.profileImg : ProfileEmpty))
 
 async function moveToChat() {
   emit('moveChat', props.user.ref)
@@ -57,10 +64,19 @@ async function moveToChat() {
 }
 
 .up-header {
-  background-color: theme('colors.gray.600');
+  background-color: theme('colors.gray.300');
   border-radius: 0.5rem 0.5rem 0 0;
   aspect-ratio: 16/9;
   overflow: hidden;
+}
+
+.up-header-default {
+  color: theme('colors.gray.50');
+  display: flex;
+  height: calc(100% - 28px);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .up-close-btn {
@@ -132,7 +148,7 @@ async function moveToChat() {
   height: 86px;
   border-radius: 50%;
   border: 4px solid theme('colors.white');
-  background-color: theme('colors.gray.600');
+  background-color: theme('colors.gray.300');
   overflow: hidden;
   position: absolute;
   bottom: -35px; /* half of profile - half of flow-sign = 35 */

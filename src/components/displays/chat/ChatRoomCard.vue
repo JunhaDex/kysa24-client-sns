@@ -11,7 +11,7 @@
         </div>
       </RouterLink>
       <div class="chat-card-action">
-        <ChatListDropdown class="dropdown-end" user-ref="1">
+        <ChatListDropdown class="dropdown-end">
           <IconButton
             class="btn-sm btn-ghost btn-square"
             role="button"
@@ -22,8 +22,7 @@
       </div>
       <RouterLink :to="{ name: 'chat_room', params: { ref: chatRoom.ref } }">
         <div class="chat-card-contents">
-          <p v-if="chatRoom.lastChat.encoded">메세지가 도착했습니다.</p>
-          <p v-else>{{ chatRoom.lastChat.message }}</p>
+          <p>{{ preview }}</p>
         </div>
       </RouterLink>
     </div>
@@ -37,10 +36,21 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import VMoreIcon from '@/assets/icons/VMore.svg'
 import type { ChatRoom } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
+import { computed } from 'vue'
 
 const props = defineProps<{
   chatRoom: ChatRoom
 }>()
+
+const preview = computed(() => {
+  const enc = props.chatRoom.lastChat.encoded
+    ? '메세지가 도착했습니다.'
+    : props.chatRoom.lastChat.message
+  if (enc.length > 12) {
+    return enc.slice(0, 12) + '...'
+  }
+  return enc
+})
 </script>
 <style scoped>
 .chat-list-item {

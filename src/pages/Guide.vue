@@ -11,9 +11,6 @@
         <button class="btn" @click="showToast">Show Toast</button>
       </Container>
       <Container>
-        <UpdateExtra :extra-info="{}" />
-      </Container>
-      <Container>
         <CreatePostBox class="mb-4" />
       </Container>
       <Container class="mb-8">

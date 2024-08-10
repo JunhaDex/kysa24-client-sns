@@ -1,11 +1,12 @@
 <template>
-  <h2 class="group-label font-sm mb-2">{{ teamName }}</h2>
+  <h2 class="group-label font-sm mb-2 mt-4">{{ teamName }}</h2>
   <div class="member-list shadow">
     <UserListCard
       v-for="user in users"
       :user="user"
       :key="user.ref"
       @select-user="openProfileModal"
+      @go-chat="() => moveUserChatRoom(user.ref)"
     />
   </div>
   <UserProfileModal
@@ -19,7 +20,7 @@
 import UserListCard from '@/components/displays/user/UserListCard.vue'
 import type { User } from '@/types/general.type'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { ChatService } from '@/services/chat.service'
 import { useRouter } from 'vue-router'
 

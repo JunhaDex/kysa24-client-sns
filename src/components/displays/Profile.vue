@@ -1,8 +1,14 @@
 <template>
-  <img :src="coverImg ?? ''" alt="group-cover" class="cover-image" />
+  <div class="cover-image">
+    <img v-if="coverImg" :src="coverImg" alt="group-cover" />
+    <p v-else class="cover-image-default">
+      '주의 영이... 우리마음 가운데 <br />
+      큰 변화를 이루셨음으로'
+    </p>
+  </div>
   <div class="profile-container">
     <div class="profile">
-      <img :src="profileImg ?? ''" alt="Profile" class="profile-pic">
+      <img :src="profileImgDef" alt="Profile" class="profile-pic" />
       <div class="group-details">
         <slot />
       </div>
@@ -10,16 +16,30 @@
   </div>
 </template>
 <script setup lang="ts">
+import { computed } from 'vue'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
+
 const props = defineProps<{
   coverImg?: string
   profileImg?: string
 }>()
+
+const profileImgDef = computed(() => (props.profileImg ? props.profileImg : ProfileEmpty))
 </script>
 <style scoped>
 .cover-image {
   width: 100%;
   aspect-ratio: 16/9;
-  object-fit: cover;
+  background-color: theme('colors.gray.300');
+}
+
+.cover-image-default {
+  color: theme('colors.gray.50');
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .profile-container {

@@ -26,8 +26,8 @@
       </div>
       <ProcessButton
         class="btn btn-sm btn-primary btn-block mt-4"
-        :is-loading="false"
-        :is-disabled="false"
+        :is-loading="isProgress"
+        :is-disabled="!hasInput"
         @click="saveInfo"
       >
         저장하기
@@ -40,7 +40,7 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import PlusIcon from '@/assets/icons/Plus.svg'
 import ProcessButton from '@/components/inputs/ProcessButton.vue'
 import { USER_EXTRA_LIST } from '@/constants/extra.constant'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { UserService } from '@/services/user.service'
 import type { User } from '@/types/general.type'
 import { useToastStore } from '@/stores/ui/toast.store'
@@ -55,6 +55,10 @@ const props = defineProps<{
 }>()
 const infoList = ref<any[]>(parseInfo())
 const isProgress = ref(false)
+
+const hasInput = computed(
+  () => infoList.value.some((info) => info.key && info.value) && !isProgress.value
+)
 
 onMounted(() => {
   if (infoList.value.length === 0) {
@@ -98,6 +102,7 @@ async function saveInfo() {
       console.log(inst)
       await userService.updateUserExtra(props.user.ref, inst)
       emit('updateDone')
+      toastStore.showToast('내 정보 수정 완료!', 'success')
     } catch (e) {
       console.error(e)
       toastStore.showToast('변경 실패', 'error')

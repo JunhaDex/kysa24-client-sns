@@ -99,10 +99,16 @@ img {
     border-color: transparent;
 }
 
+/* TODO: btn-custom -> btn-md */
 .btn-custom {
     height: 2.25rem;
     width: 2.25rem;
     min-height: 2.25rem;
+}
+
+.btn-md {
+    height: 2.5rem;
+    min-height: 2.5rem;
 }
 
 .input-group {

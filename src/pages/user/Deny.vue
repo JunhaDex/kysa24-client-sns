@@ -5,7 +5,7 @@
     </template>
     <template #main>
       <Container>
-        <Breadcrumb />
+        <!--        <Breadcrumb />-->
       </Container>
       <Container> foo</Container>
     </template>

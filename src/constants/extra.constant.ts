@@ -5,7 +5,7 @@ export interface ExtraItem {
 }
 
 export type UserExtraListUI = { [key: string]: ExtraItem }
-export const USER_EXTRA_LIST = {
+export const USER_EXTRA_LIST: UserExtraListUI = {
   movie: {
     key: 'movie',
     alias: '좋이하는 영화',

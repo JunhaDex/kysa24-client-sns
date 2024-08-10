@@ -53,10 +53,12 @@ export class ChatService extends ApiService {
     }
   }
 
-  async getChatRoomDetail(ref: string): Promise<User[]> {
+  async getChatRoomDetail(ref: string): Promise<{
+    chatRoom: ChatRoom,
+    users: User[]
+  }> {
     const res = await this.auth().client.get(`/room/${ref}/detail`)
-    const upk = this.unpackRes(res) as any
-    return upk.result
+    return this.unpackRes(res) as any
   }
 
   async countUnreadChats(): Promise<number> {

@@ -7,7 +7,7 @@
         class="nav-profile-img profile-xl mr-2"
         @click="closeSidebar"
       >
-        <img :src="userStore.myInfo?.profileImg" alt="profile image" />
+        <img :src="profileImg" alt="profile image" />
       </RouterLink>
       <div class="flex-1">
         <h4 class="text-lg font-bold">{{ userStore.myInfo!.nickname }}</h4>
@@ -20,7 +20,7 @@
     <!--if not logged in-->
     <div v-else class="nav-profile mx-4 py-4">
       <RouterLink class="btn btn-sm btn-primary btn-block" to="/login" @click="closeSidebar"
-        >로그인
+      >로그인
       </RouterLink>
     </div>
     <ul class="menu text-xl">
@@ -66,11 +66,7 @@
     <div class="nav-group-recent flex-1">
       <div class="group-item">
         <div class="group-profile-img profile-sm mr-2"></div>
-        <span class="flex-1">대회 공지사항</span>
-      </div>
-      <div class="group-item">
-        <div class="group-profile-img profile-sm mr-2"></div>
-        <span class="flex-1">대전 선교부 14'-16'</span>
+        <span class="flex-1">🚧내 팔로우 그룹 준비중...</span>
       </div>
     </div>
     <div class="nav-bottom">
@@ -121,6 +117,7 @@ import { useUserStore } from '@/stores/user.store'
 import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/ui/toast.store'
 import { ChatService } from '@/services/chat.service'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
@@ -134,6 +131,7 @@ onMounted(async () => {
   userStore.ticketCount = await chatService.countTicketRemain()
   userStore.unreadCount = await chatService.countUnreadChats()
 })
+const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
 
 function closeSidebar() {
   sidebar.isOpen = false

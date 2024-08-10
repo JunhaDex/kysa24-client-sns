@@ -28,6 +28,16 @@
       <Footer />
     </template>
   </PageView>
+  <Modal :is-show="isWelcomeModal" title="환영합니다!" @modal-close="() => (isWelcomeModal = false)">
+    <p>
+      환영합니다! 원활한 앱 이용을 위해서 나를 알릴 수 있는 프로필을 등록해보세요.<br />
+      <span class="text-xs text-accent text-bold">사이드메뉴 > 개인설정에서 변경할 수 있습니다.</span>
+    </p>
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-ghost btn-sm" @click="snoozeWelcome">다시 보지않기</button>
+      <button class="btn btn-sm btn-primary" @click="gotoProfile">프로필 업데이트</button>
+    </div>
+  </Modal>
 </template>
 <script setup lang="ts">
 import Container from '@/components/layouts/Container.vue'
@@ -35,7 +45,7 @@ import PageView from '@/components/layouts/PageView.vue'
 import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import Modal from '@/components/modals/Modal.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { setupListPage } from '@/stores/setups/list.composition'
 import { GroupService } from '@/services/group.service'
@@ -46,16 +56,25 @@ import type { Group } from '@/types/general.type'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
-import { sleep } from '@/utils/index.util'
+import { useUserStore } from '@/stores/user.store'
+import { useRouter } from 'vue-router'
 
-const showWelcomeModal = ref(false)
+const isWelcomeModal = ref(false)
 const authStore = useAuthStore()
+const userStore = useUserStore()
 const groupService = new GroupService()
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } =
   setupListPage()
 const groupList = ref<Group[]>([])
 const groupCards = ref<(typeof GroupCard)[]>([])
 const toastStore = useToastStore()
+const router = useRouter()
+
+watch(() => userStore.myInfo?.profileImg, async () => {
+  if (authStore.jwt && authStore.isGuide && !userStore.myInfo?.profileImg) {
+    isWelcomeModal.value = true
+  }
+}, { immediate: true })
 
 function copyFcm() {
   const fcm = authStore.fcm
@@ -102,6 +121,16 @@ async function unfollowGroup(group: Group, index: number) {
     console.error(e)
     toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
   }
+}
+
+function snoozeWelcome() {
+  isWelcomeModal.value = false
+  authStore.isGuide = false
+}
+
+function gotoProfile() {
+  isWelcomeModal.value = false
+  router.push({ name: 'user_update', params: { ref: userStore.myInfo?.ref } })
 }
 
 onMounted(async () => {

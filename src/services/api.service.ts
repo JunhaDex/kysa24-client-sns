@@ -18,8 +18,6 @@ export abstract class ApiService {
     }, (err) => {
       if (err.response.status === 401) {
         this.authStore.setJwt('')
-        window.alert('로그인이 필요한 서비스 입니다.')
-        window.location.href = '/login'
       }
       return Promise.reject(err)
     })
@@ -31,8 +29,8 @@ export abstract class ApiService {
       this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`
       return this
     }
-    window.alert('로그인이 필요한 서비스 입니다.')
-    window.location.href = '/login'
+    // window.alert('로그인이 필요한 서비스 입니다.')
+    // window.location.href = '/login'
     throw new Error('token not found')
   }
 

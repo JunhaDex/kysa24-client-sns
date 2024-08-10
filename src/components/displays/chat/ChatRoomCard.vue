@@ -22,7 +22,8 @@
       </div>
       <RouterLink :to="{ name: 'chat_room', params: { ref: chatRoom.ref } }">
         <div class="chat-card-contents">
-          <p>{{ chatRoom.lastChat.message }}</p>
+          <p v-if="chatRoom.lastChat.encoded">메세지가 도착했습니다.</p>
+          <p v-else>{{ chatRoom.lastChat.message }}</p>
         </div>
       </RouterLink>
     </div>

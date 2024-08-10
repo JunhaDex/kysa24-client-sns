@@ -36,6 +36,7 @@ main {
 }
 
 .bg-beige {
-  background-color: theme('colors.beige');
+  //background-color: theme('colors.beige');
+  background-color: theme('colors.white');
 }
 </style>

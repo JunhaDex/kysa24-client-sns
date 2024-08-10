@@ -6,8 +6,8 @@
           <IconButton class="btn-ghost btn-square" :prefix-icon="BackIcon" @click="goBack" />
         </li>
         <li class="chat-title">
-          <span class="chat-title-load"></span>
-          <span class="text-lg font-bold">김민지</span>
+          <span v-if="!title" class="chat-title-load"></span>
+          <span v-else class="text-lg font-bold">{{ title }}</span>
         </li>
       </ul>
     </template>
@@ -19,12 +19,10 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import BackIcon from '@/assets/icons/Back.svg'
 import { useRouter } from 'vue-router'
 
-// TODO: fix api and pass these information
-// const props = defineProps<{
-//   title: string
-//   images: string[]
-//   isLoading: boolean
-// }>()
+const props = defineProps<{
+  title: string
+  images: string[]
+}>()
 const router = useRouter()
 
 function goBack() {

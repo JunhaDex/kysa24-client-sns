@@ -6,7 +6,9 @@
     <template #main>
       <InitialLoad v-if="!isReady" />
       <section v-else class="container chat-container mx-auto">
-        <div class="chat-messages" ref="pageScroll">
+        <div class="chat-messages px-4 pb-6" ref="pageScroll">
+          <PageLoader v-if="setPgnator" class="mb-6" :has-more="hasMore" @load-more="fetchPage(nextPage)"
+                      eol="대화의 시작 입니다." />
           <ChatBubble
             v-for="chat in chatList"
             :user-list="participants"
@@ -23,7 +25,7 @@
 import PageView from '@/components/layouts/PageView.vue'
 import ChatHeader from '@/components/layouts/headers/ChatHeader.vue'
 import { useRoute } from 'vue-router'
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
 import { ChatService } from '@/services/chat.service'
 import { setupListPage } from '@/stores/setups/list.composition'
 import type { ChatMessage, User } from '@/types/general.type'
@@ -34,15 +36,17 @@ import { useToastStore } from '@/stores/ui/toast.store'
 import { useUserStore } from '@/stores/user.store'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import { useTicketStore } from '@/stores/ui/ticket.store'
+import PageLoader from '@/components/layouts/PageLoader.vue'
 
 const route = useRoute()
 const chatService = new ChatService()
 const toastStore = useToastStore()
 const ticketStore = useTicketStore()
 const userStore = useUserStore()
-const { pageMeta, isFetching, onRender } = setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, nextPage } = setupListPage()
 const isReady = computed(() => !onRender.value && userStore.myInfo)
 const pageScroll = ref<HTMLDivElement>()
+const setPgnator = ref(false)
 
 const chatList = ref<ChatMessage[]>([])
 const chatRoomDetail = ref()
@@ -59,16 +63,14 @@ async function fetchPage(pageNo = 1) {
     const roomRef = route.params.ref as string
     const res = await chatService.getChatsByRoom(roomRef, { page: { page: pageNo } })
     pageMeta.value = res.meta
-    chatList.value.push(...reverse(res.list))
+    chatList.value.unshift(...reverse(res.list))
     isFetching.value = false
   }
 }
 
 async function scrollToBottom() {
   const roomRef = route.params.ref as string
-  if (pageScroll.value) {
-    pageScroll.value.scrollTop = pageScroll.value.scrollHeight
-  }
+  pageScroll.value!.scrollTop = pageScroll.value!.scrollHeight
   await chatService.markAsRead(roomRef)
 }
 
@@ -101,17 +103,15 @@ onMounted(async () => {
   }
   onRender.value = false
   console.log(chatRoomTitle.value)
-  scrollToBottom()
-})
-
-onUpdated(() => {
-  nextTick(() => {
+  await nextTick(() => {
     scrollToBottom()
+    setPgnator.value = true
   })
 })
 
 onBeforeUnmount(() => {
-  chatSocket.onclose = () => {}
+  chatSocket.onclose = () => {
+  }
   chatSocket.close()
 })
 
@@ -138,6 +138,5 @@ function openTicketSend() {
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 2rem 1rem;
 }
 </style>

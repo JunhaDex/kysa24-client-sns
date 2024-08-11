@@ -13,23 +13,23 @@ const props = defineProps<{
   suffixIcon?: string
 }>()
 const prefixIconStyle = computed(() => ({
-  maskImage: props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
-  WebkitMaskImage: props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
-  backgroundColor: 'currentColor'
+  '--icon-url': props.prefixIcon ? `url(${props.prefixIcon})` : 'none'
 }))
 
 const suffixIconStyle = computed(() => ({
-  maskImage: props.suffixIcon ? `url(${props.suffixIcon})` : 'none',
-  WebkitMaskImage: props.suffixIcon ? `url(${props.suffixIcon})` : 'none',
-  backgroundColor: 'currentColor'
+  '--icon-url': props.suffixIcon ? `url(${props.suffixIcon})` : 'none'
 }))
 </script>
 <style scoped>
+
 .icon {
   width: 1.6em;
   height: 1.6em;
+  mask-image: var(--icon-url);
+  -webkit-mask-image: var(--icon-url);
   mask-size: contain;
   mask-repeat: no-repeat;
   mask-position: center;
+  background-color: currentColor;
 }
 </style>

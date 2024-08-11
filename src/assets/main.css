@@ -5,6 +5,7 @@
 :root {
     --footer-height: 75px;
     --header-height: 66px;
+    --icon-url: none;
 }
 
 @font-face {

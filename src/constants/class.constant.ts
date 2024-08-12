@@ -86,4 +86,5 @@ export class ChatRoomClass implements ChatRoom {
   isBlock: boolean = false
   lastRead: number = 0
   lastChat: ChatMessage = {} as any
+  party: User[] = []
 }

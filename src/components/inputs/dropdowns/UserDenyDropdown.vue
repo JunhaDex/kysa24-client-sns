@@ -17,8 +17,8 @@ import { ref } from 'vue'
 const emit = defineEmits(['undoDeny'])
 const drp = ref<typeof Dropdown>()
 
-function handleClick(emitOpt: any, arg: any) {
-  emit(emitOpt, arg)
+function handleClick(emitOpt: any) {
+  emit(emitOpt)
   drp.value!.close()
 }
 </script>

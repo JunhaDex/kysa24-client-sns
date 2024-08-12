@@ -8,6 +8,9 @@
         <Breadcrumb :router-stack="routerStack" />
       </Container>
       <InitialLoad v-if="onRender" />
+      <SearchEmpty v-else-if="chatRoomList.length === 0">
+        <span>표시할 내용이 없습니다.</span>
+      </SearchEmpty>
       <Container class="pb-6" v-else>
         <ChatRoomCard
           class="mb-2"
@@ -16,6 +19,7 @@
           :key="i"
           ref="chatRoomCards"
         />
+        <PageLoader :has-more="hasMore" @load-more="fetchPage(nextPage)" />
       </Container>
     </template>
     <template #footer>
@@ -35,6 +39,8 @@ import { setupListPage } from '@/stores/setups/list.composition'
 import type { ChatRoom } from '@/types/general.type'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
+import PageLoader from '@/components/layouts/PageLoader.vue'
+import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
 
 const routerStack = ref([
   {
@@ -51,16 +57,15 @@ const routerStack = ref([
   }
 ])
 const chatService = new ChatService()
-const { pageMeta, isFetching, onRender } = setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, nextPage } = setupListPage()
 const chatRoomList = ref<ChatRoom[]>([])
 const chatRoomCards = ref<(typeof ChatRoomCard)[]>([])
-// TODO: Blocked List should be with User List
-// const listType = ref<'recent' | 'blocked'>('recent')
 
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
     const res = await chatService.listRecentChatRooms({ page: { page: pageNo } })
+    console.log(res)
     pageMeta.value = res.meta
     chatRoomList.value.push(...res.list)
     isFetching.value = false

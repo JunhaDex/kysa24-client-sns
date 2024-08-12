@@ -46,6 +46,12 @@ export class GroupService extends ApiService {
     }
   }
 
+  async getMyGroups(): Promise<Group[]> {
+    const res = await this.auth().client.get('/mylist')
+    const groups = this.unpackRes(res) as Group[]
+    return groups.map((group) => this.cleanGroup(group))
+  }
+
   async getGroupByRef(ref: string): Promise<Group> {
     const res = await this.authOpt().client.get(`/${ref}`)
     const group = this.unpackRes(res) as Group

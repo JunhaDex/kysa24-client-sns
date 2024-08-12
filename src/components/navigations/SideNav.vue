@@ -64,17 +64,20 @@
     </ul>
     <hr />
     <div class="nav-group-recent flex-1">
-      <div class="group-item">
-        <div class="group-profile-img profile-sm mr-2"></div>
-        <span class="flex-1">🚧내 팔로우 그룹 준비중...</span>
+      <div v-for="group in myGroups" class="group-item" :key="group.id">
+        <div class="group-profile-img profile-sm mr-2">
+          <img v-if="group.profileImg" :src="group.profileImg" alt="Group Profile" />
+        </div>
+        <span class="flex-1">{{ group.groupName }}</span>
       </div>
     </div>
     <div class="nav-bottom">
       <div class="nav-support mb-2">
-        <a href="#" class="support-item">
+        <RouterLink :to="{name: 'group_feed', params: {ref: '12f5a04f-9ea5-4e04-b226-0476955750ef'}}" href="#"
+                    class="support-item" @click="closeSidebar">
           <img class="profile-sm mr-2" src="@/assets/icons/Support.svg" alt="Support Icon" />
           <span class="flex-1">대회 지원센터</span>
-        </a>
+        </RouterLink>
         <span v-if="isAuth" class="support-item" @click="logOut">
           <img class="profile-sm mr-2" src="@/assets/icons/Logout.svg" alt="Logout Icon" />
           <span class="flex-1">로그아웃</span>
@@ -111,7 +114,7 @@
 </template>
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/ui/sidebar.store'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Backdrop from '@/components/feedbacks/Backdrop.vue'
 import { useUserStore } from '@/stores/user.store'
 import { useAuthStore } from '@/stores/auth.store'
@@ -119,18 +122,24 @@ import { useToastStore } from '@/stores/ui/toast.store'
 import { ChatService } from '@/services/chat.service'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
 import { sleep } from '@/utils/index.util'
+import type { Group } from '@/types/general.type'
+import { GroupService } from '@/services/group.service'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
 const chatService = new ChatService()
+const groupService = new GroupService()
 const userStore = useUserStore()
 const authStore = useAuthStore()
 const toastStore = useToastStore()
+const myGroups = ref<Group[]>([])
 
 const isAuth = computed(() => userStore.myInfo !== undefined)
 onMounted(async () => {
   userStore.ticketCount = await chatService.countTicketRemain()
   userStore.unreadCount = await chatService.countUnreadChats()
+  myGroups.value = await groupService.getMyGroups()
+  console.log(myGroups.value)
 })
 const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
 

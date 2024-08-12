@@ -34,7 +34,7 @@
         <RouterLink :to="{ name: 'user_profile', params: { ref: user.ref } }">
           <IconButton class="btn-md btn-secondary">프로필 보기</IconButton>
         </RouterLink>
-        <IconButton class="btn-md btn-primary" @click="moveToChat">메세지</IconButton>
+        <IconButton class="btn-md btn-primary" @click="moveToChat" :disabled="noChat">메세지</IconButton>
       </div>
     </div>
   </ModalBase>
@@ -49,6 +49,7 @@ import ProfileEmpty from '@/assets/images/profile_empty.png'
 const props = defineProps<{
   isShow: boolean
   user: Profile
+  noChat?: boolean
 }>()
 const emit = defineEmits(['modalClose', 'moveChat'])
 const profileImg = computed(() => (props.user.profileImg ? props.user.profileImg : ProfileEmpty))

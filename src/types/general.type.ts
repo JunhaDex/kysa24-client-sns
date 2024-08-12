@@ -48,7 +48,8 @@ export interface User extends Profile {
   actStatus: number
 }
 
-export interface UserExtra {}
+export interface UserExtra {
+}
 
 export interface Team {
   id: number
@@ -118,4 +119,5 @@ export interface ChatRoom {
   isBlock: boolean
   lastRead: number
   lastChat: ChatMessage
+  party: User[]
 }

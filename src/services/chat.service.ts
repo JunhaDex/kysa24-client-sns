@@ -37,19 +37,41 @@ export class ChatService extends ApiService {
 
   async listRecentChatRooms(options?: {
     page: PageRequest
-    isBlock?: 'true'
   }): Promise<PageResponse<ChatRoom>> {
     const res = await this.auth().client.get('/recent', {
       params: {
         page: options?.page?.page,
-        size: options?.page?.size,
-        'is-block': options?.isBlock
+        size: options?.page?.size
       }
     })
     const { meta, list } = this.unpackRes(res) as PageResponse<ChatRoom>
     return {
       meta,
-      list: list.map((room) => this.cleanChatRoom(room))
+      list: list.filter((room) => !!room.lastChat).map((room) => this.cleanChatRoom(room))
+    }
+  }
+
+  async getDeniedUsers(options?: {
+    page: PageRequest
+  }): Promise<PageResponse<ChatRoom>> {
+    const res = await this.auth().client.get('/recent', {
+      params: {
+        page: options?.page?.page,
+        size: options?.page?.size,
+        'is-block': 'true'
+      }
+    })
+    const { meta, list } = this.unpackRes(res) as PageResponse<ChatRoom>
+    const roomOnly = list.map((room) => {
+      const cp: any = { ...room }
+      if (cp.lastChat) {
+        delete cp.lastChat
+      }
+      return cleanObject(cp, ChatRoomClass)
+    })
+    return {
+      meta,
+      list: roomOnly
     }
   }
 

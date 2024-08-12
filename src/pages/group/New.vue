@@ -1,5 +1,5 @@
 <template>
-  <PageView beige>
+  <PageView>
     <template #header>
       <Header />
     </template>
@@ -156,7 +156,8 @@ const validateSubmit = computed(() => {
 })
 const isProgress = ref(false)
 
-onMounted(async () => {})
+onMounted(async () => {
+})
 
 function openCoverInput() {
   coverInput.value!.click()

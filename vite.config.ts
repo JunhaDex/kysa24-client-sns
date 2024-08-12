@@ -28,6 +28,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  build: {
+    cssCodeSplit: false,
+    assetsInlineLimit: 0
+  },
   server: {
     port: 8080
   }

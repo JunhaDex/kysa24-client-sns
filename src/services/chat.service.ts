@@ -94,8 +94,9 @@ export class ChatService extends ApiService {
     return upk.count
   }
 
-  async sendTicket(recipient: string): Promise<void> {
-    await this.auth().client.post(`/ticket/${recipient}`)
+  async sendTicket(recipient: string, originId?: number): Promise<void> {
+    const params = originId ? { originId } : {}
+    await this.auth().client.post(`/ticket/${recipient}`, {}, { params })
   }
 
   async denyUserChat(user: string, params: { status: boolean }): Promise<void> {

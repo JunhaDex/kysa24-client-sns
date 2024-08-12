@@ -1,7 +1,7 @@
 <template>
   <div class="text-center" ref="pageLoader">
     <span v-if="hasMore" class="loading loading-spinner text-primary loading-md"></span>
-    <span v-else class="text-sm">마지막 이에요!</span>
+    <span v-else class="text-sm">{{ eol ?? '마지막 이에요!' }}</span>
   </div>
 </template>
 <script setup lang="ts">
@@ -10,6 +10,7 @@ import { onUnmounted, ref } from 'vue'
 
 const props = defineProps<{
   hasMore: boolean
+  eol?: string
 }>()
 const emit = defineEmits(['loadMore'])
 defineExpose({ stopInterval })

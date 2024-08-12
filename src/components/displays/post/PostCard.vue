@@ -3,7 +3,7 @@
     <div class="post">
       <div class="post-profile">
         <div class="profile-pic">
-          <img :src="post.author.profileImg" alt="author profile" />
+          <img :src="profileImg" alt="author profile" />
         </div>
       </div>
       <div class="post-header">
@@ -16,7 +16,12 @@
         </span>
       </div>
       <div class="post-action">
-        <PostHandleDropdown class="dropdown-end" :post-reply-id="post.id" is-author>
+        <PostHandleDropdown
+          class="dropdown-end" :post-reply-id="post.id"
+          :is-author="post.author.ref === userStore.myInfo?.ref"
+          @open-profile="() => emit('openProfile', post.author)"
+          @delete-instance="() => emit('deletePost', post)"
+        >
           <IconButton
             class="btn-sm btn-ghost btn-square"
             :prefix-icon="VMoreIcon"
@@ -57,19 +62,23 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import type { Post } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
 import PostHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
 import VMoreIcon from '@/assets/icons/VMore.svg'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
+import { useUserStore } from '@/stores/user.store'
 import '@/assets/card.css'
 
 const props = defineProps<{
   post: Post
   groupRef: string
 }>()
-const emits = defineEmits(['likePost'])
+const emit = defineEmits(['likePost', 'openProfile', 'deletePost'])
+const userStore = useUserStore()
 const likeState = ref(!!props.post.already)
 const isImageFail = ref(false)
+const profileImg = computed(() => props.post.author.profileImg ? props.post.author.profileImg : ProfileEmpty)
 
 onMounted(() => {
   isImageFail.value = !props.post.image
@@ -79,7 +88,7 @@ const throttleLike = throttle(
   () => {
     likeState.value = !likeState.value
     console.log('likeState', likeState.value)
-    emits('likePost', { post: props.post, isLike: likeState.value })
+    emit('likePost', { post: props.post, isLike: likeState.value })
   },
   1000,
   { trailing: false }

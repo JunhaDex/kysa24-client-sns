@@ -42,14 +42,13 @@
 <script setup lang="ts">
 import ModalBase from '@/components/feedbacks/ModalBase.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
-import type { User } from '@/types/general.type'
-import { ChatService } from '@/services/chat.service'
+import type { Profile } from '@/types/general.type'
 import { computed } from 'vue'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const props = defineProps<{
   isShow: boolean
-  user: User
+  user: Profile
 }>()
 const emit = defineEmits(['modalClose', 'moveChat'])
 const profileImg = computed(() => (props.user.profileImg ? props.user.profileImg : ProfileEmpty))

@@ -2,7 +2,7 @@
   <Box>
     <div class="reply-input">
       <div class="input-top">
-        <img src="@/assets/images/profile-image.png" alt="User Profile" class="profile-img" />
+        <img :src="profileImg" alt="User Profile" class="profile-img" />
         <textarea
           v-model="userInput"
           placeholder="댓글을 입력해 주세요"
@@ -24,7 +24,7 @@
     <ul v-else>
       <li v-for="reply in replyList" class="reply-item" :key="reply.id">
         <div class="profile-lg profile-rnd" @click="() => openAuthorProfile(reply.author)">
-          <img :src="reply.author.profileImg" alt="Profile" />
+          <img :src="replyProfile(reply.author.profileImg)" alt="Profile" />
         </div>
         <div class="reply-content">
           <div class="reply-header">
@@ -43,7 +43,6 @@
           <IconButton class="btn-ghost btn-square btn-sm" :prefix-icon="VMoreIcon" />
         </PostHandleDropdown>
       </li>
-      <!-- TODO: More reply items can be added here -->
     </ul>
   </Box>
 </template>
@@ -59,6 +58,7 @@ import VMoreIcon from '@/assets/icons/VMore.svg'
 import { throttle } from 'lodash-es'
 import PostHandleDropdown from '@/components/inputs/dropdowns/PostHandleDropdown.vue'
 import { useUserStore } from '@/stores/user.store'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const props = defineProps<{
   replyList: Reply[]
@@ -71,6 +71,7 @@ const { getTeamNameById } = setupTeamInfo()
 const inputCounter = computed<number>(() => {
   return new Blob([userInput.value]).size
 })
+const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
 const maxInputLength = MAX_POST_INPUT_SIZE
 
 onMounted(async () => {
@@ -87,6 +88,10 @@ onMounted(async () => {
 
 function resetInput() {
   userInput.value = ''
+}
+
+function replyProfile(img: string) {
+  return img ? img : ProfileEmpty
 }
 
 const throttleSubmit = throttle(() => {

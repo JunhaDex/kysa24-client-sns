@@ -2,7 +2,7 @@
   <Box>
     <div class="create-post">
       <div class="profile-pic profile-xl">
-        <img :src="userStore.myInfo?.profileImg" alt="profile image" />
+        <img :src="profileImg" alt="profile image" />
       </div>
       <form class="post-form" onsubmit="return false;">
         <div class="post-content">
@@ -37,12 +37,13 @@
 </template>
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'
 import IconButton from '@/components/inputs/IconButton.vue'
 import ImageIcon from '@/assets/icons/Image.svg'
 import { throttle } from 'lodash-es'
 import { useUserStore } from '@/stores/user.store'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const emit = defineEmits(['submitPost'])
 const postInput = ref<HTMLTextAreaElement>()
@@ -58,6 +59,7 @@ const userInput = ref<{
 })
 
 const userStore = useUserStore()
+const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
 
 onMounted(async () => {
   if (postInput.value) {

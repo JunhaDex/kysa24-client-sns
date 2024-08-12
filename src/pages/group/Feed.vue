@@ -10,7 +10,7 @@
       <InitialLoad v-if="onRender" />
       <template v-else>
         <Container stretch class="mb-4">
-          <GroupProfile :group="groupItem!" />
+          <GroupProfile :group="groupItem!" @follow-group="followGroup" @unfollow-group="unfollowGroup" />
         </Container>
         <Container class="pb-6">
           <CreatePostBox class="mb-4" @submit-post="submitCreatePost" />
@@ -22,6 +22,7 @@
             ref="postCards"
             :key="p.id"
             @like-post="(pl) => likePost(p, pl)"
+            @open-profile="openProfileModal"
           />
           <PageLoader :has-more="hasMore" @load-more="() => fetchPage(nextPage)" />
         </Container>
@@ -31,6 +32,12 @@
       <Footer />
     </template>
   </PageView>
+  <UserProfileModal
+    v-if="profileTarget"
+    :user="profileTarget"
+    :is-show="isProfile"
+    @modal-close="() => (isProfile = false)"
+  />
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -46,13 +53,13 @@ import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import GroupProfile from '@/components/displays/group/GroupProfile.vue'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
-import type { Group, Post } from '@/types/general.type'
+import type { Group, Post, Profile, User } from '@/types/general.type'
 import { genRandStr } from '@/utils/index.util'
 import { FileService } from '@/services/file.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
-import router from '@/router'
+import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const groupService = new GroupService()
@@ -61,6 +68,8 @@ const fileService = new FileService()
 const toastStore = useToastStore()
 const route = useRoute()
 const groupItem = ref<Group>()
+const profileTarget = ref<Profile>()
+const isProfile = ref(false)
 const postList = ref<Post[]>([])
 const postCards = ref<(typeof PostCard)[]>([])
 const routerStack = ref([
@@ -111,15 +120,42 @@ async function resetPostList() {
 onMounted(async () => {
   await fetchGroup()
   await fetchPage()
-  routerStack.value[1].alias = groupItem.value!.groupName
-  routerStack.value[1].path.profile = groupItem.value!.profileImg
   onRender.value = false
+  routerStack.value[1].alias = groupItem.value!.groupName
+  routerStack.value[1].path.profile = groupItem.value!.profileImg ?? ''
 })
 
 async function likePost(post: Post, payload: any) {
   const isUndo = !payload.isLike ? 'true' : undefined
   await postService.likePost(payload.post.id, { undo: isUndo })
   post.likes += payload.isLike ? 1 : -1
+}
+
+async function followGroup() {
+  try {
+    await groupService.followGroup(groupItem.value!.ref)
+    toastStore.showToast('팔로우 성공!', 'success')
+    await fetchGroup()
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+  }
+}
+
+async function unfollowGroup() {
+  try {
+    await groupService.followGroup(groupItem.value!.ref, { undo: 'true' })
+    toastStore.showToast('팔로우를 해제했습니다.', 'info')
+    await fetchGroup()
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+  }
+}
+
+async function openProfileModal(user: Profile) {
+  profileTarget.value = user
+  isProfile.value = true
 }
 
 async function submitCreatePost(payload: { postText: string; postImageFile?: any }) {

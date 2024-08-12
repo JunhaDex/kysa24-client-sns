@@ -118,6 +118,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/ui/toast.store'
 import { ChatService } from '@/services/chat.service'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
+import { sleep } from '@/utils/index.util'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
@@ -142,6 +143,8 @@ function logOut() {
   userStore.myInfo = undefined
   closeSidebar()
   toastStore.showToast('로그아웃 되었습니다.', 'info')
+  sleep(1000)
+  window.location.href = '/'
 }
 </script>
 <style scoped>

@@ -41,7 +41,7 @@
       :prefix-icon="Close"
       icon-color="error"
     />
-    <Toast v-else :toast-msg="toastStore.message" icon-color="info" />
+    <Toast v-else :toast-msg="toastStore.message" :prefix-icon="Info" icon-color="info" />
   </div>
 </template>
 <script setup lang="ts">
@@ -52,11 +52,11 @@ import { useToastStore } from '@/stores/ui/toast.store'
 import Toast from '@/components/feedbacks/Toast.vue'
 import Check from '@/assets/icons/Check.svg'
 import Close from '@/assets/icons/Close.svg'
+import Info from '@/assets/icons/InfoCircle.svg'
 import IconButton from '@/components/inputs/IconButton.vue'
 import NotiIcon from '@/assets/icons/Notification.svg'
 import MenuIcon from '@/assets/icons/Menu.svg'
 import ArrowRightIcon from '@/assets/icons/ArrowRight.svg'
-import { ChatService } from '@/services/chat.service'
 
 const H_HI = 66 - 4 // 4px is the border width
 const isScrollingUp = ref(true)
@@ -120,9 +120,8 @@ function openSideNav() {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition:
-    top 0.3s ease-in-out 0s,
-    top 0.2s ease-in-out 0s;
+  transition: top 0.3s ease-in-out 0s,
+  top 0.2s ease-in-out 0s;
   z-index: 9;
 }
 

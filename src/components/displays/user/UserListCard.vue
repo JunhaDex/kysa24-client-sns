@@ -16,6 +16,7 @@
       :target-ref="user.ref"
       @select-user-profile="clickUser"
       @select-message="() => emit('goChat')"
+      @deny-user-chat="() => emit('denyUserChat')"
     >
       <IconButton
         class="btn-sm btn-ghost btn-square"
@@ -38,7 +39,7 @@ import ProfileEmpty from '@/assets/images/profile_empty.png'
 const props = defineProps<{
   user: User
 }>()
-const emit = defineEmits(['selectUser', 'goChat'])
+const emit = defineEmits(['selectUser', 'goChat', 'denyUserChat'])
 const profileImg = computed(() => (props.user.profileImg ? props.user.profileImg : ProfileEmpty))
 const subfix = computed(() => {
   return sfx(props.user.sex)

@@ -91,12 +91,16 @@ export interface Reply {
 
 export interface UserNoti {
   id: number
+  target: number
   type: {
     category: string
     sub: string
   }
   payload: any
+  message: string
+  title: string
   readAt: string | null
+  createdAt: string
 }
 
 export interface ChatMessage {

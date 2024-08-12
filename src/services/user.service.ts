@@ -100,6 +100,10 @@ export class UserService extends ApiService {
     return { meta, list: list.map(this.cleanUserNoti) }
   }
 
+  async markNotificationAsRead(params: { ids: number[] }): Promise<void> {
+    await this.auth().client.post('/my/noti', params)
+  }
+
   async deleteNotification(params: { ids: number[] }): Promise<void> {
     await this.auth().client.delete('my/noti/delete-batch', {
       data: params

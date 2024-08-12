@@ -28,9 +28,13 @@ export class UserClass implements User {
 
 export class UserNotiClass implements UserNoti {
   id: number = 0
+  target: number = 0
   payload: any = ''
   readAt: string | null = null
+  title: string = ''
+  message: string = ''
   type: { category: string; sub: string } = { category: '', sub: '' }
+  createdAt: string = ''
 }
 
 export class GroupClass implements Group {

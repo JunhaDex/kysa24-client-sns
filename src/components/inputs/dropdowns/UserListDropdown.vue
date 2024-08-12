@@ -14,7 +14,17 @@
         <span>자매만 보기</span>
       </li>
       <li>
-        <span class="text-error">수신거부 목록</span>
+        <RouterLink
+          :to="{ name: 'user_deny' }"
+          class="text-error"
+          @click="
+            () => {
+              drp!.close()
+            }
+          "
+        >
+          수신거부 목록
+        </RouterLink>
       </li>
     </template>
   </Dropdown>

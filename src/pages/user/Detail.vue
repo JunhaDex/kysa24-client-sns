@@ -56,12 +56,14 @@ import { useUserStore } from '@/stores/user.store'
 import { useTicketStore } from '@/stores/ui/ticket.store'
 import { USER_EXTRA_LIST } from '@/constants/extra.constant'
 import { ChatService } from '@/services/chat.service'
+import { useToastStore } from '@/stores/ui/toast.store'
 
 const route = useRoute()
 const router = useRouter()
 const userService = new UserService()
 const chatService = new ChatService()
 const userStore = useUserStore()
+const toastStore = useToastStore()
 const ticketStore = useTicketStore()
 const uRef = route.params.ref as string
 const user = ref<User>()
@@ -111,8 +113,12 @@ function openTicketModal() {
 }
 
 async function moveUserChatRoom(userRef: string) {
-  const roomRef = await chatService.openChatRoom(userRef)
-  router.push({ name: 'chat_room', params: { ref: roomRef } })
+  try {
+    const roomRef = await chatService.openChatRoom(userRef)
+    router.push({ name: 'chat_room', params: { ref: roomRef } })
+  } catch (e) {
+    toastStore.showToast('채팅방으로 이동할 수 없습니다.', 'error')
+  }
 }
 </script>
 <style>

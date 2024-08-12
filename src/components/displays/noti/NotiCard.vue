@@ -1,24 +1,33 @@
 <template>
   <div class="container mx-auto noti-box">
     <div class="noti-input pt-1">
-      <input type="checkbox" class="checkbox" />
+      <input
+        v-model="checkValue"
+        type="checkbox"
+        class="checkbox"
+        @change="() => emit('checkItem', checkValue)"
+      />
     </div>
-    <div class="noti-content">그룹에 새로운 알림이 있습니다.</div>
+    <div class="noti-content">{{ noti.message }}</div>
     <div class="noti-mark">
-      <span class="blue-dot"></span>
+      <span v-if="!noti.readAt" class="blue-dot"></span>
     </div>
     <div class="noti-timestamp">
-      <span class="text-xs font-bold">7월 22일 오후 8:13</span>
+      <span class="text-xs font-bold">{{ tts(noti.createdAt) }}</span>
     </div>
   </div>
   <hr class="my-4" />
 </template>
 <script setup lang="ts">
 import type { UserNoti } from '@/types/general.type'
+import { tts } from '@/utils/index.util'
+import { ref } from 'vue'
 
+const emit = defineEmits(['checkItem'])
 const props = defineProps<{
   noti: UserNoti
 }>()
+const checkValue = ref(false)
 </script>
 <style scoped>
 .noti-box {

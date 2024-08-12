@@ -2,7 +2,9 @@
   <Box>
     <div class="chat-list-item">
       <div class="chat-card-profile">
-        <div class="profile-pic"></div>
+        <div class="profile-pic" @click="() => emit('openProfile')">
+          <img :src="profileImg" alt="User Profile" />
+        </div>
       </div>
       <RouterLink :to="{ name: 'chat_room', params: { ref: chatRoom.ref } }">
         <div class="chat-card-header text-lg">
@@ -11,7 +13,8 @@
         </div>
       </RouterLink>
       <div class="chat-card-action">
-        <ChatListDropdown class="dropdown-end">
+        <ChatListDropdown class="dropdown-end" @open-profile="() => emit('openProfile')"
+                          @deny-user-chat="() => emit('denyUserChat')">
           <IconButton
             class="btn-sm btn-ghost btn-square"
             role="button"
@@ -37,10 +40,13 @@ import VMoreIcon from '@/assets/icons/VMore.svg'
 import type { ChatRoom } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
 import { computed } from 'vue'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
+const emit = defineEmits(['openProfile', 'denyUserChat'])
 const props = defineProps<{
   chatRoom: ChatRoom
 }>()
+const profileImg = computed(() => props.chatRoom.party[0].profileImg ? props.chatRoom.party[0].profileImg : ProfileEmpty)
 
 const preview = computed(() => {
   const enc = props.chatRoom.lastChat.encoded

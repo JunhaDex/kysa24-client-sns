@@ -18,6 +18,8 @@
           :chat-room="room"
           :key="i"
           ref="chatRoomCards"
+          @open-profile="() => selectRoom(room)"
+          @deny-user-chat="() => registerDenyUserChat(room.party[0])"
         />
         <PageLoader :has-more="hasMore" @load-more="fetchPage(nextPage)" />
       </Container>
@@ -26,6 +28,13 @@
       <Footer />
     </template>
   </PageView>
+  <UserProfileModal
+    v-if="roomSelected"
+    :user="roomSelected.party[0]"
+    :is-show="isProfileModal"
+    @modal-close="() => (isProfileModal = false)"
+    @move-chat="moveUserChatRoom"
+  />
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
@@ -36,11 +45,14 @@ import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import ChatRoomCard from '@/components/displays/chat/ChatRoomCard.vue'
 import { setupListPage } from '@/stores/setups/list.composition'
-import type { ChatRoom } from '@/types/general.type'
+import type { ChatRoom, User } from '@/types/general.type'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
 import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
+import UserProfileModal from '@/components/modals/UserProfileModal.vue'
+import { useToastStore } from '@/stores/ui/toast.store'
+import { useRouter } from 'vue-router'
 
 const routerStack = ref([
   {
@@ -57,9 +69,13 @@ const routerStack = ref([
   }
 ])
 const chatService = new ChatService()
+const toastStore = useToastStore()
+const router = useRouter()
 const { pageMeta, isFetching, onRender, hasMore, nextPage } = setupListPage()
 const chatRoomList = ref<ChatRoom[]>([])
 const chatRoomCards = ref<(typeof ChatRoomCard)[]>([])
+const isProfileModal = ref(false)
+const roomSelected = ref<ChatRoom>()
 
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
@@ -74,7 +90,25 @@ async function fetchPage(pageNo = 1) {
 
 onMounted(async () => {
   await fetchPage()
+  if (chatRoomList.value.length > 0) {
+    roomSelected.value = chatRoomList.value[0]
+  }
   onRender.value = false
 })
+
+function moveUserChatRoom() {
+  router.push({ name: 'chat_room', params: { ref: roomSelected.value!.ref } })
+}
+
+async function selectRoom(room: ChatRoom) {
+  roomSelected.value = room
+  isProfileModal.value = true
+}
+
+async function registerDenyUserChat(user: User) {
+  await chatService.denyUserChat(user.ref, { status: true })
+  chatRoomList.value = chatRoomList.value.filter((room) => room.party[0].ref !== user.ref)
+  toastStore.showToast('수신차단이 완료되었습니다.', 'success')
+}
 </script>
 <style scoped></style>

@@ -18,7 +18,14 @@
           </li>
         </ul>
       </div>
-      <div class="action-area">
+      <div v-if="isCreator" class="action-area">
+        <GroupCtrlDropdown class="dropdown-end" @delete-group="() => emit('deleteGroup')">
+          <IconButton class="btn-md btn-white btn-block whitespace-nowrap" :prefix-icon="GearIcon">
+            설정
+          </IconButton>
+        </GroupCtrlDropdown>
+      </div>
+      <div v-else class="action-area">
         <IconButton v-if="!followState" class="btn-primary btn-sm btn-block" @click="followGroup">
           팔로우
         </IconButton>
@@ -52,15 +59,18 @@ import { computed } from 'vue'
 import UserBadge from '@/components/layouts/UserBadge.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import CaretDown from '@/assets/icons/CaretDown.svg'
+import GearIcon from '@/assets/icons/Gear.svg'
 import UnfollowDropdown from '@/components/inputs/dropdowns/UnfollowDropdown.vue'
 import { throttle } from 'lodash-es'
 import { useUserStore } from '@/stores/user.store'
+import GroupCtrlDropdown from '@/components/inputs/dropdowns/GroupCtrlDropdown.vue'
 
-const emit = defineEmits(['followGroup', 'unfollowGroup'])
+const emit = defineEmits(['followGroup', 'unfollowGroup', 'deleteGroup'])
 const props = defineProps<{
   group: Group
 }>()
 const userStore = useUserStore()
+const isCreator = computed(() => props.group.creator.ref === userStore.myInfo?.ref)
 const followState = computed(() => !!props.group.already)
 const unfollowBlocked = computed(() => {
   return props.group.id === 1 || props.group.creator.ref === userStore.myInfo?.ref

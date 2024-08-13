@@ -49,6 +49,11 @@ const router = createRouter({
           path: 'new',
           name: 'group_new',
           component: () => import('@/pages/group/New.vue')
+        },
+        {
+          path: ':ref/edit',
+          name: 'group_update',
+          component: () => import('@/pages/group/Update.vue')
         }
       ]
     },

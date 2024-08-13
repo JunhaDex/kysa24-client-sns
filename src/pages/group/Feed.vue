@@ -10,7 +10,12 @@
       <InitialLoad v-if="onRender" />
       <template v-else>
         <Container stretch class="mb-4">
-          <GroupProfile :group="groupItem!" @follow-group="followGroup" @unfollow-group="unfollowGroup" />
+          <GroupProfile
+            :group="groupItem!"
+            @follow-group="followGroup"
+            @unfollow-group="unfollowGroup"
+            @delete-group="deleteGroup"
+          />
         </Container>
         <Container class="pb-6">
           <CreatePostBox class="mb-4" @submit-post="submitCreatePost" />
@@ -156,6 +161,10 @@ async function unfollowGroup() {
 async function openProfileModal(user: Profile) {
   profileTarget.value = user
   isProfile.value = true
+}
+
+async function deleteGroup() {
+  // TODO: apply api
 }
 
 async function submitCreatePost(payload: { postText: string; postImageFile?: any }) {

@@ -42,6 +42,7 @@
       icon-color="error"
     />
     <Toast v-else :toast-msg="toastStore.message" :prefix-icon="Info" icon-color="info" />
+    <!--TODO: create up toast-->
   </div>
 </template>
 <script setup lang="ts">
@@ -120,8 +121,9 @@ function openSideNav() {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: top 0.3s ease-in-out 0s,
-  top 0.2s ease-in-out 0s;
+  transition:
+    top 0.3s ease-in-out 0s,
+    top 0.2s ease-in-out 0s;
   z-index: 9;
 }
 

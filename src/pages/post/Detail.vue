@@ -16,6 +16,7 @@
             ref="postCard"
             @like-post="likePost"
             @open-profile="openProfileModal"
+            @delete-post="openDeletePostModal"
           />
         </Container>
         <Container class="pb-6">
@@ -39,6 +40,15 @@
     :is-show="isProfile"
     @modal-close="() => (isProfile = false)"
   />
+  <Modal :is-show="isRemovePost" title="게시물 삭제" @modal-close="() => (isRemovePost = false)">
+    <p>게시물을 삭제하시겠습니까? 한번 삭제하면 복구할 수 없습니다.</p>
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-secondary btn-sm mr-2" @click="() => (isRemovePost = false)">
+        취소
+      </button>
+      <button class="btn btn-error btn-sm" @click="deletePost">삭제</button>
+    </div>
+  </Modal>
   <Modal :is-show="isRemoveReply" title="댓글 삭제됨" @modal-close="reloadPage">
     <p>댓글이 삭제되었습니다.</p>
     <div class="flex justify-end mt-6">
@@ -50,7 +60,7 @@
 import PageView from '@/components/layouts/PageView.vue'
 import Container from '@/components/layouts/Container.vue'
 import { PostService } from '@/services/post.service'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
@@ -68,6 +78,7 @@ import { GroupService } from '@/services/group.service'
 
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const route = useRoute()
+const router = useRouter()
 const postService = new PostService()
 const groupService = new GroupService()
 const toastStore = useToastStore()
@@ -77,6 +88,7 @@ const replyList = ref<Reply[]>([])
 const groupRef = route.params.ref as string
 const isProfile = ref(false)
 const isRemoveReply = ref(false)
+const isRemovePost = ref(false)
 const profileTarget = ref<Profile>()
 const routerStack = ref([
   {
@@ -175,7 +187,23 @@ async function removeReply(reply: Reply) {
     isRemoveReply.value = true
   } catch (e) {
     console.error(e)
-    toastStore.showToast('오류! 잠시 뒤 다시 시도하시기 바랍니다.', 'error')
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+  }
+}
+
+async function openDeletePostModal() {
+  isRemovePost.value = true
+}
+
+async function deletePost() {
+  try {
+    const res = await postService.deletePost(postItem.value!.id)
+    console.log(res)
+    toastStore.showToast('게시물이 삭제되었습니다.', 'success')
+    router.replace({ name: 'group_feed', params: { ref: groupRef } })
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
   }
 }
 

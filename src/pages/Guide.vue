@@ -42,7 +42,7 @@
     </template>
   </PageView>
   <!--<UserProfileModal :is-show="true" />-->
-  <SendTicketModal step="before" />
+  <!--<SendTicketModal step="before" />-->
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'

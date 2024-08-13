@@ -6,13 +6,33 @@
       </div>
       <form class="post-form" onsubmit="return false;">
         <div class="post-content">
-          <textarea
-            v-model="userInput.postText"
-            class="textarea text-input"
-            name="post-text"
-            placeholder="무슨 생각을 하고 있나요?"
-            ref="postInput"
-          ></textarea>
+          <div class="form-control">
+            <textarea
+              v-model="userInput.postText"
+              class="textarea text-input"
+              name="post-text"
+              placeholder="무슨 생각을 하고 있나요?"
+              ref="postInput"
+            ></textarea>
+            <div class="label">
+              <transition name="slide-down">
+                <label v-if="inputCounter > 0" class="label-text-alt"
+                  >{{ inputCounter }}/{{ MAX_POST_INPUT_SIZE }} B</label
+                >
+              </transition>
+            </div>
+          </div>
+          <div v-if="userInput.postImage" class="media-preview-wrap">
+            <div class="text-xs text-gray-600 font-bold ml-2 mb-2">미리보기</div>
+            <div class="media-preview">
+              <button class="btn-preview-close" @click="resetMediaInput">
+                <span class="icon-close">
+                  <span class="icon-close"></span>
+                </span>
+              </button>
+              <img :src="userInput.postImage" alt="media preview" />
+            </div>
+          </div>
           <!--TODO: Image Preview-->
           <div class="post-actions mt-2">
             <input
@@ -24,9 +44,10 @@
               @change="changeMediaInput"
             />
             <IconButton
-              class="btn-square btn-sm mr-4"
+              class="btn-secondary btn-square btn-sm mr-4"
               @click="clickMediaInput"
               :prefix-icon="ImageIcon"
+              :disabled="userInput.postImage"
             />
             <IconButton class="btn-primary btn-sm" @click="clickSubmit">포스트 올리기</IconButton>
           </div>
@@ -58,8 +79,14 @@ const userInput = ref<{
   postText: ''
 })
 
+const inputCounter = computed<number>(() => {
+  return new Blob([userInput.value.postText]).size
+})
+
 const userStore = useUserStore()
-const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
+const profileImg = computed(() =>
+  userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty
+)
 
 onMounted(async () => {
   if (postInput.value) {
@@ -80,6 +107,7 @@ function clickMediaInput() {
 }
 
 function changeMediaInput(e: any) {
+  console.log('change!')
   const file = e.target.files[0]
   if (file) {
     const reader = new FileReader()
@@ -103,6 +131,13 @@ function resetInput() {
     postImageFile: null,
     postText: ''
   }
+  mediaInput.value!.value = ''
+}
+
+function resetMediaInput() {
+  userInput.value.postImage = null
+  userInput.value.postImageFile = null
+  mediaInput.value!.value = ''
 }
 
 function clickSubmit() {
@@ -126,6 +161,7 @@ function clickSubmit() {
   border-radius: 50%;
   background-color: #ddd;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .post-form {
@@ -150,5 +186,70 @@ function clickSubmit() {
   display: flex;
   justify-content: end;
   align-items: center;
+}
+
+.media-preview {
+  position: relative;
+  width: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.media-preview img {
+  aspect-ratio: 1/1;
+}
+
+.btn-preview-close {
+  width: 24px;
+  height: 24px;
+  background-color: theme('colors.white');
+  color: theme('colors.black');
+  padding: 0.1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.icon-close {
+  width: 18px;
+  height: 18px;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-image: url('@/assets/icons/Close.svg');
+  -webkit-mask-image: url('@/assets/icons/Close.svg');
+  background-color: currentColor;
+}
+
+.btn-preview-close:hover {
+  background-color: theme('colors.gray.50');
+}
+
+.btn-preview-close:active {
+  transform: scale(0.95); /* Shrink effect when clicked */
+}
+
+.slide-down-enter-active {
+  transition: transform 0.5s ease-out;
+}
+
+.slide-down-enter-from {
+  transform: translateY(-100%);
+}
+
+.slide-down-enter-to,
+.slide-down-leave-from {
+  transform: translateY(0);
+}
+
+.label,
+.media-preview-wrap {
+  overflow: hidden;
 }
 </style>

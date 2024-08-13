@@ -28,6 +28,7 @@
             :key="p.id"
             @like-post="(pl) => likePost(p, pl)"
             @open-profile="openProfileModal"
+            @delete-post="openDeletePostModal"
           />
           <PageLoader :has-more="hasMore" @load-more="() => fetchPage(nextPage)" />
         </Container>
@@ -43,28 +44,44 @@
     :is-show="isProfile"
     @modal-close="() => (isProfile = false)"
   />
+  <Modal :is-show="isRemovePost" title="게시물 삭제" @modal-close="() => (isRemovePost = false)">
+    <p>게시물을 삭제하시겠습니까? 한번 삭제하면 복구할 수 없습니다.</p>
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-secondary btn-sm mr-2" @click="() => (isRemovePost = false)">
+        취소
+      </button>
+      <button class="btn btn-error btn-sm" @click="deletePost">삭제</button>
+    </div>
+  </Modal>
+  <Modal :is-show="isRemoveGroup" title="그룹 삭제불가" @modal-close="() => isRemoveGroup">
+    <p>그룹에 게시물이 있는 경우 삭제할 수 없습니다. 관리자에게 문의하시기 바랍니다.</p>
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-primary btn-sm" @click="() => (isRemoveGroup = false)">확인</button>
+    </div>
+  </Modal>
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
 import Container from '@/components/layouts/Container.vue'
 import { setupListPage } from '@/stores/setups/list.composition'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { GroupService } from '@/services/group.service'
 import { PostService } from '@/services/post.service'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Header from '@/components/layouts/Header.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import Breadcrumb from '@/components/navigations/Breadcrumb.vue'
 import GroupProfile from '@/components/displays/group/GroupProfile.vue'
 import CreatePostBox from '@/components/displays/group/CreatePostBox.vue'
 import PostCard from '@/components/displays/post/PostCard.vue'
-import type { Group, Post, Profile, User } from '@/types/general.type'
+import type { Group, Post, Profile } from '@/types/general.type'
 import { genRandStr } from '@/utils/index.util'
 import { FileService } from '@/services/file.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
+import Modal from '@/components/modals/Modal.vue'
 
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const groupService = new GroupService()
@@ -72,11 +89,16 @@ const postService = new PostService()
 const fileService = new FileService()
 const toastStore = useToastStore()
 const route = useRoute()
+const router = useRouter()
 const groupItem = ref<Group>()
 const profileTarget = ref<Profile>()
 const isProfile = ref(false)
 const postList = ref<Post[]>([])
 const postCards = ref<(typeof PostCard)[]>([])
+const postDeleteItem = ref<Post>()
+const isRemovePost = ref(false)
+const isRemoveGroup = ref(false)
+const isGroupEmpty = computed(() => postList.value.length === 0)
 const routerStack = ref([
   {
     alias: '홈',
@@ -164,13 +186,42 @@ async function openProfileModal(user: Profile) {
 }
 
 async function deleteGroup() {
-  // TODO: apply api
+  if (isGroupEmpty.value) {
+    try {
+      const res = await groupService.deleteGroup(groupItem.value!.ref)
+      console.log(res)
+      toastStore.showToast('그룹이 삭제되었습니다.', 'success')
+      router.replace({ name: 'home' })
+    } catch (e) {
+      console.error(e)
+      toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+    }
+  } else {
+    isRemoveGroup.value = true
+  }
+}
+
+async function openDeletePostModal(post: Post) {
+  postDeleteItem.value = post
+  isRemovePost.value = true
+}
+
+async function deletePost() {
+  try {
+    const res = await postService.deletePost(postDeleteItem.value!.id)
+    console.log(res)
+    window.location.reload()
+  } catch (e) {
+    console.error(e)
+    toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
+  }
 }
 
 async function submitCreatePost(payload: { postText: string; postImageFile?: any }) {
   if (payload.postText) {
     let urls: any = {}
     try {
+      toastStore.showToast('게시물을 업로드 중입니다.', 'up')
       // upload image
       if (payload.postImageFile) {
         const pfd = new FormData()
@@ -186,6 +237,7 @@ async function submitCreatePost(payload: { postText: string; postImageFile?: any
       }
       const res = await postService.createPost(newPost)
       console.log(res)
+      toastStore.showToast('게시물이 업로드되었습니다.', 'success')
       await resetPostList()
     } catch (e) {
       console.error(e)

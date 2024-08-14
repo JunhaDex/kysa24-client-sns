@@ -1,34 +1,33 @@
 <template>
-  <footer
-    class="app-footer bg-white rounded-t text-center text-xs">
+  <footer class="app-footer bg-white rounded-t text-center text-xs">
     <ul class="app-footer-link-group mb-2 my-auto">
       <li>
-        <a href="#" class="app-footer-link">
-          <img src="@/assets/icons/brands/insta-icon.svg" alt="Instagram" class="brand-icon mr-1" />
-          <span>Instagram</span>
+        <a href="https://www.instagram.com/2024_kysa/" target="_blank" class="app-footer-link">
+          <span class="icon brand-icon instagram-mask mr-1"></span>
+          <span class="font-bold">Instagram</span>
         </a>
       </li>
       <li>
-        <a href="#" class="app-footer-link">
-          <img src="@/assets/icons/brands/notion-icon.svg" alt="Notion" class="brand-icon mr-1" />
-          <span>Notion</span>
+        <a href="https://docs.kysa.page/" target="_blank" class="app-footer-link">
+          <span class="icon brand-icon notion-mask mr-1"></span>
+          <span class="font-bold">Notion</span>
         </a>
       </li>
       <li>
-        <a href="#" class="app-footer-link">
-          <img src="@/assets/icons/brands/github-icon.svg" alt="Github" class="brand-icon mr-1" />
-          <span>Github</span>
+        <a
+          href="https://github.com/JunhaDex/kysa24-client-sns"
+          target="_blank"
+          class="app-footer-link"
+        >
+          <span class="icon brand-icon github-mask mr-1"></span>
+          <span class="font-bold">Github</span>
         </a>
       </li>
     </ul>
-    <div>
-      © 2024 KYSA All Rights Reserved. <span class="italic">designed with</span> ❤️
-    </div>
+    <div>© 2024 KYSA All Rights Reserved. <i class="font-cursive">designed with</i> ❤️</div>
   </footer>
 </template>
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <style>
 .app-footer {
   position: relative;
@@ -50,6 +49,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  color: theme('colors.gray.600');
 }
 
 .brand-icon {
@@ -57,5 +57,21 @@
   width: 18px;
   height: 18px;
   vertical-align: middle;
+  background-color: theme('colors.gray.600');
+}
+
+.instagram-mask {
+  mask-image: url(@/assets/icons/brands/insta-icon.svg);
+  -webkit-mask-image: url(@/assets/icons/brands/insta-icon.svg);
+}
+
+.notion-mask {
+  mask-image: url(@/assets/icons/brands/notion-icon.svg);
+  -webkit-mask-image: url(@/assets/icons/brands/notion-icon.svg);
+}
+
+.github-mask {
+  mask-image: url(@/assets/icons/brands/github-icon.svg);
+  -webkit-mask-image: url(@/assets/icons/brands/github-icon.svg);
 }
 </style>

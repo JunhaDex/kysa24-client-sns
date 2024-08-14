@@ -23,12 +23,14 @@ import { AuthService } from '@/services/auth.service'
 import { storeToRefs } from 'pinia'
 import SendTicketModal from '@/components/modals/SendTicketModal.vue'
 import { useTicketStore } from '@/stores/ui/ticket.store'
+import { useToastStore } from '@/stores/ui/toast.store'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const ticketStore = useTicketStore()
 const authService = new AuthService()
 const userService = new UserService()
+const toastStore = useToastStore()
 const firebase = new FirebaseProvider()
 const favicon = document.querySelector('favicon-badge') as any
 const { jwt } = storeToRefs(authStore)
@@ -40,7 +42,10 @@ onMounted(async () => {
     const fcm = await firebase.getUserToken()
     console.log('fcm', fcm)
     authStore.setFcm(fcm!)
-    firebase.setupMessageListener()
+    firebase.setupMessageListener(() => {
+      console.log('message received')
+      toastStore.showToast('새로운 메시지가 도착했습니다.', 'msg')
+    })
   } catch (e) {
     console.error(e)
   }

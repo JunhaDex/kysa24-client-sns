@@ -20,7 +20,7 @@
     <!--if not logged in-->
     <div v-else class="nav-profile mx-4 py-4">
       <RouterLink class="btn btn-sm btn-primary btn-block" to="/login" @click="closeSidebar"
-      >로그인
+        >로그인
       </RouterLink>
     </div>
     <ul class="menu text-xl">
@@ -64,17 +64,27 @@
     </ul>
     <hr />
     <div class="nav-group-recent flex-1">
-      <div v-for="group in myGroups" class="group-item" :key="group.id">
+      <RouterLink
+        v-for="group in myGroups"
+        :to="{ name: 'group_feed', params: { ref: group.ref } }"
+        class="group-item block"
+        :key="group.id"
+        @click="closeSidebar"
+      >
         <div class="group-profile-img profile-sm mr-2">
           <img v-if="group.profileImg" :src="group.profileImg" alt="Group Profile" />
         </div>
         <span class="flex-1">{{ group.groupName }}</span>
-      </div>
+      </RouterLink>
     </div>
     <div class="nav-bottom">
       <div class="nav-support mb-2">
-        <RouterLink :to="{name: 'group_feed', params: {ref: '12f5a04f-9ea5-4e04-b226-0476955750ef'}}" href="#"
-                    class="support-item" @click="closeSidebar">
+        <RouterLink
+          :to="{ name: 'group_feed', params: { ref: '12f5a04f-9ea5-4e04-b226-0476955750ef' } }"
+          href="#"
+          class="support-item"
+          @click="closeSidebar"
+        >
           <img class="profile-sm mr-2" src="@/assets/icons/Support.svg" alt="Support Icon" />
           <span class="flex-1">대회 지원센터</span>
         </RouterLink>
@@ -91,22 +101,22 @@
       <div class="nav-footer">
         <ul class="social-links mb-2">
           <li>
-            <a href="#" target="_blank">
-              <img class="profile-sm" src="@/assets/icons/brands/insta-icon.svg" alt="Instagram" />
+            <a href="https://www.instagram.com/2024_kysa/" target="_blank">
+              <span class="icon brand-icon instagram-mask mr-1"></span>
             </a>
           </li>
           <li>
-            <a href="#" target="_blank">
-              <img class="profile-sm" src="@/assets/icons/brands/notion-icon.svg" alt="Notion" />
+            <a href="https://docs.kysa.page/" target="_blank">
+              <span class="icon brand-icon notion-mask mr-1"></span>
             </a>
           </li>
           <li>
-            <a href="#" target="_blank">
-              <img class="profile-sm" src="@/assets/icons/brands/github-icon.svg" alt="Github" />
+            <a href="https://github.com/JunhaDex/kysa24-client-sns" target="_blank">
+              <span class="icon brand-icon github-mask mr-1"></span>
             </a>
           </li>
         </ul>
-        <p class="copyright text-xs">© 2024 KYSA designed with ❤️</p>
+        <p class="copyright text-xs">© 2024 KYSA <i class="font-cursive">designed with</i> ❤️</p>
       </div>
     </div>
   </nav>
@@ -141,7 +151,9 @@ onMounted(async () => {
   myGroups.value = await groupService.getMyGroups()
   console.log(myGroups.value)
 })
-const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
+const profileImg = computed(() =>
+  userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty
+)
 
 function closeSidebar() {
   sidebar.isOpen = false
@@ -264,5 +276,28 @@ function logOut() {
 .copyright {
   text-align: center;
   color: theme('colors.gray.600');
+}
+
+.brand-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  background-color: theme('colors.gray.600');
+}
+
+.instagram-mask {
+  mask-image: url(@/assets/icons/brands/insta-icon.svg);
+  -webkit-mask-image: url(@/assets/icons/brands/insta-icon.svg);
+}
+
+.notion-mask {
+  mask-image: url(@/assets/icons/brands/notion-icon.svg);
+  -webkit-mask-image: url(@/assets/icons/brands/notion-icon.svg);
+}
+
+.github-mask {
+  mask-image: url(@/assets/icons/brands/github-icon.svg);
+  -webkit-mask-image: url(@/assets/icons/brands/github-icon.svg);
 }
 </style>

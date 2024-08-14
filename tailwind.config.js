@@ -7,7 +7,8 @@ export default {
     extend: {},
     fontFamily: {
       sans: ['suite', ...defaultTheme.fontFamily.sans],
-      gsans: ['gsans']
+      gsans: ['gsans'],
+      cursive: ['Dancing Script']
     },
     colors: {
       transparent: 'transparent',

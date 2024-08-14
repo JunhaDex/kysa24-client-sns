@@ -12,11 +12,13 @@
         <span class="send-icon"></span>
       </button>
     </form>
-    <IconButton
-      class="btn-white btn-square btn-size text-error"
-      :prefix-icon="LikeFillIcon"
-      @click="clickTicket"
-    />
+    <div class="tooltip tooltip-top tooltip-secondary tooltip-open" data-tip="관심보내기">
+      <IconButton
+        class="btn-white btn-square btn-size text-error"
+        :prefix-icon="LikeFillIcon"
+        @click="clickTicket"
+      />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -36,6 +38,12 @@ onMounted(() => {
       msgInput.value!.style.height = `${msgInput.value!.scrollHeight}px`
     })
   }
+  setTimeout(() => {
+    const tooltip = document.querySelector('.tooltip')
+    if (tooltip) {
+      tooltip.classList.remove('tooltip-open')
+    }
+  }, 3000)
 })
 
 function clickSendMessage() {
@@ -109,5 +117,9 @@ function clickTicket() {
   height: 2.6rem;
   min-height: 2.6rem;
   border: 1px solid theme('colors.gray.300');
+}
+
+.tooltip:before {
+  left: 10%;
 }
 </style>

@@ -7,8 +7,13 @@
       <InitialLoad v-if="!isReady" />
       <section v-else class="container chat-container mx-auto">
         <div class="chat-messages px-4 pb-6" ref="pageScroll">
-          <PageLoader v-if="setPgnator" class="mb-6" :has-more="hasMore" @load-more="fetchPage(nextPage)"
-                      eol="대화의 시작 입니다." />
+          <PageLoader
+            v-if="setPgnator"
+            class="mb-6"
+            :has-more="hasMore"
+            @load-more="fetchPage(nextPage)"
+            eol="대화의 시작 입니다."
+          />
           <ChatBubble
             v-for="chat in chatList"
             :user-list="participants"
@@ -109,9 +114,10 @@ onMounted(async () => {
   })
 })
 
-onBeforeUnmount(() => {
-  chatSocket.onclose = () => {
-  }
+onBeforeUnmount(async () => {
+  const roomRef = route.params.ref as string
+  await chatService.markAsRead(roomRef)
+  chatSocket.onclose = () => {}
   chatSocket.close()
 })
 

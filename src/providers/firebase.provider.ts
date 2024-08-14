@@ -31,9 +31,10 @@ export class FirebaseProvider {
     }
   }
 
-  setupMessageListener(): void {
+  setupMessageListener(uiResolver: any): void {
     onMessage(this.messaging, (payload) => {
       console.log('Message received foreground: ', payload)
+      uiResolver()
     })
   }
 }

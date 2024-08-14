@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-type ToastLevel = 'success' | 'error' | 'info' | 'up'
+type ToastLevel = 'success' | 'error' | 'info' | 'up' | 'msg'
 export const useToastStore = defineStore('toast', () => {
   const isShow = ref(false)
   const message = ref('')

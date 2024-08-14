@@ -23,14 +23,17 @@ import { AuthService } from '@/services/auth.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import Close from '@/assets/icons/Close.svg'
 import Toast from '@/components/feedbacks/Toast.vue'
+import { useAuthStore } from '@/stores/auth.store'
 
 const loginBox = ref()
 const authSvc = new AuthService()
+const authStore = useAuthStore()
 const toastStore = useToastStore()
 
 async function processLogin(payload: { id: string; pwd: string }) {
+  const fcm = authStore.fcm?.length ? authStore.fcm : undefined
   try {
-    await authSvc.login(payload) // TODO: add fcm
+    await authSvc.login({ ...payload, fcm })
     window.location.href = '/'
   } catch (error) {
     console.error(error)

@@ -12,7 +12,12 @@ export class AuthService extends ApiService {
     return cleanObject<User>(user, UserClass)
   }
 
-  async login(params: { id: string; pwd: string; fcm?: string }): Promise<void> {
+  async login(params: {
+    id: string; pwd: string; fcm?: {
+      token: string;
+      device: string;
+    }
+  }): Promise<void> {
     const res = await this.client.post('/login', { ...params })
     const auth = this.unpackRes(res) as UserAuth
     this.authStore.setJwt(auth.accessToken)

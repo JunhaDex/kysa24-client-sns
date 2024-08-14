@@ -31,7 +31,10 @@ const authStore = useAuthStore()
 const toastStore = useToastStore()
 
 async function processLogin(payload: { id: string; pwd: string }) {
-  const fcm = authStore.fcm?.length ? authStore.fcm : undefined
+  const fcm = authStore.fcm?.length ? {
+    token: authStore.fcm,
+    device: navigator.userAgent
+  } : undefined
   try {
     await authSvc.login({ ...payload, fcm })
     window.location.href = '/'

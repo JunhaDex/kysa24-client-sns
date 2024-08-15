@@ -9,13 +9,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-const props = withDefaults(defineProps<{
-  prefixIcon?: string
-  iconColor?: 'success' | 'error' | 'info'
-  toastMsg: string
-}>(), {
-  iconColor: 'info'
-})
+const props = withDefaults(
+  defineProps<{
+    prefixIcon?: string
+    iconColor?: 'success' | 'error' | 'info' | 'accent'
+    toastMsg: string
+  }>(),
+  {
+    iconColor: 'info'
+  }
+)
 const prefixIconStyle = computed(() => ({
   maskImage: props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
   WebkitMaskImage: props.prefixIcon ? `url(${props.prefixIcon})` : 'none',
@@ -65,5 +68,13 @@ const prefixIconStyle = computed(() => ({
 
 .icon-info {
   background-color: theme('colors.info');
+}
+
+.icon-accent {
+  background-color: theme('colors.accent');
+}
+
+.icon-msg {
+  transform: scaleY(-1);
 }
 </style>

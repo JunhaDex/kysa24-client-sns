@@ -33,7 +33,6 @@
       <div class="post-content">
         <p>{{ post.message }}</p>
         <div v-if="!isImageFail" class="post-media">
-          <!--TODO: debug on @error hook-->
           <img :src="post.image" alt="media" @error="disableImage" />
         </div>
       </div>

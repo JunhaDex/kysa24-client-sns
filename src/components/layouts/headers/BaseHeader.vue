@@ -41,9 +41,19 @@
       :prefix-icon="Close"
       icon-color="error"
     />
+    <Toast
+      v-else-if="toastStore.msgLevel === 'up'"
+      :toast-msg="toastStore.message"
+      :prefix-icon="Upload"
+      icon-color="success"
+    />
+    <Toast
+      v-else-if="toastStore.msgLevel === 'msg'"
+      :toast-msg="toastStore.message"
+      :prefix-icon="Chat"
+      icon-color="accent"
+    />
     <Toast v-else :toast-msg="toastStore.message" :prefix-icon="Info" icon-color="info" />
-    <!--TODO: create up toast-->
-    <!--TODO: create msg toast-->
   </div>
 </template>
 <script setup lang="ts">
@@ -54,7 +64,9 @@ import { useToastStore } from '@/stores/ui/toast.store'
 import Toast from '@/components/feedbacks/Toast.vue'
 import Check from '@/assets/icons/Check.svg'
 import Close from '@/assets/icons/Close.svg'
+import Chat from '@/assets/icons/Chat.svg'
 import Info from '@/assets/icons/InfoCircle.svg'
+import Upload from '@/assets/icons/Upload.svg'
 import IconButton from '@/components/inputs/IconButton.vue'
 import NotiIcon from '@/assets/icons/Notification.svg'
 import MenuIcon from '@/assets/icons/Menu.svg'

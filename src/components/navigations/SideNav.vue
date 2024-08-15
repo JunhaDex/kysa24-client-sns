@@ -46,7 +46,7 @@
         </RouterLink>
       </li>
       <li class="menu-item mb-2">
-        <a href="https://daisyui.com/" target="_blank">
+        <a href="https://linktr.ee/2024kysa" target="_blank">
           <img class="profile-md" src="@/assets/icons/InfoExt.svg" alt="Info Icon" />
           <span class="flex-1">대회정보</span>
           <img class="profile-md" src="@/assets/icons/Outlink.svg" alt="Outlink Icon" />

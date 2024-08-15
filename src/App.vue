@@ -1,5 +1,5 @@
 <template>
-  <RouterView :key="jwt" />
+  <RouterView :key="route.fullPath" />
   <div class="teleport">
     <!--SideBar, Alert, Toast, No Modal-->
     <!--Component here controlled by ui store (not main logic)-->
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import SideNav from '@/components/navigations/SideNav.vue'
 import { onMounted } from 'vue'
 import { FirebaseProvider } from '@/providers/firebase.provider'
@@ -33,6 +33,7 @@ const userService = new UserService()
 const toastStore = useToastStore()
 const firebase = new FirebaseProvider()
 const favicon = document.querySelector('favicon-badge') as any
+const route = useRoute()
 const { jwt } = storeToRefs(authStore)
 const { stage, target } = storeToRefs(ticketStore)
 onMounted(async () => {

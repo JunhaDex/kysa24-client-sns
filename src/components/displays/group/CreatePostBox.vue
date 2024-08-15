@@ -17,7 +17,7 @@
             <div class="label">
               <transition name="slide-down">
                 <label v-if="inputCounter > 0" class="label-text-alt"
-                  >{{ inputCounter }}/{{ MAX_POST_INPUT_SIZE }} B</label
+                >{{ inputCounter }}/{{ MAX_POST_INPUT_SIZE }} B</label
                 >
               </transition>
             </div>
@@ -33,7 +33,6 @@
               <img :src="userInput.postImage" alt="media preview" />
             </div>
           </div>
-          <!--TODO: Image Preview-->
           <div class="post-actions mt-2">
             <input
               type="file"

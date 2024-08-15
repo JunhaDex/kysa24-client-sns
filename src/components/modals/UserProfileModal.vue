@@ -31,7 +31,7 @@
         <p>{{ user.introduce }}</p>
       </div>
       <div class="up-content-button-group">
-        <RouterLink :to="{ name: 'user_profile', params: { ref: user.ref } }">
+        <RouterLink :to="{ name: 'user_profile', params: { ref: user.ref } }" @click="() => emit('modalClose')">
           <IconButton class="btn-md btn-secondary">프로필 보기</IconButton>
         </RouterLink>
         <IconButton class="btn-md btn-primary" @click="moveToChat" :disabled="noChat">메세지</IconButton>

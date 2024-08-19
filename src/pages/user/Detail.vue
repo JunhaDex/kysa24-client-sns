@@ -112,9 +112,9 @@ function openTicketModal() {
   ticketStore.openTicketModal(user.value!)
 }
 
-async function moveUserChatRoom(userRef: string) {
+async function moveUserChatRoom() {
   try {
-    const roomRef = await chatService.openChatRoom(userRef)
+    const roomRef = await chatService.openChatRoom(user.value!.ref)
     router.push({ name: 'chat_room', params: { ref: roomRef } })
   } catch (e) {
     toastStore.showToast('채팅방으로 이동할 수 없습니다.', 'error')

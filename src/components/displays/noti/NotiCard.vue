@@ -8,7 +8,7 @@
         @change="() => emit('checkItem', checkValue)"
       />
     </div>
-    <div class="noti-content">{{ noti.message }}</div>
+    <div class="noti-content" @click="routeNoti">{{ noti.message }}</div>
     <div class="noti-mark">
       <span v-if="!noti.readAt" class="blue-dot"></span>
     </div>
@@ -22,12 +22,18 @@
 import type { UserNoti } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const emit = defineEmits(['checkItem'])
 const props = defineProps<{
   noti: UserNoti
 }>()
 const checkValue = ref(false)
+const router = useRouter()
+
+function routeNoti() {
+  router.push(props.noti.payload.clickUrl ?? '')
+}
 </script>
 <style scoped>
 .noti-box {

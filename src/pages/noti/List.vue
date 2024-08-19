@@ -75,6 +75,7 @@ async function fetchPage(pageNo = 1) {
 onMounted(async () => {
   await fetchPage()
   onRender.value = false
+  await markAsRead()
 })
 
 function toggleCheck(state: boolean, id: number) {
@@ -86,7 +87,12 @@ function toggleCheck(state: boolean, id: number) {
 }
 
 async function markAsRead() {
-  // TODO: apply api
+  const ids = notiList.value.map((noti) => noti.id)
+  try {
+    await userService.markNotificationAsRead({ ids })
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 async function deleteSelected() {

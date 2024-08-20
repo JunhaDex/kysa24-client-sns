@@ -57,7 +57,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useSidebarStore } from '@/stores/ui/sidebar.store'
 
 import { useToastStore } from '@/stores/ui/toast.store'
@@ -71,13 +71,21 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import NotiIcon from '@/assets/icons/Notification.svg'
 import MenuIcon from '@/assets/icons/Menu.svg'
 import ArrowRightIcon from '@/assets/icons/ArrowRight.svg'
+import { useUserStore } from '@/stores/user.store'
 
 const H_HI = 66 - 4 // 4px is the border width
 const isScrollingUp = ref(true)
 const sideBar = useSidebarStore()
 let lastScrollPosition = 0
 let isFixed = false
+const userStore = useUserStore()
 const toastStore = useToastStore()
+watch(
+  () => toastStore.msgLevel,
+  () => {
+    userStore.updateNumbers()
+  }
+)
 const handleScroll = () => {
   const currentScrollPosition = window.scrollY || document.documentElement.scrollTop
   const headerElement = document.querySelector<HTMLElement>('.header')!

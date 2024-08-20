@@ -137,7 +137,6 @@ import { GroupService } from '@/services/group.service'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
-const chatService = new ChatService()
 const groupService = new GroupService()
 const userStore = useUserStore()
 const authStore = useAuthStore()
@@ -146,8 +145,7 @@ const myGroups = ref<Group[]>([])
 
 const isAuth = computed(() => userStore.myInfo !== undefined)
 onMounted(async () => {
-  userStore.ticketCount = await chatService.countTicketRemain()
-  userStore.unreadCount = await chatService.countUnreadChats()
+  await userStore.updateNumbers()
   myGroups.value = await groupService.getMyGroups()
   console.log(myGroups.value)
 })

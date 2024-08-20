@@ -18,6 +18,7 @@ export class ChatService extends ApiService {
   private cleanChatMessage(message: any): ChatMessage {
     const clean = cleanObject(message, ChatMessageClass)
     clean.createdAt = dayjs(message.createdAt).tz().format('YYYY-MM-DD HH:mm:ss')
+    clean.id = message.chatId
     return clean
   }
 
@@ -35,9 +36,7 @@ export class ChatService extends ApiService {
     throw new Error('Invalid chat object')
   }
 
-  async listRecentChatRooms(options?: {
-    page: PageRequest
-  }): Promise<PageResponse<ChatRoom>> {
+  async listRecentChatRooms(options?: { page: PageRequest }): Promise<PageResponse<ChatRoom>> {
     const res = await this.auth().client.get('/recent', {
       params: {
         page: options?.page?.page,
@@ -51,9 +50,7 @@ export class ChatService extends ApiService {
     }
   }
 
-  async getDeniedUsers(options?: {
-    page: PageRequest
-  }): Promise<PageResponse<ChatRoom>> {
+  async getDeniedUsers(options?: { page: PageRequest }): Promise<PageResponse<ChatRoom>> {
     const res = await this.auth().client.get('/recent', {
       params: {
         page: options?.page?.page,
@@ -76,7 +73,7 @@ export class ChatService extends ApiService {
   }
 
   async getChatRoomDetail(ref: string): Promise<{
-    chatRoom: ChatRoom,
+    chatRoom: ChatRoom
     users: User[]
   }> {
     const res = await this.auth().client.get(`/room/${ref}/detail`)

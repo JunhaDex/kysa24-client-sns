@@ -10,11 +10,15 @@
         <div class="chat-card-header text-lg">
           <strong>{{ chatRoom.title }}</strong>
           <span class="text-xs ml-2">{{ tts(chatRoom.lastChat.createdAt) }}</span>
+          <span v-if="hasUnread" class="blue-dot ml-2 mb-1"></span>
         </div>
       </RouterLink>
       <div class="chat-card-action">
-        <ChatListDropdown class="dropdown-end" @open-profile="() => emit('openProfile')"
-                          @deny-user-chat="() => emit('denyUserChat')">
+        <ChatListDropdown
+          class="dropdown-end"
+          @open-profile="() => emit('openProfile')"
+          @deny-user-chat="() => emit('denyUserChat')"
+        >
           <IconButton
             class="btn-sm btn-ghost btn-square"
             role="button"
@@ -39,14 +43,18 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import VMoreIcon from '@/assets/icons/VMore.svg'
 import type { ChatRoom } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
+import { useUserStore } from '@/stores/user.store'
 
 const emit = defineEmits(['openProfile', 'denyUserChat'])
 const props = defineProps<{
   chatRoom: ChatRoom
 }>()
-const profileImg = computed(() => props.chatRoom.party[0].profileImg ? props.chatRoom.party[0].profileImg : ProfileEmpty)
+const userStore = useUserStore()
+const profileImg = computed(() =>
+  props.chatRoom.party[0].profileImg ? props.chatRoom.party[0].profileImg : ProfileEmpty
+)
 
 const preview = computed(() => {
   const enc = props.chatRoom.lastChat.encoded
@@ -56,6 +64,14 @@ const preview = computed(() => {
     return enc.slice(0, 12) + '...'
   }
   return enc
+})
+const hasUnread = computed(
+  () =>
+    props.chatRoom.lastChat.sender !== userStore.myInfo?.id &&
+    props.chatRoom.lastChat.id > props.chatRoom.lastRead
+)
+onMounted(() => {
+  console.log(props.chatRoom.lastChat)
 })
 </script>
 <style scoped>
@@ -89,5 +105,13 @@ const preview = computed(() => {
 
 .chat-card-contents {
   grid-area: content;
+}
+
+.blue-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #3b82f6;
 }
 </style>

@@ -11,7 +11,7 @@
         <button class="btn" @click="showToast">Show Toast</button>
       </Container>
       <Container>
-        <CreatePostBox class="mb-4" />
+        <CreatePostBox :is-writable="false" class="mb-4" />
       </Container>
       <Container class="mb-8">
         <UserBadge>김민지</UserBadge>
@@ -39,6 +39,11 @@
           <span class="text-sm">마지막 이에요!</span>
         </div>
       </Container>
+      <Container class="pb-6">
+        <Box class="h-80 flex justify-center items-center">
+          <span class="loading loading-spinner text-primary loading-lg"></span>
+        </Box>
+      </Container>
     </template>
   </PageView>
   <!--<UserProfileModal :is-show="true" />-->
@@ -62,6 +67,7 @@ import { useUserStore } from '@/stores/user.store'
 import IconButton from '@/components/inputs/IconButton.vue'
 import UpdateExtra from '@/components/displays/user/UpdateExtra.vue'
 import SendTicketModal from '@/components/modals/SendTicketModal.vue'
+import Box from '@/components/layouts/Box.vue'
 
 const toastStore = useToastStore()
 const userStore = useUserStore()

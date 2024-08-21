@@ -13,7 +13,7 @@
         <h4 class="text-lg font-bold">{{ userStore.myInfo!.nickname }}</h4>
         <div class="flex justify-start w-full">
           <span class="ticket-icon mr-1"></span>
-          <span class="inline-block">{{ userStore.ticketCount }}개 남음</span>
+          <span class="inline-block">{{ ticketCount }}개 남음</span>
         </div>
       </div>
     </div>
@@ -40,8 +40,8 @@
         <RouterLink to="/chat/list" @click="closeSidebar">
           <img class="profile-md" src="@/assets/icons/Chat.svg" alt="Chat Icon" />
           <span class="flex-1">메세지</span>
-          <span v-if="userStore.unreadCount > 0" class="msg-count text-sm">
-            {{ userStore.unreadCount }}
+          <span v-if="unreadCount > 0" class="msg-count text-sm">
+            {{ unreadCount }}
           </span>
         </RouterLink>
       </li>
@@ -124,16 +124,16 @@
 </template>
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/ui/sidebar.store'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import Backdrop from '@/components/feedbacks/Backdrop.vue'
 import { useUserStore } from '@/stores/user.store'
 import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/ui/toast.store'
-import { ChatService } from '@/services/chat.service'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
 import { sleep } from '@/utils/index.util'
 import type { Group } from '@/types/general.type'
 import { GroupService } from '@/services/group.service'
+import { storeToRefs } from 'pinia'
 
 const sidebar = useSidebarStore()
 const isOpen = computed(() => sidebar.isOpen)
@@ -142,10 +142,18 @@ const userStore = useUserStore()
 const authStore = useAuthStore()
 const toastStore = useToastStore()
 const myGroups = ref<Group[]>([])
+const { unreadCount, ticketCount } = storeToRefs(userStore)
 
 const isAuth = computed(() => userStore.myInfo !== undefined)
+watch(
+  () => isAuth.value,
+  (val) => {
+    if (val) {
+      userStore.updateNumbers()
+    }
+  }
+)
 onMounted(async () => {
-  await userStore.updateNumbers()
   myGroups.value = await groupService.getMyGroups()
   console.log(myGroups.value)
 })

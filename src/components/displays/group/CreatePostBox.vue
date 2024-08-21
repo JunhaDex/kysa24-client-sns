@@ -11,14 +11,17 @@
               v-model="userInput.postText"
               class="textarea text-input"
               name="post-text"
-              placeholder="무슨 생각을 하고 있나요?"
+              :placeholder="
+                isWritable ? '무슨 생각을 하고 있나요?' : '팔로우하고 게시물을 공유해보세요!'
+              "
               ref="postInput"
+              :disabled="!isWritable"
             ></textarea>
             <div class="label">
               <transition name="slide-down">
-                <label v-if="inputCounter > 0" class="label-text-alt"
-                >{{ inputCounter }}/{{ MAX_POST_INPUT_SIZE }} B</label
-                >
+                <label v-if="inputCounter > 0" class="label-text-alt">
+                  {{ inputCounter }}/{{ MAX_POST_INPUT_SIZE }} B
+                </label>
               </transition>
             </div>
           </div>
@@ -43,12 +46,19 @@
               @change="changeMediaInput"
             />
             <IconButton
-              class="btn-secondary btn-square btn-sm mr-4"
+              class="btn-secondary btn-square btn-md mr-2"
               @click="clickMediaInput"
               :prefix-icon="ImageIcon"
               :disabled="userInput.postImage"
             />
-            <IconButton class="btn-primary btn-sm" @click="clickSubmit">포스트 올리기</IconButton>
+            <ProcessButton
+              class="btn btn-primary btn-md"
+              @click="clickSubmit"
+              :is-disabled="isPosting || !isWritable"
+              :is-loading="isPosting"
+            >
+              올리기
+            </ProcessButton>
           </div>
         </div>
       </form>
@@ -64,10 +74,16 @@ import ImageIcon from '@/assets/icons/Image.svg'
 import { throttle } from 'lodash-es'
 import { useUserStore } from '@/stores/user.store'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
+import ProcessButton from '@/components/inputs/ProcessButton.vue'
 
 const emit = defineEmits(['submitPost'])
+const props = defineProps<{
+  isWritable: boolean
+}>()
+defineExpose({ resetUploadState })
 const postInput = ref<HTMLTextAreaElement>()
 const mediaInput = ref<HTMLInputElement>()
+const isPosting = ref(false)
 const userInput = ref<{
   postImage: any
   postImageFile: any
@@ -133,18 +149,24 @@ function resetInput() {
   mediaInput.value!.value = ''
 }
 
+function resetUploadState() {
+  isPosting.value = false
+}
+
 function resetMediaInput() {
   userInput.value.postImage = null
   userInput.value.postImageFile = null
   mediaInput.value!.value = ''
 }
 
+const postSubmitCaller = throttle(() => {
+  isPosting.value = true
+  emit('submitPost', userInput.value)
+}, 1000)
+
 function clickSubmit() {
   if (userInput.value.postText) {
-    const caller = throttle(() => {
-      emit('submitPost', userInput.value)
-    }, 1000)
-    caller()
+    postSubmitCaller()
   }
   resetInput()
 }
@@ -179,6 +201,10 @@ function clickSubmit() {
   overflow: hidden;
   min-height: 20px;
   line-height: 20px;
+}
+
+.text-input:disabled::placeholder {
+  color: theme('colors.gray.900');
 }
 
 .post-actions {

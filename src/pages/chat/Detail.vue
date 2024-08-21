@@ -1,7 +1,7 @@
 <template>
   <PageView footless>
     <template #header>
-      <ChatHeader :title="chatRoomTitle" :images="userProfiles" />
+      <ChatHeader :title="chatRoomTitle" :images="userProfiles" :route="userProfileRoute" />
     </template>
     <template #main>
       <InitialLoad v-if="!isReady" />
@@ -30,7 +30,7 @@
 import PageView from '@/components/layouts/PageView.vue'
 import ChatHeader from '@/components/layouts/headers/ChatHeader.vue'
 import { useRoute } from 'vue-router'
-import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { ChatService } from '@/services/chat.service'
 import { setupListPage } from '@/stores/setups/list.composition'
 import type { ChatMessage, User } from '@/types/general.type'
@@ -59,6 +59,12 @@ const participants = ref<User[]>([])
 const userProfiles = computed(() =>
   participants.value.filter((p) => p.ref !== userStore.myInfo?.ref).map((user) => user.profileImg)
 )
+const userProfileRoute = computed(() => {
+  const lst = participants.value
+    .filter((p) => p.ref !== userStore.myInfo?.ref)
+    .map((user) => `/user/${user.ref}`)
+  return lst.length ? lst[0] : undefined
+})
 const chatRoomTitle = computed(() => chatRoomDetail.value?.title ?? '')
 let chatSocket: WebSocket
 

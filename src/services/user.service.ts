@@ -89,6 +89,10 @@ export class UserService extends ApiService {
     await this.auth().client.put(`/my/${ref}/pwd`, params)
   }
 
+  async updateMyDevice(ref: string, fcm: { token: string; device: string }) {
+    await this.auth().client.put(`/my/${ref}/device`, fcm)
+  }
+
   async listNotifications(options?: { page?: PageRequest }): Promise<PageResponse<UserNoti>> {
     const res = await this.auth().client.get('/my/noti', {
       params: {

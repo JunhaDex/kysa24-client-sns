@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Dancing+Script:wght@400..700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -111,6 +112,11 @@ img {
 .btn-md {
     height: 2.5rem;
     min-height: 2.5rem;
+}
+
+.btn-square:where(.btn-md) {
+    height: 2.5rem;
+    width: 2.5rem;
 }
 
 .input-group {

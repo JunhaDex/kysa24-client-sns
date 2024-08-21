@@ -18,7 +18,12 @@
           />
         </Container>
         <Container class="pb-6">
-          <CreatePostBox class="mb-4" @submit-post="submitCreatePost" />
+          <CreatePostBox
+            :is-writable="isWritable"
+            class="mb-4"
+            @submit-post="submitCreatePost"
+            ref="createPostBox"
+          />
           <PostCard
             v-for="p in postList"
             :post="p"
@@ -94,6 +99,7 @@ const groupItem = ref<Group>()
 const profileTarget = ref<Profile>()
 const isProfile = ref(false)
 const postList = ref<Post[]>([])
+const createPostBox = ref<typeof CreatePostBox>()
 const postCards = ref<(typeof PostCard)[]>([])
 const postDeleteItem = ref<Post>()
 const isRemovePost = ref(false)
@@ -115,6 +121,8 @@ const routerStack = ref([
     }
   }
 ])
+
+const isWritable = computed(() => !!groupItem.value?.already)
 
 async function fetchGroup() {
   const groupRef = route.params.ref as string
@@ -243,6 +251,7 @@ async function submitCreatePost(payload: { postText: string; postImageFile?: any
       console.error(e)
       toastStore.showToast('문제가 생겼습니다. 잠시 후 다시 시도해주세요.', 'error')
     }
+    createPostBox.value!.resetUploadState()
   }
 }
 </script>

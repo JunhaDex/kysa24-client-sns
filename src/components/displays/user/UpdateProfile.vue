@@ -16,6 +16,9 @@
         이미지
       </span>
     </div>
+    <div class="user-name">
+      <h2 class="text-lg font-bold">{{ props.user.nickname }}</h2>
+    </div>
     <div class="form-wrap">
       <input
         type="file"
@@ -43,7 +46,7 @@
           type="text"
           name="username"
           placeholder="2024 청년대회에 참석하는 나의 소감은?"
-          @input="() => diffCheck.introduce = true"
+          @input="() => (diffCheck.introduce = true)"
         />
       </div>
       <ProcessButton
@@ -90,7 +93,10 @@ const diffCheck = ref({
   introduce: false
 })
 const validated = computed(() => {
-  return (diffCheck.value.cover || diffCheck.value.profile || diffCheck.value.introduce) && isProgress.value === false
+  return (
+    (diffCheck.value.cover || diffCheck.value.profile || diffCheck.value.introduce) &&
+    isProgress.value === false
+  )
 })
 const isProgress = ref(false)
 
@@ -214,7 +220,12 @@ async function updateMyProfile() {
   object-fit: cover;
 }
 
+.user-name {
+  margin-top: 0.7rem;
+  margin-left: 118px;
+}
+
 .form-wrap {
-  padding: calc(22px + 1.2rem) 1.2rem 1.2rem 1.2rem;
+  padding: 0.5rem 1.2rem 1.2rem 1.2rem;
 }
 </style>

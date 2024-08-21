@@ -19,7 +19,12 @@
             @delete-post="openDeletePostModal"
           />
         </Container>
-        <Container class="pb-6">
+        <Container v-if="isFetching" class="pb-6">
+          <Box class="h-80 flex justify-center items-center">
+            <span class="loading loading-spinner text-primary loading-lg"></span>
+          </Box>
+        </Container>
+        <Container v-else class="pb-6">
           <ReplyBox
             :replyList="replyList"
             @submit-reply="submitReply"
@@ -75,6 +80,7 @@ import Modal from '@/components/modals/Modal.vue'
 import InitialLoad from '@/components/layouts/InitialLoad.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
 import { GroupService } from '@/services/group.service'
+import Box from '@/components/layouts/Box.vue'
 
 const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const route = useRoute()
@@ -172,11 +178,11 @@ async function submitReply(message: string) {
     try {
       const res = await postService.createReply(postItem.value!.id, { message })
       console.log(res)
-      window.location.reload()
     } catch (e) {
       console.error(e)
       toastStore.showToast('댓글을 작성하는 중 오류가 발생했습니다.', 'error')
     }
+    await reloadPage()
   }
 }
 
@@ -210,7 +216,7 @@ async function deletePost() {
 async function reloadPage() {
   isProfile.value = false
   isRemoveReply.value = false
-  window.location.reload()
+  await fetchPage(1)
 }
 </script>
 <style scoped></style>

@@ -1,11 +1,14 @@
 <template>
   <BaseHeader>
     <template #prefix>
-      <ul class="flex space-x-2">
-        <li>
+      <ul class="flex space-x-1">
+        <li @click="reroute">
           <IconButton class="btn-ghost btn-square" :prefix-icon="BackIcon" @click="goBack" />
         </li>
-        <li class="chat-title">
+        <li class="chat-title" @click="reroute">
+          <div class="profile-img profile-md mr-2">
+            <img :src="profileImg" alt="profile image" />
+          </div>
           <span v-if="!title" class="chat-title-load"></span>
           <span v-else class="text-lg font-bold">{{ title }}</span>
         </li>
@@ -18,18 +21,36 @@ import BaseHeader from '@/components/layouts/headers/BaseHeader.vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import BackIcon from '@/assets/icons/Back.svg'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import ProfileEmpty from '@/assets/images/profile_empty.png'
 
 const props = defineProps<{
   title: string
   images: string[]
+  route?: string
 }>()
 const router = useRouter()
+const profileImg = computed(() => (props.images[0] ? props.images[0] : ProfileEmpty))
 
 function goBack() {
   router.go(-1)
 }
+
+function reroute() {
+  console.log(props.route)
+  if (props.route) {
+    router.replace(props.route)
+  }
+}
 </script>
 <style scoped>
+.profile-img {
+  border-radius: 50%;
+  background-color: #ddd;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
 .chat-title {
   display: flex;
   align-items: center;

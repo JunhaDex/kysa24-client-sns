@@ -6,6 +6,8 @@ export const useToastStore = defineStore('toast', () => {
   const isShow = ref(false)
   const message = ref('')
   const msgLevel = ref<ToastLevel>('info')
+  // global help desk
+  const isHelp = ref(false)
 
   function showToast(msg: string, type: ToastLevel) {
     message.value = msg
@@ -21,6 +23,7 @@ export const useToastStore = defineStore('toast', () => {
     isShow,
     message,
     msgLevel,
+    isHelp,
     showToast
   }
 })

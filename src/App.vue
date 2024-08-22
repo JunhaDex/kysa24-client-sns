@@ -9,6 +9,19 @@
       :target="target"
       @close-ticket-prompt="() => ticketStore.closeTicketModal()"
     />
+    <Modal :is-show="isHelp" title="대회 지원센터" @modal-close="() => isHelp = false">
+      <p>
+        대회 지원센터는 카카오톡 플러스친구를 통해 운영되고 있습니다.<br />
+        카카오톡 사용이 어려운 경우, 운영위 및 대회 본부로 직접 문의해 주시기 바랍니다.
+      </p>
+      <div class="flex justify-end mt-6">
+        <a href="http://pf.kakao.com/_VxiXAn" target="_blank">
+          <IconButton class="btn btn-md btn-primary" :suffix-icon="OutLink" @click="() => isHelp = false">
+            오픈 카톡방
+          </IconButton>
+        </a>
+      </div>
+    </Modal>
   </div>
 </template>
 <script setup lang="ts">
@@ -24,6 +37,9 @@ import { storeToRefs } from 'pinia'
 import SendTicketModal from '@/components/modals/SendTicketModal.vue'
 import { useTicketStore } from '@/stores/ui/ticket.store'
 import { useToastStore } from '@/stores/ui/toast.store'
+import IconButton from '@/components/inputs/IconButton.vue'
+import OutLink from '@/assets/icons/Outlink.svg'
+import Modal from '@/components/modals/Modal.vue'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -36,6 +52,7 @@ const favicon = document.querySelector('favicon-badge') as any
 const route = useRoute()
 const { jwt } = storeToRefs(authStore)
 const { stage, target } = storeToRefs(ticketStore)
+const { isHelp } = storeToRefs(toastStore)
 onMounted(async () => {
   console.log('App.vue mounted')
   await initUserInfo()

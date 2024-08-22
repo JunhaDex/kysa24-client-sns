@@ -11,8 +11,12 @@
       </RouterLink>
       <div class="flex-1">
         <h4 class="text-lg font-bold">{{ userStore.myInfo!.nickname }}</h4>
-        <div class="flex justify-start w-full">
-          <span class="ticket-icon mr-1"></span>
+        <div class="flex justify-start items-center w-full">
+          <img
+            class="inline-block profile-md mr-1"
+            src="@/assets/icons/TicketHeart-BO.svg"
+            alt="ticket"
+          />
           <span class="inline-block">{{ ticketCount }}개 남음</span>
         </div>
       </div>
@@ -188,18 +192,6 @@ function logOut() {
   padding: 1rem;
   transition: right 0.3s ease-in-out;
   z-index: 9;
-}
-
-.ticket-icon {
-  display: inline-block;
-  width: 1.4rem;
-  height: 1.4rem;
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-image: url('@/assets/icons/LikeFill.svg');
-  -webkit-mask-image: url('@/assets/icons/LikeFill.svg');
-  background-color: theme('colors.error');
 }
 
 .side-nav hr {

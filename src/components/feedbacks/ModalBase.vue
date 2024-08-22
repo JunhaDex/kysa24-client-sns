@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isShow" class="modal-main">
+  <div v-show="isShow" class="modal-main" :class="$attrs.class">
     <slot />
   </div>
   <Backdrop :is-open="isShow" @bg-click="$emit('modalClose')" />
@@ -28,5 +28,9 @@ const emit = defineEmits(['modalClose'])
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.img-fill-wrap {
+  max-width: 327px;
 }
 </style>

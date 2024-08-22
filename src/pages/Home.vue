@@ -5,7 +5,7 @@
     </template>
     <template #main>
       <Container>
-        <GroupSearchInput @search-group="searchGroup" />
+        <GroupSearchInput @search-group="searchGroup" ref="groupSearch" />
       </Container>
       <InitialLoad v-if="onRender" />
       <SearchEmpty v-else-if="groupList.length === 0" @reset-input="() => searchGroup('')">
@@ -28,10 +28,16 @@
       <Footer />
     </template>
   </PageView>
-  <Modal :is-show="isWelcomeModal" title="환영합니다!" @modal-close="() => (isWelcomeModal = false)">
+  <Modal
+    :is-show="isWelcomeModal"
+    title="환영합니다!"
+    @modal-close="() => (isWelcomeModal = false)"
+  >
     <p>
       환영합니다! 원활한 앱 이용을 위해서 나를 알릴 수 있는 프로필을 등록해보세요.<br />
-      <span class="text-xs text-accent text-bold">사이드메뉴 > 개인설정에서 변경할 수 있습니다.</span>
+      <span class="text-xs text-accent text-bold"
+        >사이드메뉴 > 개인설정에서 변경할 수 있습니다.</span
+      >
     </p>
     <div class="flex justify-end mt-6">
       <button class="btn btn-ghost btn-sm" @click="snoozeWelcome">다시 보지않기</button>
@@ -63,18 +69,22 @@ const isWelcomeModal = ref(false)
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const groupService = new GroupService()
-const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } =
-  setupListPage()
+const { pageMeta, isFetching, onRender, hasMore, nextPage, fetchConfig } = setupListPage()
 const groupList = ref<Group[]>([])
 const groupCards = ref<(typeof GroupCard)[]>([])
+const groupSearch = ref<typeof GroupSearchInput>()
 const toastStore = useToastStore()
 const router = useRouter()
 
-watch(() => userStore.myInfo?.profileImg, async () => {
-  if (authStore.jwt && authStore.isGuide && !userStore.myInfo?.profileImg) {
-    isWelcomeModal.value = true
-  }
-}, { immediate: true })
+watch(
+  () => userStore.myInfo?.profileImg,
+  async () => {
+    if (authStore.jwt && authStore.isGuide && !userStore.myInfo?.profileImg) {
+      isWelcomeModal.value = true
+    }
+  },
+  { immediate: true }
+)
 
 function copyFcm() {
   const fcm = authStore.fcm
@@ -136,6 +146,7 @@ function gotoProfile() {
 onMounted(async () => {
   await fetchPage()
   onRender.value = false
+  groupSearch.value!.showTooltip()
 })
 
 async function searchGroup(keyword: string) {

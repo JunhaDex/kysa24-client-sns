@@ -4,6 +4,7 @@
       <Header />
     </template>
     <template #main>
+      <InitialLoad />
       <Container>
         GUIDE
         <CustomButton class="btn-primary btn-square btn-sm" :prefix-icon="HMore"></CustomButton>
@@ -46,6 +47,7 @@
       </Container>
     </template>
   </PageView>
+  <!--<ProfileImgModal :profile-img="ProfileSample" :is-show="true" />-->
   <!--<UserProfileModal :is-show="true" />-->
   <!--<SendTicketModal step="before" />-->
 </template>
@@ -68,6 +70,9 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import UpdateExtra from '@/components/displays/user/UpdateExtra.vue'
 import SendTicketModal from '@/components/modals/SendTicketModal.vue'
 import Box from '@/components/layouts/Box.vue'
+import ProfileImgModal from '@/components/modals/ProfileImgModal.vue'
+import ProfileSample from '@/assets/images/profile-image.png'
+import InitialLoad from '@/components/layouts/InitialLoad.vue'
 
 const toastStore = useToastStore()
 const userStore = useUserStore()

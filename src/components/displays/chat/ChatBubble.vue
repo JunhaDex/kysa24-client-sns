@@ -6,14 +6,14 @@
     <template v-if="message.encoded">
       <div v-if="encodedMsg.type === 'ticket'" class="ticket-send ticket-send-start shadow">
         <div class="text-center">
-          <span><b>{{ encodedMsg.from.nickname }} 님</b>이 관심을 표현했습니다.</span><br />
-          <span>나도 관심을 표현해볼까요?</span><br />
-          <button class="btn btn-primary mt-4" :disabled="replied" @click="() => replyTicket()">관심에 답하기
+          <span><b>{{ encodedMsg.from.nickname }} 님</b>이 호감을 표현했습니다.</span><br />
+          <span>나도 호감에 답해볼까요?</span><br />
+          <button class="btn btn-primary mt-4" :disabled="replied" @click="() => replyTicket()">호감보내기에 답하기
           </button>
         </div>
       </div>
       <div v-else-if="encodedMsg.type === 'reply'" class="ticket-send ticket-send-start shadow">
-        <span><b>{{ encodedMsg.from.nickname }} 님</b>이 관심에 답했습니다.</span><br />
+        <span><b>{{ encodedMsg.from.nickname }} 님</b>이 호감보내기에 답했습니다.</span><br />
         <span>좋은 대화가 계속 되기를 바래요 🎉</span>
       </div>
     </template>
@@ -23,11 +23,11 @@
   <div v-else class="chat chat-end">
     <template v-if="message.encoded">
       <div v-if="encodedMsg.type === 'ticket'" class="ticket-send ticket-send-end shadow">
-        <span><b>{{ encodedMsg.to.nickname }} 님</b>에게 관심을 표현했습니다.</span><br />
+        <span><b>{{ encodedMsg.to.nickname }} 님</b>에게 호감을 표현했습니다.</span><br />
         <span>좋은 소식이 있을지도?</span>
       </div>
       <div v-else-if="encodedMsg.type === 'reply'" class="ticket-send ticket-send-end shadow">
-        <span><b>{{ encodedMsg.to.nickname }} 님</b>의 관심에 답장했습니다.</span><br />
+        <span><b>{{ encodedMsg.to.nickname }} 님</b>의 호감보내기에 답했습니다.</span><br />
         <span>좋은 대화가 계속 되기를 바래요 🎉</span>
       </div>
     </template>

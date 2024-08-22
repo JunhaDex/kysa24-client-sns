@@ -7,7 +7,7 @@
     </p>
   </div>
   <div class="profile-container">
-    <div class="profile">
+    <div class="profile" @click="clickProfile">
       <img :src="profileImgDef" alt="Profile" class="profile-pic" />
       <div class="group-details">
         <slot />
@@ -23,8 +23,15 @@ const props = defineProps<{
   coverImg?: string
   profileImg?: string
 }>()
+const emit = defineEmits(['clickProfile'])
 
 const profileImgDef = computed(() => (props.profileImg ? props.profileImg : ProfileEmpty))
+
+function clickProfile() {
+  if (props.profileImg) {
+    emit('clickProfile')
+  }
+}
 </script>
 <style scoped>
 .cover-image {

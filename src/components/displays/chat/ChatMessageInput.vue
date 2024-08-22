@@ -1,5 +1,5 @@
 <template>
-  <div class="input-area">
+  <div class="input-area" :class="{ expanded: isExpanded }">
     <form class="input-wrapper mr-2" onsubmit="return false">
       <textarea
         v-model="userInput"
@@ -7,29 +7,29 @@
         placeholder="메세지를 입력해주세요"
         ref="msgInput"
         rows="1"
+        @focus="() => (isFocus = true)"
+        @blur="() => (isFocus = false)"
       />
       <button class="send-button" @click="clickSendMessage" :disabled="userInput.length === 0">
         <span class="send-icon"></span>
       </button>
     </form>
-    <div class="tooltip tooltip-top tooltip-secondary tooltip-open" data-tip="관심보내기">
-      <IconButton
-        class="btn-white btn-square btn-size text-error"
-        :prefix-icon="LikeFillIcon"
-        @click="clickTicket"
-      />
+    <div class="tooltip tooltip-top tooltip-secondary tooltip-open btn-wrap" data-tip="호감보내기">
+      <button class="btn btn-white btn-square btn-size" @click="clickTicket">
+        <img class="profile-lg" src="@/assets/icons/TicketHeart-BO.svg" alt="ticket" />
+      </button>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import IconButton from '@/components/inputs/IconButton.vue'
-import LikeFillIcon from '@/assets/icons/LikeFill.svg'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { throttle } from 'lodash-es'
 
 const emit = defineEmits(['sendMessage', 'openTicket'])
 const msgInput = ref<HTMLTextAreaElement>()
 const userInput = ref('')
+const isFocus = ref(false)
+const isExpanded = computed(() => isFocus.value && userInput.value.length > 0)
 
 onMounted(() => {
   if (msgInput.value) {
@@ -46,13 +46,14 @@ onMounted(() => {
   }, 3000)
 })
 
+const sendMsgCaller = throttle(() => {
+  emit('sendMessage', userInput.value)
+  userInput.value = ''
+}, 1000)
+
 function clickSendMessage() {
   if (userInput.value) {
-    const caller = throttle(() => {
-      emit('sendMessage', userInput.value)
-      userInput.value = ''
-    }, 1000)
-    caller()
+    sendMsgCaller()
   }
   // reset input
   userInput.value = ''
@@ -75,7 +76,7 @@ function clickTicket() {
 
 .input-wrapper {
   position: relative;
-  flex: 1;
+  flex-grow: 1;
 }
 
 .text-input {
@@ -119,7 +120,19 @@ function clickTicket() {
   border: 1px solid theme('colors.gray.300');
 }
 
+.btn-wrap {
+  display: inline-block;
+}
+
 .tooltip:before {
   left: 10%;
+}
+
+.expanded .input-wrapper {
+  width: 100%;
+}
+
+.expanded .btn-wrap {
+  display: none;
 }
 </style>

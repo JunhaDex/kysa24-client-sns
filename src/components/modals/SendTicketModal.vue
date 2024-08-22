@@ -1,7 +1,7 @@
 <template>
   <Modal
     :is-show="step === 'before'"
-    title="호감 표현하기"
+    title="호감보내기 전송"
     @modal-close="() => emit('closeTicketPrompt')"
   >
     <p>호감을 표현하면 {{ target?.nickname }} 님에게</p>
@@ -16,17 +16,17 @@
               <b>
                 {{ myInfo?.nickname }}
               </b>
-              이 관심을 표현했습니다.
+              이 호감을 표현했습니다.
             </span>
             <br />
-            <span>나도 관심을 표현해볼까요?</span><br />
-            <button class="btn btn-primary btn-sm mt-4">관심에 답하기</button>
+            <span>나도 호감을 표현해볼까요?</span><br />
+            <button class="btn btn-primary btn-sm mt-4">호감보내기에 답하기</button>
           </div>
         </div>
       </div>
     </div>
-    <p>라는 알림과 메세지가 표시됩니다. {{ target?.nickname }} 님에게 호감 표현을 보낼까요?</p>
-    <div class="mt-4">오늘 남은 호감 표현 {{ userStore.ticketCount }}개</div>
+    <p>라는 알림과 메세지가 표시됩니다. {{ target?.nickname }} 님에게 호감을 보낼까요?</p>
+    <div class="mt-4">오늘 남은 호감보내기 {{ userStore.ticketCount }}개</div>
     <div class="mt-4 flex justify-end">
       <button class="btn btn-md btn-secondary mr-2" @click="() => emit('closeTicketPrompt')">
         취소
@@ -37,17 +37,17 @@
         class="btn btn-md btn-primary"
         @click="sendTicket"
       >
-        호감 표현하기
+        호감보내기
       </ProcessButton>
     </div>
   </Modal>
   <Modal
     :is-show="step === 'after'"
-    title="호감 표현하기 완료!"
+    title="호감보내기 완료!"
     @modal-close="() => emit('closeTicketPrompt')"
   >
-    <p>{{ target?.nickname }}님에게 호감 표현을 보냈습니다! 좋은 소식이 있을지도?</p>
-    <div>오늘 남은 호감 표현 {{ userStore.ticketCount }}개</div>
+    <p>{{ target?.nickname }}님에게 호감을 보냈습니다! 좋은 소식이 있을지도?</p>
+    <div>오늘 남은 호감보내기 {{ userStore.ticketCount }}개</div>
     <div class="mt-4 flex justify-end">
       <button class="btn btn-md btn-primary" @click="() => emit('closeTicketPrompt')">확인</button>
     </div>

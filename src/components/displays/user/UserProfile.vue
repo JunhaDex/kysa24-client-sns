@@ -1,5 +1,9 @@
 <template>
-  <Profile :cover-img="user.coverImg" :profile-img="user.profileImg">
+  <Profile
+    :cover-img="user.coverImg"
+    :profile-img="user.profileImg"
+    @click-profile="() => emit('clickProfile')"
+  >
     <div class="user-profile-wrap">
       <div class="name-area mr-4">
         <h2 class="text-xl font-bold">
@@ -22,7 +26,7 @@
       </div>
       <div v-if="!isMe" class="action-area">
         <button class="btn btn-md btn-primary btn-block mb-2" @click="() => emit('sendTicket')">
-          관심 보내기
+          호감보내기
         </button>
         <button class="btn btn-md btn-secondary btn-block" @click="() => emit('goChat')">
           메세지
@@ -30,7 +34,7 @@
       </div>
       <div v-else class="action-area">
         <button class="btn btn-sm btn-primary btn-block mb-2" @click="gotoProfile">
-          프로필 수정
+          개인설정
         </button>
       </div>
     </div>
@@ -58,7 +62,7 @@ const props = defineProps<{
   user: User
   isMe: boolean
 }>()
-const emit = defineEmits(['sendTicket', 'goChat'])
+const emit = defineEmits(['sendTicket', 'goChat', 'clickProfile'])
 const userStore = useUserStore()
 const router = useRouter()
 const subfix = computed(() => {

@@ -16,7 +16,7 @@
           <IconButton
             class="btn-primary btn-sm btn-block"
             :prefix-icon="BellOn"
-            :disabled="isPermission.push"
+            :disabled="isPermission.push || !isPermission.support"
             @click="allowPush"
           >
             {{ isPermission.push ? '알림 사용중' : '알림 받기' }}
@@ -140,6 +140,10 @@ async function allowPush() {
       await userService.updateMyDevice(userInfo.value!.ref, {
         token: fcm!,
         device: navigator.userAgent
+      })
+      firebase.setupMessageListener(() => {
+        console.log('message received')
+        toastStore.showToast('새로운 메시지가 도착했습니다.', 'msg')
       })
       toastStore.showToast('푸시 알림을 설정했습니다.', 'success')
     } catch (e) {

@@ -16,6 +16,7 @@
             :is-me="isMe"
             @send-ticket="openTicketModal"
             @go-chat="moveUserChatRoom"
+            @click-profile="() => (openProfile = true)"
           />
         </Container>
         <Container class="pb-6">
@@ -38,6 +39,11 @@
       <Footer />
     </template>
   </PageView>
+  <ProfileImgModal
+    :profile-img="user?.profileImg ?? ''"
+    :is-show="openProfile"
+    @modal-close="() => (openProfile = false)"
+  />
 </template>
 <script lang="ts" setup>
 import PageView from '@/components/layouts/PageView.vue'
@@ -57,6 +63,7 @@ import { useTicketStore } from '@/stores/ui/ticket.store'
 import { USER_EXTRA_LIST } from '@/constants/extra.constant'
 import { ChatService } from '@/services/chat.service'
 import { useToastStore } from '@/stores/ui/toast.store'
+import ProfileImgModal from '@/components/modals/ProfileImgModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -70,6 +77,7 @@ const user = ref<User>()
 const extra = ref()
 const onRender = ref(true)
 const isMe = computed(() => userStore.myInfo?.ref === uRef)
+const openProfile = ref(false)
 
 const routerStack = ref([
   {

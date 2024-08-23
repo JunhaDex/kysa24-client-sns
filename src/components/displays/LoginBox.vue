@@ -32,13 +32,14 @@
         />
       </div>
       <ProcessButton
-        class="btn btn-primary btn-block"
+        class="btn btn-primary btn-block mb-2"
         :is-disabled="isPress"
         :is-loading="isPress"
         @click="pressLogin"
       >
         로그인
       </ProcessButton>
+      <RouterLink to="/" class="btn btn-ghost btn-block btn-sm text-xs"> 뒤로가기 </RouterLink>
     </form>
     <div class="links mt-2"><a href="#">이용약관</a> | <a href="#">사용 설명서</a></div>
   </Box>
@@ -47,6 +48,8 @@
 import Box from '@/components/layouts/Box.vue'
 import { ref } from 'vue'
 import ProcessButton from '@/components/inputs/ProcessButton.vue'
+import IconButton from '@/components/inputs/IconButton.vue'
+import Home from '@/assets/icons/Home.svg'
 
 const emit = defineEmits(['login'])
 defineExpose({ releaseLogin })

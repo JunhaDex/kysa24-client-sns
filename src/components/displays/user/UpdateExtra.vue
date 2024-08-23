@@ -45,6 +45,7 @@ import { UserService } from '@/services/user.service'
 import type { User } from '@/types/general.type'
 import { useToastStore } from '@/stores/ui/toast.store'
 
+const DEFAULT_INFO_NUM = 5
 const userService = new UserService()
 const toastStore = useToastStore()
 const extraList = Object.values(USER_EXTRA_LIST)
@@ -61,8 +62,12 @@ const hasInput = computed(
 )
 
 onMounted(() => {
-  if (infoList.value.length === 0) {
-    infoList.value.push({ key: '', value: '' })
+  if (infoList.value.length < DEFAULT_INFO_NUM) {
+    const num = DEFAULT_INFO_NUM - infoList.value.length
+    const arr = Array.from({ length: num }, () =>
+      JSON.parse(JSON.stringify({ key: '', value: '' }))
+    )
+    infoList.value.push(...arr)
   }
 })
 
@@ -79,7 +84,7 @@ function addInfoItem() {
 }
 
 function removeInfoItem(idx: number) {
-  if (infoList.value.length > 1) {
+  if (infoList.value.length > DEFAULT_INFO_NUM) {
     infoList.value.splice(idx, 1)
   }
 }

@@ -12,7 +12,7 @@ import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
     prefixIcon?: string
-    iconColor?: 'success' | 'error' | 'info' | 'accent'
+    iconColor?: 'success' | 'error' | 'info' | 'accent' | 'secondary' | 'none'
     toastMsg: string
   }>(),
   {
@@ -72,6 +72,14 @@ const prefixIconStyle = computed(() => ({
 
 .icon-accent {
   background-color: theme('colors.accent');
+}
+
+.icon-secondary {
+  background-color: theme('colors.secondary');
+}
+
+.icon-none {
+  background-color: transparent;
 }
 
 .icon-msg {

@@ -21,7 +21,7 @@
         </Container>
         <Container class="pb-6">
           <Box class="extra-min">
-            <h2 class="font-bold text-sm mb-2">내 정보</h2>
+            <h2 class="font-bold text-sm mb-2">자기소개</h2>
             <div v-if="extraEmpty" class="no-extra">
               <p>등록된 정보가 없습니다.</p>
             </div>

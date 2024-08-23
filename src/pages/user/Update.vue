@@ -25,7 +25,7 @@
             Push 알림을 지원하지 않는 환경입니다.
           </label>
         </Box>
-        <h2>내 정보 수정</h2>
+        <h2>자기소개 정보 수정</h2>
         <UpdateExtra :user="userInfo!" :extra-info="extraInfo!" />
         <h2>비밀번호 수정</h2>
         <UpdatePwd :user="userInfo!" @update-done="() => (isPwdModal = true)" />

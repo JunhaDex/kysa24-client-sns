@@ -12,15 +12,15 @@
         <ul>
           <li class="align-center">
             <span class="icon-mask team-icon mr-1"></span>
-            <span class="text-sm"
-              >소속: <b>{{ team }}</b></span
-            >
+            <span class="text-sm whitespace-nowrap">
+              소속: <b>{{ team }}</b>
+            </span>
           </li>
           <li class="align-center">
             <span class="icon-mask geo-icon mr-1"></span>
-            <span class="text-sm"
-              >지역: <b>{{ user.geo }}</b></span
-            >
+            <span class="text-sm whitespace-nowrap">
+              지역: <b>{{ user.geo }}</b>
+            </span>
           </li>
         </ul>
       </div>
@@ -33,15 +33,13 @@
         </button>
       </div>
       <div v-else class="action-area">
-        <button class="btn btn-sm btn-primary btn-block mb-2" @click="gotoProfile">
-          개인설정
-        </button>
+        <button class="btn btn-sm btn-primary btn-block mb-2" @click="gotoProfile">개인설정</button>
       </div>
     </div>
   </Profile>
   <Container>
     <Box>
-      <h2 class="font-bold text-sm mb-2">한줄 소개</h2>
+      <h2 class="font-bold text-sm mb-2">상태 메세지</h2>
       <p>
         {{ user.introduce }}
       </p>

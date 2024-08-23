@@ -112,6 +112,10 @@ async function fetchPage(pageNo = 1) {
 }
 
 async function followGroup(group: Group, index: number) {
+  if (!authStore.jwt) {
+    toastStore.showToast('로그인이 필요한 서비스 입니다.', 'info')
+    return
+  }
   try {
     await groupService.followGroup(group.ref)
     groupCards.value[index].updateFollowState(true)

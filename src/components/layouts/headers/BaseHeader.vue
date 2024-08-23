@@ -53,7 +53,7 @@
       :prefix-icon="Chat"
       icon-color="accent"
     />
-    <Toast v-else :toast-msg="toastStore.message" :prefix-icon="Info" icon-color="info" />
+    <Toast v-else :toast-msg="toastStore.message" :prefix-icon="Info" icon-color="none" />
   </div>
 </template>
 <script setup lang="ts">
@@ -114,7 +114,16 @@ onBeforeUnmount(() => {
 })
 
 function openSideNav() {
+  const headerElement = document.querySelector<HTMLElement>('.header')!
   sideBar.isOpen = !sideBar.isOpen
+  if (sideBar.isOpen) {
+    headerElement.style.position = 'fixed'
+    isFixed = true
+    isScrollingUp.value = true
+  } else {
+    headerElement.style.position = 'absolute'
+    isFixed = false
+  }
 }
 </script>
 <style scoped>

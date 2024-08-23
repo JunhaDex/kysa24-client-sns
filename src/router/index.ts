@@ -4,6 +4,7 @@ import Guide from '@/pages/Guide.vue'
 import NotFound from '@/pages/404.vue'
 import Error from '@/pages/500.vue'
 import { useUserStore } from '@/stores/user.store'
+import { useAuthStore } from '@/stores/auth.store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -102,13 +103,27 @@ const router = createRouter({
   ]
 })
 router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  const userStore = useUserStore()
   if (to.matched.length < 1) {
     next(false)
     router.push({ name: '404' })
   } else {
-    const userStore = useUserStore()
-    userStore.updateNumbers()
-    next()
+    const BYPASS = ['home', 'guide', 'login', '404', 'error']
+    if (BYPASS.includes(to.name as string)) {
+      if (authStore.jwt) {
+        userStore.updateNumbers()
+      }
+      next()
+    } else {
+      if (authStore.jwt) {
+        userStore.updateNumbers()
+        next()
+      } else {
+        window.alert('로그인이 필요한 서비스입니다.')
+        next({ name: 'login' })
+      }
+    }
   }
 })
 

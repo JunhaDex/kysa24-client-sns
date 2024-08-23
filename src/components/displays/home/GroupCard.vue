@@ -8,7 +8,9 @@
       </p>
     </RouterLink>
     <div class="profile">
-      <img :src="profileImg" alt="Group Profile" class="profile-pic" />
+      <RouterLink :to="{ name: 'group_feed', params: { ref: group.ref } }">
+        <img :src="profileImg" alt="Group Profile" class="profile-pic" />
+      </RouterLink>
       <div class="group-details">
         <h2 class="text-lg">
           <RouterLink class="font-bold" :to="{ name: 'group_feed', params: { ref: group.ref } }">
@@ -97,7 +99,7 @@ defineExpose({ updateFollowState })
 const userStore = useUserStore()
 const { getTeamNameById } = setupTeamInfo()
 const followState = ref(false)
-const profileImg = computed(() => props.group.profileImg ? props.group.profileImg : ProfileEmpty)
+const profileImg = computed(() => (props.group.profileImg ? props.group.profileImg : ProfileEmpty))
 const unfollowBlocked = computed(() => {
   return props.group.id === 1 || props.group.creator.ref === userStore.myInfo?.ref
 })

@@ -21,6 +21,9 @@ export abstract class ApiService {
         if (err.response.status === 401) {
           window.alert('만료된 인증정보 입니다.')
           this.fallbackAuth()
+        } else if (err.response.status === 500) {
+          this.authStore.circuitBreak = true
+          window.location.href = '/error'
         }
         return Promise.reject(err)
       }

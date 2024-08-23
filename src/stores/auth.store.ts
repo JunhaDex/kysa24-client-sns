@@ -7,6 +7,7 @@ export const useAuthStore = defineStore(
     const jwt = ref('')
     const fcm = ref('')
     const isGuide = ref(true)
+    const circuitBreak = ref(false)
 
     function setJwt(token: string) {
       jwt.value = token
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore(
       jwt,
       fcm,
       isGuide,
+      circuitBreak,
       setJwt,
       setFcm
     }

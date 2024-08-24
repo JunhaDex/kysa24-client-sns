@@ -13,7 +13,12 @@
       @click="searchUser"
     />
     <UserListDropdown :is-filtered="genFilter" @filter-user="filterUser">
-      <IconButton class="ml-2 btn-sm btn-white btn-square" :prefix-icon="CaretDownIcon" />
+      <IconButton
+        class="ml-2 btn-sm btn-white btn-square"
+        role="button"
+        tabindex="0"
+        :prefix-icon="CaretDownIcon"
+      />
     </UserListDropdown>
   </div>
 </template>

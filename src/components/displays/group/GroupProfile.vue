@@ -20,7 +20,12 @@
       </div>
       <div v-if="isCreator" class="action-area">
         <GroupCtrlDropdown class="dropdown-end" @delete-group="() => emit('deleteGroup')">
-          <IconButton class="btn-md btn-white btn-block whitespace-nowrap" :prefix-icon="GearIcon">
+          <IconButton
+            class="btn-md btn-white btn-block whitespace-nowrap"
+            role="button"
+            tabindex="0"
+            :prefix-icon="GearIcon"
+          >
             설정
           </IconButton>
         </GroupCtrlDropdown>
@@ -36,7 +41,12 @@
           :disabled="unfollowBlocked"
           @unfollow-group="unfollowGroup"
         >
-          <IconButton class="btn-sm btn-white btn-block text-xs" :suffix-icon="CaretDown">
+          <IconButton
+            class="btn-sm btn-white btn-block text-xs"
+            role="button"
+            tabindex="0"
+            :suffix-icon="CaretDown"
+          >
             팔로잉
           </IconButton>
         </UnfollowDropdown>

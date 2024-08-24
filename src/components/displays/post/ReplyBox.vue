@@ -40,7 +40,12 @@
           @open-profile="() => openAuthorProfile(reply.author)"
           @delete-instance="() => emit('removeReply', reply)"
         >
-          <IconButton class="btn-ghost btn-square btn-sm" :prefix-icon="VMoreIcon" />
+          <IconButton
+            class="btn-ghost btn-square btn-sm"
+            role="button"
+            tabindex="0"
+            :prefix-icon="VMoreIcon"
+          />
         </PostHandleDropdown>
       </li>
     </ul>
@@ -71,7 +76,9 @@ const { getTeamNameById } = setupTeamInfo()
 const inputCounter = computed<number>(() => {
   return new Blob([userInput.value]).size
 })
-const profileImg = computed(() => userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty)
+const profileImg = computed(() =>
+  userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty
+)
 const maxInputLength = MAX_POST_INPUT_SIZE
 
 onMounted(async () => {

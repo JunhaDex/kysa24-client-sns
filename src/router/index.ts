@@ -109,6 +109,7 @@ router.beforeEach((to, from, next) => {
     next(false)
     router.push({ name: '404' })
   } else {
+    document.body.classList.remove('prevent-scroll')
     const BYPASS = ['home', 'guide', 'login', '404', 'error']
     if (BYPASS.includes(to.name as string)) {
       if (authStore.jwt) {

@@ -72,6 +72,7 @@ function clickTicket() {
   padding: 0.6rem;
   border-top: 1px solid theme('colors.gray.300');
   justify-content: center;
+  background-color: theme('colors.gray.50');
 }
 
 .input-wrapper {

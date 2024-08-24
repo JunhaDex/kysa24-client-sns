@@ -6,7 +6,7 @@
   ></div>
 </template>
 <script lang="ts" setup>
-import { watchEffect } from 'vue'
+import { onBeforeUnmount, watchEffect } from 'vue'
 
 const props = defineProps<{
   isOpen: boolean
@@ -20,6 +20,10 @@ watchEffect(() => {
   } else {
     document.body.classList.remove('prevent-scroll')
   }
+})
+
+onBeforeUnmount(() => {
+  document.body.classList.remove('prevent-scroll')
 })
 </script>
 <style scoped>

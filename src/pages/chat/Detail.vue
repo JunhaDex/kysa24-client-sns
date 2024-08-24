@@ -21,7 +21,11 @@
             :key="chat.id"
           />
         </div>
-        <ChatMessageInput @send-message="sendMessage" @open-ticket="openTicketSend" />
+        <ChatMessageInput
+          class="chat-msg-input-btm"
+          @send-message="sendMessage"
+          @open-ticket="openTicketSend"
+        />
       </section>
     </template>
   </PageView>
@@ -150,5 +154,11 @@ function openTicketSend() {
 .chat-messages {
   flex: 1;
   overflow-y: auto;
+}
+
+.chat-msg-input-btm {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 </style>

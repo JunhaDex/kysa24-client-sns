@@ -1,5 +1,5 @@
 <template>
-  <BaseHeader>
+  <BaseHeader :is-fixed="true">
     <template #prefix>
       <ul class="flex space-x-1">
         <li @click="reroute">

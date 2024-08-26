@@ -9,8 +9,6 @@
 </template>
 <script setup lang="ts">
 import Container from '@/components/layouts/Container.vue'
-
-const emit = defineEmits(['resetInput'])
 </script>
 <style scoped>
 .full-cover {
@@ -22,5 +20,6 @@ const emit = defineEmits(['resetInput'])
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
 }
 </style>

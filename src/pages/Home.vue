@@ -4,12 +4,18 @@
       <Header />
     </template>
     <template #main>
-      <Container>
+      <Container class="relative z-[3]">
         <GroupSearchInput @search-group="searchGroup" ref="groupSearch" />
       </Container>
       <InitialLoad v-if="onRender" />
-      <SearchEmpty v-else-if="groupList.length === 0" @reset-input="() => searchGroup('')">
+      <SearchEmpty v-else-if="groupList.length === 0">
         <span>요청하신 결과가 없습니다.</span>
+        <div class="btn-group mt-6">
+          <button class="btn btn-md btn-primary mr-4" @click="() => searchGroup('')">
+            목록 초기화
+          </button>
+          <button class="btn btn-md btn-secondary" @click="reloadPage">새로고침</button>
+        </div>
       </SearchEmpty>
       <Container class="pb-6" v-else>
         <GroupCard
@@ -64,6 +70,7 @@ import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
 import PageLoader from '@/components/layouts/PageLoader.vue'
 import { useUserStore } from '@/stores/user.store'
 import { useRouter } from 'vue-router'
+import { reloadPage } from '@/utils/index.util'
 
 const isWelcomeModal = ref(false)
 const authStore = useAuthStore()
@@ -85,12 +92,6 @@ watch(
   },
   { immediate: true }
 )
-
-function copyFcm() {
-  const fcm = authStore.fcm
-  navigator.clipboard.writeText(fcm)
-  window.alert('FCM copied')
-}
 
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {

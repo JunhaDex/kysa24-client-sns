@@ -4,7 +4,7 @@
       <img v-if="group.coverImg" :src="group.coverImg" alt="Group Cover" class="cover-pic" />
       <p v-else class="group-header-default p-4">
         '주의 영이... 우리마음 가운데 <br />
-        큰 변화를 이루셨음으로'
+        큰 변화를 이루셨으므로'
       </p>
     </RouterLink>
     <div class="profile">

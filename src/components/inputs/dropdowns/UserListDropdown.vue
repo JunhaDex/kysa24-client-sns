@@ -4,8 +4,8 @@
       <slot />
     </template>
     <template #menus>
-      <li v-if="isFiltered !== 0" @click="() => handleClick('filterUser', 0)">
-        <span>전체 보기</span>
+      <li v-if="isFiltered !== 0 || isReset" @click="() => handleClick('filterUser', 0)">
+        <span>목록 초기화</span>
       </li>
       <li v-if="isFiltered !== 1" @click="() => handleClick('filterUser', 1)">
         <span>형제만 보기</span>
@@ -35,6 +35,7 @@ import { ref } from 'vue'
 
 const props = defineProps<{
   isFiltered: number
+  isReset?: boolean
 }>()
 
 const emit = defineEmits(['filterUser'])

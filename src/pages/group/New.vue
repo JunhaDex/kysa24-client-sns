@@ -26,6 +26,7 @@ import { GroupService } from '@/services/group.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import GroupForm from '@/components/displays/group/GroupForm.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const routerStack = [
   {
@@ -44,6 +45,7 @@ const routerStack = [
 const groupService = new GroupService()
 const toastStore = useToastStore()
 const groupForm = ref<typeof GroupForm>()
+const router = useRouter()
 
 async function createGroup(payload: any) {
   try {
@@ -51,6 +53,7 @@ async function createGroup(payload: any) {
     const res = await groupService.createGroup(payload)
     console.log(res)
     toastStore.showToast('그룹이 생성되었습니다.', 'success')
+    router.push({ name: 'home' })
   } catch (e) {
     console.error(e)
     toastStore.showToast('그룹을 생성할 수 없습니다. 잠시 후 다시 시도해주세요.', 'error')

@@ -5,7 +5,7 @@
         <img v-if="user.coverImg" :src="user.coverImg" alt="Group Cover" />
         <p v-else class="up-header-default p-4">
           '주의 영이... 우리마음 가운데 <br />
-          큰 변화를 이루셨음으로'
+          큰 변화를 이루셨으므로'
         </p>
         <button class="up-close-btn" @click="() => emit('modalClose')">
           <span class="icon-close"></span>

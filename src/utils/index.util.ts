@@ -65,3 +65,7 @@ export function genRandStr(len: number) {
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+export async function reloadPage() {
+  window.location.reload()
+}

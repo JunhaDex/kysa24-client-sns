@@ -15,7 +15,9 @@
 <script setup lang="ts">
 import Dropdown from '@/components/inputs/Dropdown.vue'
 import { ref } from 'vue'
+import { useToastStore } from '@/stores/ui/toast.store'
 
+const toastStore = useToastStore()
 const props = withDefaults(
   defineProps<{
     isAuthor: boolean
@@ -33,6 +35,9 @@ function openUserProfile() {
 }
 
 function copyShareLink() {
+  const url = window.location.href
+  navigator.clipboard.writeText(url)
+  toastStore.showToast('링크가 복사되었습니다.', 'success')
   drp.value!.close()
 }
 

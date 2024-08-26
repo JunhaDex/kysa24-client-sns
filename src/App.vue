@@ -9,14 +9,18 @@
       :target="target"
       @close-ticket-prompt="() => ticketStore.closeTicketModal()"
     />
-    <Modal :is-show="isHelp" title="대회 지원센터" @modal-close="() => isHelp = false">
+    <Modal :is-show="isHelp" title="대회 지원센터" @modal-close="() => (isHelp = false)">
       <p>
         대회 지원센터는 카카오톡 플러스친구를 통해 운영되고 있습니다.<br />
         카카오톡 사용이 어려운 경우, 운영위 및 대회 본부로 직접 문의해 주시기 바랍니다.
       </p>
       <div class="flex justify-end mt-6">
         <a href="http://pf.kakao.com/_VxiXAn" target="_blank">
-          <IconButton class="btn btn-md btn-primary" :suffix-icon="OutLink" @click="() => isHelp = false">
+          <IconButton
+            class="btn btn-md btn-primary"
+            :suffix-icon="OutLink"
+            @click="() => (isHelp = false)"
+          >
             오픈 카톡방
           </IconButton>
         </a>
@@ -55,6 +59,8 @@ const { stage, target } = storeToRefs(ticketStore)
 const { isHelp } = storeToRefs(toastStore)
 onMounted(async () => {
   console.log('App.vue mounted')
+  // set outside blur for mobile safari -> causing x scroll
+  // ;(document.body!.firstElementChild! as any).tabIndex = 1
   await initUserInfo()
   try {
     const fcm = await firebase.getUserToken()

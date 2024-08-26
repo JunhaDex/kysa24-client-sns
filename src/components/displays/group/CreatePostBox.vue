@@ -49,7 +49,7 @@
               class="btn-secondary btn-square btn-md mr-2"
               @click="clickMediaInput"
               :prefix-icon="ImageIcon"
-              :disabled="userInput.postImage"
+              :disabled="!isWritable || userInput.postImage"
             />
             <ProcessButton
               class="btn btn-primary btn-md"
@@ -75,6 +75,7 @@ import { throttle } from 'lodash-es'
 import { useUserStore } from '@/stores/user.store'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
 import ProcessButton from '@/components/inputs/ProcessButton.vue'
+import { useToastStore } from '@/stores/ui/toast.store'
 
 const emit = defineEmits(['submitPost'])
 const props = defineProps<{
@@ -83,6 +84,7 @@ const props = defineProps<{
 defineExpose({ resetUploadState })
 const postInput = ref<HTMLTextAreaElement>()
 const mediaInput = ref<HTMLInputElement>()
+const toastStore = useToastStore()
 const isPosting = ref(false)
 const userInput = ref<{
   postImage: any
@@ -167,6 +169,9 @@ const postSubmitCaller = throttle(() => {
 function clickSubmit() {
   if (userInput.value.postText) {
     postSubmitCaller()
+  } else {
+    toastStore.showToast('게시물 본문 입력은 필수입니다.', 'error')
+    return
   }
   resetInput()
 }

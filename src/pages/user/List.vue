@@ -4,12 +4,22 @@
       <Header />
     </template>
     <template #main>
-      <Container>
-        <UserSearchInput @search-user="searchUser" @filter-user="filterUser" />
+      <Container class="relative z-[3]">
+        <UserSearchInput
+          @search-user="searchUser"
+          @filter-user="filterUser"
+          @reset-all="resetSearchFilter"
+        />
       </Container>
       <InitialLoad v-if="onRender" />
-      <SearchEmpty v-else-if="groupMap.size === 0" @reset-input="() => searchUser('')">
+      <SearchEmpty v-else-if="groupMap.size === 0">
         <span>해당 참가자를 찾을 수 없습니다.</span>
+        <div class="btn-group mt-6">
+          <button class="btn btn-md btn-primary mr-4" @click="resetSearchFilter">
+            목록 초기화
+          </button>
+          <RouterLink to="/" class="btn btn-md btn-secondary">홈으로</RouterLink>
+        </div>
       </SearchEmpty>
       <Container v-else>
         <UserListCardGroup
@@ -69,6 +79,7 @@ async function fetchPage(pageNo = 1) {
       groupMap.value.clear()
       teamMap.value.clear()
       fetchConfig.mode = 'append'
+      console.log('haskey?', groupMap.value.size)
     }
     if (res.list.length > 0) {
       const teamId = res.list[0].teamId
@@ -86,28 +97,36 @@ async function fetchPage(pageNo = 1) {
 }
 
 async function searchUser(keyword: string) {
-  console.log('user search', keyword)
   fetchConfig.keyword = keyword
   fetchConfig.mode = 'replace'
   if (keyword.length === 0) {
     searchType = ''
   } else if (
-    keyword.includes('조') ||
     keyword.includes('팀') ||
     keyword.includes('운영') ||
     keyword.includes('집행') ||
     keyword.includes('준비') ||
-    /\d/.test(keyword)
+    /^\d+조?$/.test(keyword)
   ) {
     searchType = 'team'
   } else {
     searchType = 'name'
   }
-  await fetchPage()
+  if (keyword.length > 0) {
+    await fetchPage()
+  }
 }
 
 async function filterUser(gen: number) {
   genFilter.value = gen
+  fetchConfig.mode = 'replace'
+  await fetchPage()
+}
+
+async function resetSearchFilter() {
+  fetchConfig.keyword = ''
+  searchType = ''
+  genFilter.value = 0
   fetchConfig.mode = 'replace'
   await fetchPage()
 }

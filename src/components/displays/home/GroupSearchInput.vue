@@ -13,14 +13,12 @@
       :prefix-icon="SearchIcon"
     />
     <RouterLink to="/group/new">
-      <div class="tooltip tooltip-bottom tooltip-secondary" data-tip="그룹만들기">
-        <IconButton class="btn-secondary btn-sm btn-square ml-2" :prefix-icon="PlusIcon" />
-      </div>
+      <IconButton class="btn-secondary btn-sm btn-square ml-2" :prefix-icon="PlusIcon" />
     </RouterLink>
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import IconButton from '@/components/inputs/IconButton.vue'
 import SearchIcon from '@/assets/icons/Search.svg'
 import PlusIcon from '@/assets/icons/Plus.svg'

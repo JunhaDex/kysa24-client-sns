@@ -58,7 +58,7 @@ export const USER_EXTRA_LIST: UserExtraListUI = {
   },
   movie: {
     key: 'movie',
-    alias: '좋이하는 영화',
+    alias: '좋아하는 영화',
     icon: 'icon-movie'
   },
   book: {

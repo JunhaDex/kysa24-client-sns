@@ -10,10 +10,9 @@
       <InitialLoad v-if="onRender" />
       <SearchEmpty v-else-if="chatRoomList.length === 0">
         <span>표시할 내용이 없습니다.</span>
-        <!--TODO: update all search empty-->
-        <!--<div class="btn-group mt-6">-->
-        <!--  <button class="btn btn-md btn-primary">홈으로</button>-->
-        <!--</div>-->
+        <div class="btn-group mt-6">
+          <button class="btn btn-md btn-primary">홈으로</button>
+        </div>
       </SearchEmpty>
       <Container v-else>
         <h2 class="font-bole font-sm mb-2 mt-4">수신 거부 목록</h2>

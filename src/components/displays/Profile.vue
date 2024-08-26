@@ -3,7 +3,7 @@
     <img v-if="coverImg" :src="coverImg" alt="group-cover" />
     <p v-else class="cover-image-default">
       '주의 영이... 우리마음 가운데 <br />
-      큰 변화를 이루셨음으로'
+      큰 변화를 이루셨으므로'
     </p>
   </div>
   <div class="profile-container">

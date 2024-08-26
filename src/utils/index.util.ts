@@ -50,7 +50,7 @@ export function sfx(sex: number) {
 
 export function timeOnly(time: Date | string): string {
   const local = dayjs(time).tz()
-  return local.format('A hh:mm')
+  return local.format('hh:mm A')
 }
 
 export function genRandStr(len: number) {

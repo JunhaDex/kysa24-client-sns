@@ -1,8 +1,5 @@
 <template>
-  <PageView>
-    <template #header>
-      <Header />
-    </template>
+  <PageView headless>
     <template #main>
       <Container>
         <div class="text-3xl font-bold underline">404</div>

@@ -6,7 +6,7 @@
     <template #main>
       <div class="splash"></div>
       <div class="container relative mx-auto">
-        <LoginBox @login="processLogin" ref="loginBox" />
+        <LoginBox class="login-box" @login="processLogin" ref="loginBox" />
       </div>
     </template>
     <template #footer>
@@ -54,9 +54,8 @@ async function processLogin(payload: { id: string; pwd: string }) {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition:
-    top 0.3s ease-in-out 0s,
-    top 0.2s ease-in-out 0s;
+  transition: top 0.3s ease-in-out 0s,
+  top 0.2s ease-in-out 0s;
   z-index: 9;
 }
 
@@ -65,22 +64,24 @@ async function processLogin(payload: { id: string; pwd: string }) {
 }
 
 .container {
-  padding-top: 50%;
   height: calc(100vh - var(--footer-height));
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
 }
 
 .splash {
+  max-width: 686px;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   height: calc(100vh - var(--footer-height) + 16px);
   background-image: url('@/assets/images/app_splash.png');
   background-size: cover;
   background-position: center;
 }
+
 </style>

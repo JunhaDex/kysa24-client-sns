@@ -1,7 +1,6 @@
 <template>
   <RouterView :key="route.fullPath" />
   <div class="teleport">
-    <!--SideBar, Alert, Toast, No Modal-->
     <!--Component here controlled by ui store (not main logic)-->
     <SideNav :key="jwt" />
     <SendTicketModal

@@ -1,5 +1,5 @@
 <template>
-  <PageView>
+  <PageView headless>
     <template #main>
       <Container>
         <div class="text-3xl font-bold underline">서버에러</div>
@@ -14,7 +14,6 @@
 </template>
 <script setup lang="ts">
 import PageView from '@/components/layouts/PageView.vue'
-import Header from '@/components/layouts/Header.vue'
 import Container from '@/components/layouts/Container.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import { useAuthStore } from '@/stores/auth.store'

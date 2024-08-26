@@ -189,7 +189,7 @@ function logOut() {
   background-color: theme('colors.white');
   border-left: 1px solid theme('colors.gray.300');
   padding: 1rem;
-  transition: right 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 9;
 }
 
@@ -206,9 +206,9 @@ function logOut() {
 
 @media (min-width: 768px) {
   .side-nav {
-    left: 0;
+    left: -100%;
     width: 300px;
-    border-left: none;
+    border-right: 1px solid theme('colors.gray.300');
   }
 
   .open {

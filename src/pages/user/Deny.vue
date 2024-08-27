@@ -81,8 +81,7 @@ const userSelected = ref<User>()
 async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
-    const res = await chatService.getDeniedUsers({ page: { page: pageNo } })
-    console.log(res)
+    await chatService.getDeniedUsers({ page: { page: pageNo } })
     pageMeta.value = res.meta
     chatRoomList.value.push(...res.list)
     isFetching.value = false

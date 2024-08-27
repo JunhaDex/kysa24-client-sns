@@ -13,7 +13,6 @@ export const useToastStore = defineStore('toast', () => {
     message.value = msg
     isShow.value = true
     msgLevel.value = type
-    console.log('Toast: ', msg)
     setTimeout(() => {
       isShow.value = false
     }, 2300)

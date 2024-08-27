@@ -56,7 +56,7 @@ export function timeOnly(time: Date | string): string {
 export function genRandStr(len: number) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < len; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length))
   }
   return result

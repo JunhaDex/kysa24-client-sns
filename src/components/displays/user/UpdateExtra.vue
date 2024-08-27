@@ -104,7 +104,6 @@ async function saveInfo() {
     isProgress.value = true
     try {
       const inst = cleanInfo()
-      console.log(inst)
       await userService.updateUserExtra(props.user.ref, inst)
       emit('updateDone')
       toastStore.showToast('내 정보 수정 완료!', 'success')

@@ -2,7 +2,7 @@
   <div v-show="isShow" class="modal-main" :class="$attrs.class">
     <slot />
   </div>
-  <Backdrop :is-open="isShow" @bg-click="$emit('modalClose')" />
+  <Backdrop :is-open="isShow" @bg-click="() => emit('modalClose')" />
 </template>
 <script setup lang="ts">
 import Backdrop from '@/components/feedbacks/Backdrop.vue'

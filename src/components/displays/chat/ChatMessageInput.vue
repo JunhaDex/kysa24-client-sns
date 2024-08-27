@@ -22,7 +22,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { throttle } from 'lodash-es'
 
 const emit = defineEmits(['sendMessage', 'openTicket'])

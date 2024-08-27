@@ -37,7 +37,6 @@ const userSelected = ref<User>(props.users[0])
 const isProfileModal = ref(false)
 
 function openProfileModal(user: User) {
-  console.log(user)
   userSelected.value = user
   isProfileModal.value = true
 }

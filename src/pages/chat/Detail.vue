@@ -92,7 +92,6 @@ async function scrollToBottom() {
 onMounted(async () => {
   const roomRef = route.params.ref as string
   const res = await chatService.getChatRoomDetail(roomRef)
-  console.log(res)
   chatRoomDetail.value = res.chatRoom
   participants.value.push(...res.users)
   await fetchPage()
@@ -109,7 +108,6 @@ onMounted(async () => {
       chatList.value.push(newChat)
     } catch (e) {
       console.error(e)
-      console.log(event.data)
     }
   }
   chatSocket.onclose = () => {
@@ -117,7 +115,6 @@ onMounted(async () => {
     toastStore.showToast('채팅서버 수신불가 새로고침 하세요.', 'error')
   }
   onRender.value = false
-  console.log(chatRoomTitle.value)
   await nextTick(() => {
     scrollToBottom()
     setPgnator.value = true
@@ -132,7 +129,6 @@ onBeforeUnmount(async () => {
 })
 
 function sendMessage(payload: string) {
-  console.log(payload)
   chatSocket.send(JSON.stringify({ message: payload, encoded: false }))
 }
 

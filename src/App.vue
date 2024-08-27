@@ -51,7 +51,6 @@ const authService = new AuthService()
 const userService = new UserService()
 const toastStore = useToastStore()
 const firebase = new FirebaseProvider()
-const favicon = document.querySelector('favicon-badge') as any
 const route = useRoute()
 const { jwt } = storeToRefs(authStore)
 const { stage, target } = storeToRefs(ticketStore)
@@ -63,41 +62,19 @@ onMounted(async () => {
   await initUserInfo()
   try {
     const fcm = await firebase.getUserToken()
-    console.log('fcm', fcm)
     authStore.setFcm(fcm!)
     firebase.setupMessageListener(() => {
-      console.log('message received')
       toastStore.showToast('새로운 메시지가 도착했습니다.', 'msg')
     })
   } catch (e) {
     console.error(e)
   }
-
-  // app badge
-  const supportAppBadge = 'setAppBadge' in navigator
-  console.log('supportAppBadge', supportAppBadge)
-  // if (matchMedia('(display-mode: standalone)').matches && supportAppBadge) {
-  //   console.log('native badge')
-  //   setAppBadgeNative(1)
-  // } else {
-  //   console.log('favicon badge')
-  //   setAppBadgeFavicon(1)
-  // }
 })
-
-function setAppBadgeFavicon(value: number) {
-  favicon.badge = value
-}
-
-function setAppBadgeNative(value: number) {
-  navigator.setAppBadge(value)
-}
 
 async function initUserInfo() {
   if (authStore.circuitBreak) return
   if (userStore.teams.length === 0) {
     userStore.teams = await userService.listTeams()
-    console.log('teams', userStore.teams)
   }
   if (authStore.jwt && userStore.myInfo === undefined) {
     userStore.myInfo = await authService.getMy()

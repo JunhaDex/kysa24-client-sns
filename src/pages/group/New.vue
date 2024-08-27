@@ -50,8 +50,7 @@ const router = useRouter()
 async function createGroup(payload: any) {
   try {
     // send request
-    const res = await groupService.createGroup(payload)
-    console.log(res)
+    await groupService.createGroup(payload)
     toastStore.showToast('그룹이 생성되었습니다.', 'success')
     router.push({ name: 'home' })
   } catch (e) {

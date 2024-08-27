@@ -15,10 +15,8 @@ export class FirebaseProvider {
     try {
       const userToken = await getToken(this.messaging, { vapidKey: firebaseConfig.vapidKey })
       if (userToken) {
-        console.log('userToken:', userToken)
         return userToken
       } else {
-        console.log('no permission!')
         Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
             return this.getUserToken()
@@ -33,7 +31,6 @@ export class FirebaseProvider {
 
   setupMessageListener(uiResolver: any): void {
     onMessage(this.messaging, (payload) => {
-      console.log('Message received foreground: ', payload)
       uiResolver()
     })
   }

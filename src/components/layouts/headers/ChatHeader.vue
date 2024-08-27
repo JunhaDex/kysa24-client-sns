@@ -37,7 +37,6 @@ function goBack() {
 }
 
 function reroute() {
-  console.log(props.route)
   if (props.route) {
     router.replace(props.route)
   }

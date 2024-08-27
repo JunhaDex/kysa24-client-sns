@@ -6,11 +6,9 @@ import firebaseConfig from '../secret/firebase-config.json'
 declare const clients: any
 
 console.log('messaging-sw loaded!')
-console.log(navigator.serviceWorker)
 const app = initializeApp(firebaseConfig)
 const messaging = getMessaging(app)
 onBackgroundMessage(messaging, (payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload)
   const res = payload.data?.raw
   if (res) {
     const parsed: any = JSON.parse(res)
@@ -24,7 +22,6 @@ onBackgroundMessage(messaging, (payload) => {
       }
     }
     self.addEventListener('notificationclick', (event: any) => {
-      console.log('On notification click: ', event.notification.data.url)
       const urlToOpen = event.notification.data.url
       event.notification.close()
       event.waitUntil(

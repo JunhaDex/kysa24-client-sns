@@ -43,7 +43,7 @@ import IconButton from '@/components/inputs/IconButton.vue'
 import VMoreIcon from '@/assets/icons/VMore.svg'
 import type { ChatRoom } from '@/types/general.type'
 import { tts } from '@/utils/index.util'
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import ProfileEmpty from '@/assets/images/profile_empty.png'
 import { useUserStore } from '@/stores/user.store'
 
@@ -70,9 +70,6 @@ const hasUnread = computed(
     props.chatRoom.lastChat.sender !== userStore.myInfo?.id &&
     props.chatRoom.lastChat.id > props.chatRoom.lastRead
 )
-onMounted(() => {
-  console.log(props.chatRoom.lastChat)
-})
 </script>
 <style scoped>
 .chat-list-item {

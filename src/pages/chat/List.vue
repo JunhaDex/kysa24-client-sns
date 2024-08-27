@@ -81,7 +81,6 @@ async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
     const res = await chatService.listRecentChatRooms({ page: { page: pageNo } })
-    console.log(res)
     pageMeta.value = res.meta
     chatRoomList.value.push(...res.list)
     isFetching.value = false

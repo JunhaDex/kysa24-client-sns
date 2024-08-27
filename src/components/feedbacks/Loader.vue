@@ -13,7 +13,6 @@ const { stop } = useIntersectionObserver(
   loader,
   ([entry]) => {
     if (entry.isIntersecting) {
-      console.log('intersecting')
       emit('loadMore')
     }
   },

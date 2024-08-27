@@ -135,14 +135,12 @@ async function allowPush() {
     isPermission.value.push = true
     try {
       const fcm = await firebase.getUserToken()
-      console.log('fcm', fcm)
       authStore.setFcm(fcm!)
       await userService.updateMyDevice(userInfo.value!.ref, {
         token: fcm!,
         device: navigator.userAgent
       })
       firebase.setupMessageListener(() => {
-        console.log('message received')
         toastStore.showToast('새로운 메시지가 도착했습니다.', 'msg')
       })
       toastStore.showToast('푸시 알림을 설정했습니다.', 'success')

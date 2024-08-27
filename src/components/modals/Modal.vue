@@ -3,7 +3,11 @@
     <div class="box-wrap">
       <div class="modal-header">
         <h2 class="font-bold">{{ title }}</h2>
-        <IconButton class="btn-ghost btn-square" :prefix-icon="CloseIcon" @click="$emit('modalClose')"></IconButton>
+        <IconButton
+          class="btn-ghost btn-square"
+          :prefix-icon="CloseIcon"
+          @click="() => emit('modalClose')"
+        ></IconButton>
       </div>
       <div class="modal-content">
         <slot />

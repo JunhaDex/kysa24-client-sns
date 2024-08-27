@@ -24,7 +24,7 @@
     <!--if not logged in-->
     <div v-else class="nav-profile mx-4 py-4">
       <RouterLink class="btn btn-sm btn-primary btn-block" to="/login" @click="closeSidebar"
-      >로그인
+        >로그인
       </RouterLink>
     </div>
     <ul class="menu text-xl">
@@ -83,10 +83,15 @@
     </div>
     <div class="nav-bottom">
       <div class="nav-support mb-2">
-        <span class="support-item" @click="() => {
-          isHelp = true
-          closeSidebar()
-        }">
+        <span
+          class="support-item"
+          @click="
+            () => {
+              isHelp = true
+              closeSidebar()
+            }
+          "
+        >
           <img class="profile-sm mr-2" src="@/assets/icons/Support.svg" alt="Support Icon" />
           <span class="flex-1">대회 지원센터</span>
         </span>
@@ -158,7 +163,6 @@ watch(
 )
 onMounted(async () => {
   myGroups.value = await groupService.getMyGroups()
-  console.log(myGroups.value)
 })
 const profileImg = computed(() =>
   userStore.myInfo?.profileImg ? userStore.myInfo.profileImg : ProfileEmpty

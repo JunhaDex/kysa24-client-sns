@@ -73,13 +73,11 @@ async function fetchPage(pageNo = 1) {
       team: searchType === 'team' ? fetchConfig.keyword : undefined,
       sex: [1, 2].includes(genFilter.value) ? genFilter.value : undefined
     })
-    console.log(res)
     pageMeta.value = res.meta
     if (fetchConfig.mode === 'replace') {
       groupMap.value.clear()
       teamMap.value.clear()
       fetchConfig.mode = 'append'
-      console.log('haskey?', groupMap.value.size)
     }
     if (res.list.length > 0) {
       const teamId = res.list[0].teamId

@@ -196,8 +196,7 @@ async function openProfileModal(user: Profile) {
 async function deleteGroup() {
   if (isGroupEmpty.value) {
     try {
-      const res = await groupService.deleteGroup(groupItem.value!.ref)
-      console.log(res)
+      await groupService.deleteGroup(groupItem.value!.ref)
       toastStore.showToast('그룹이 삭제되었습니다.', 'success')
       router.replace({ name: 'home' })
     } catch (e) {
@@ -216,8 +215,7 @@ async function openDeletePostModal(post: Post) {
 
 async function deletePost() {
   try {
-    const res = await postService.deletePost(postDeleteItem.value!.id)
-    console.log(res)
+    await postService.deletePost(postDeleteItem.value!.id)
     window.location.reload()
   } catch (e) {
     console.error(e)
@@ -243,8 +241,7 @@ async function submitCreatePost(payload: { postText: string; postImageFile?: any
         message: payload.postText,
         image: urls.postImgUrl?.location
       }
-      const res = await postService.createPost(newPost)
-      console.log(res)
+      await postService.createPost(newPost)
       toastStore.showToast('게시물이 업로드되었습니다.', 'success')
       await resetPostList()
     } catch (e) {

@@ -127,7 +127,6 @@ async function getPost() {
     return
   }
   const res = await postService.getPostById(Number(rpm))
-  console.log(res)
   postItem.value = res.post
   pageMeta.value = res.reply.meta
   replyList.value.push(...res.reply.list)
@@ -176,8 +175,7 @@ async function likePost(payload: any) {
 async function submitReply(message: string) {
   if (message.length > 0) {
     try {
-      const res = await postService.createReply(postItem.value!.id, { message })
-      console.log(res)
+      await postService.createReply(postItem.value!.id, { message })
     } catch (e) {
       console.error(e)
       toastStore.showToast('댓글을 작성하는 중 오류가 발생했습니다.', 'error')
@@ -188,8 +186,7 @@ async function submitReply(message: string) {
 
 async function removeReply(reply: Reply) {
   try {
-    const res = await postService.deleteReply(postItem.value!.id, reply.id)
-    console.log(res)
+    await postService.deleteReply(postItem.value!.id, reply.id)
     isRemoveReply.value = true
   } catch (e) {
     console.error(e)
@@ -203,8 +200,7 @@ async function openDeletePostModal() {
 
 async function deletePost() {
   try {
-    const res = await postService.deletePost(postItem.value!.id)
-    console.log(res)
+    await postService.deletePost(postItem.value!.id)
     toastStore.showToast('게시물이 삭제되었습니다.', 'success')
     router.replace({ name: 'group_feed', params: { ref: groupRef } })
   } catch (e) {

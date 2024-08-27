@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import Box from '@/components/layouts/Box.vue'
 import { computed, onMounted, ref } from 'vue'
-import type { Reply, User } from '@/types/general.type'
+import type { Reply } from '@/types/general.type'
 import { setupTeamInfo } from '@/stores/setups/team.composition'
 import { tts } from '@/utils/index.util'
 import { MAX_POST_INPUT_SIZE } from '@/constants/index.constant'

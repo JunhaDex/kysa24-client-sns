@@ -17,7 +17,8 @@
       </div>
       <div class="post-action">
         <PostHandleDropdown
-          class="dropdown-end" :post-reply-id="post.id"
+          class="dropdown-end"
+          :post-reply-id="post.id"
           :is-author="post.author.ref === userStore.myInfo?.ref"
           @open-profile="() => emit('openProfile', post.author)"
           @delete-instance="() => emit('deletePost', post)"
@@ -77,7 +78,9 @@ const emit = defineEmits(['likePost', 'openProfile', 'deletePost'])
 const userStore = useUserStore()
 const likeState = ref(!!props.post.already)
 const isImageFail = ref(false)
-const profileImg = computed(() => props.post.author.profileImg ? props.post.author.profileImg : ProfileEmpty)
+const profileImg = computed(() =>
+  props.post.author.profileImg ? props.post.author.profileImg : ProfileEmpty
+)
 
 onMounted(() => {
   isImageFail.value = !props.post.image
@@ -86,7 +89,6 @@ onMounted(() => {
 const throttleLike = throttle(
   () => {
     likeState.value = !likeState.value
-    console.log('likeState', likeState.value)
     emit('likePost', { post: props.post, isLike: likeState.value })
   },
   1000,
@@ -94,12 +96,10 @@ const throttleLike = throttle(
 )
 
 function clickLike() {
-  console.log('click like')
   throttleLike()
 }
 
 function disableImage() {
-  console.log('err hook')
   isImageFail.value = true
 }
 

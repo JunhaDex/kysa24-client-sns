@@ -155,7 +155,6 @@ onMounted(async () => {
 })
 
 async function searchGroup(keyword: string) {
-  console.log('user input:', keyword)
   fetchConfig.keyword = keyword
   fetchConfig.mode = 'replace'
   await fetchPage()

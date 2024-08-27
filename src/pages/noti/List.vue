@@ -60,7 +60,6 @@ async function fetchPage(pageNo = 1) {
   if (!isFetching.value) {
     isFetching.value = true
     const res = await userService.listNotifications({ page: { page: pageNo } })
-    console.log(res)
     pageMeta.value = res.meta
     if (fetchConfig.mode === 'replace') {
       notiList.value = res.list

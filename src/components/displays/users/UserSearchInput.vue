@@ -78,7 +78,6 @@ function searchUser() {
 }
 
 function filterUser(filter: number) {
-  console.log('filter?')
   genFilter.value = filter
   if (filter === 0) {
     userInput.value = ''

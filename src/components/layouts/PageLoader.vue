@@ -21,12 +21,10 @@ const { stop } = useIntersectionObserver(
   pageLoader,
   ([{ isIntersecting }]) => {
     if (isIntersecting) {
-      console.log('load more')
       if (props.hasMore) {
         startInterval()
       }
     } else {
-      console.log('out of sight')
       stopInterval()
     }
   },
@@ -41,7 +39,6 @@ onUnmounted(() => {
 function startInterval() {
   if (interval === null) {
     interval = setInterval(() => {
-      console.log('pageLoad!')
       emit('loadMore')
     }, 1000)
   }

@@ -1,21 +1,32 @@
 <template>
-  <div class="carousel-wrap"
-       @pointerdown="touchStart"
-       @pointermove="touchMove"
-       @pointerup="touchEnd"
-       @click="showController"
+  <div
+    class="carousel-wrap"
+    @pointerdown="touchStart"
+    @pointermove="touchMove"
+    @pointerup="touchEnd"
+    @touchstart="touchStart"
+    @touchmove="touchMove"
+    @touchend="touchEnd"
+    @click="showController"
   >
-    <div class="post-carousel" :style="{ transform: `translateX(calc(-${current * 100}% - ${current * 16}px))` }">
+    <div
+      class="post-carousel"
+      :style="{ transform: `translateX(calc(-${current * 100}% - ${current * 16}px))` }"
+    >
       <slot />
     </div>
-    <div v-if="itemCount > 1" class="carousel-control" :class="{visible: isController}">
+    <div v-if="itemCount > 1" class="carousel-control" :class="{ visible: isController }">
       <IconButton class="btn-sm btn-square" :prefix-icon="Back" @click="slidePrev" />
       <IconButton class="btn-sm btn-square" :prefix-icon="Forward" @click="slideNext" />
     </div>
   </div>
   <div v-if="itemCount > 1" class="carousel-dots mb-2">
-      <span v-for="index in itemCount" class="c-dot" :class="{'is-now': (index-1) === current}"
-            :key="`cd-${index}`"></span>
+    <span
+      v-for="index in itemCount"
+      class="c-dot"
+      :class="{ 'is-now': index - 1 === current }"
+      :key="`cd-${index}`"
+    ></span>
   </div>
 </template>
 <script setup lang="ts">
@@ -44,7 +55,6 @@ function showController() {
   }, 3000)
 }
 
-
 function slideNext() {
   current.value = (current.value + 1) % props.itemCount
 }
@@ -53,19 +63,27 @@ function slidePrev() {
   current.value = (current.value - 1 + props.itemCount) % props.itemCount
 }
 
-function touchStart(e: PointerEvent) {
-  touchStartX.value = e.clientX
+function touchStart(e: any) {
+  if (e instanceof TouchEvent) {
+    touchStartX.value = e.touches[0].clientX
+  } else {
+    touchStartX.value = e.clientX
+  }
 }
 
-function touchMove(e: PointerEvent) {
-  touchEndX.value = e.clientX
+function touchMove(e: any) {
+  if (e instanceof TouchEvent) {
+    touchEndX.value = e.touches[0].clientX
+  } else {
+    touchEndX.value = e.clientX
+  }
 }
 
 function touchEnd() {
   if (touchStartX.value - touchEndX.value > 50) {
-    slideNext()
-  } else if (touchStartX.value - touchEndX.value < -50) {
     slidePrev()
+  } else if (touchStartX.value - touchEndX.value < -50) {
+    slideNext()
   }
 }
 </script>
@@ -112,6 +130,6 @@ function touchEnd() {
 }
 
 .c-dot.is-now {
-  background-color: #000
+  background-color: #000;
 }
 </style>

@@ -26,8 +26,10 @@
               <p>등록된 정보가 없습니다.</p>
             </div>
             <ul v-else>
-              <li v-for="key in Object.keys(extra!)" :key="key">
-                <span class="text-sm font-bold">{{ USER_EXTRA_LIST[key].alias }}: </span>
+              <li class="mb-1" v-for="key in Object.keys(extra!).sort()" :key="key">
+                <span class="text-sm font-bold align-middle">
+                  ▸ {{ USER_EXTRA_LIST[key].alias }}:
+                </span>
                 <span>{{ extra![key] }}</span>
               </li>
             </ul>

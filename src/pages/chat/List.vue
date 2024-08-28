@@ -10,6 +10,9 @@
       <InitialLoad v-if="onRender" />
       <SearchEmpty v-else-if="chatRoomList.length === 0">
         <span>표시할 내용이 없습니다.</span>
+        <div class="btn-group mt-6">
+          <RouterLink class="btn btn-md btn-primary" to="/">홈으로</RouterLink>
+        </div>
       </SearchEmpty>
       <Container class="pb-6" v-else>
         <ChatRoomCard
@@ -53,6 +56,7 @@ import SearchEmpty from '@/components/layouts/SearchEmpty.vue'
 import UserProfileModal from '@/components/modals/UserProfileModal.vue'
 import { useToastStore } from '@/stores/ui/toast.store'
 import { useRouter } from 'vue-router'
+import { reloadPage } from '@/utils/index.util'
 
 const routerStack = ref([
   {

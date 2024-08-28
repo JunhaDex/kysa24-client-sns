@@ -20,6 +20,7 @@
             class="input input-bordered input-sm"
             type="text"
             placeholder="내용을 입력하세요"
+            @input="ignoreInput"
           />
           <span class="icon icon-x" @click="() => removeInfoItem(idx)"></span>
         </div>
@@ -46,6 +47,7 @@ import type { User } from '@/types/general.type'
 import { useToastStore } from '@/stores/ui/toast.store'
 
 const DEFAULT_INFO_NUM = 5
+const MAX_INPUT_LENGTH = 100
 const userService = new UserService()
 const toastStore = useToastStore()
 const extraList = Object.values(USER_EXTRA_LIST)
@@ -81,6 +83,12 @@ function parseInfo() {
 
 function addInfoItem() {
   infoList.value.push({ key: '', value: '' })
+}
+
+function ignoreInput(e) {
+  if (e.target.value.length > MAX_INPUT_LENGTH) {
+    e.target.value = e.target.value.slice(0, MAX_INPUT_LENGTH)
+  }
 }
 
 function removeInfoItem(idx: number) {

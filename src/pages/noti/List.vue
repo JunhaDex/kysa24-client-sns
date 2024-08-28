@@ -18,6 +18,9 @@
       <InitialLoad v-if="onRender" />
       <SearchEmpty v-else-if="notiList.length === 0">
         <span>새로운 알림이 없습니다.</span>
+        <div class="btn-group mt-6">
+          <RouterLink class="btn btn-md btn-primary" to="/">홈으로</RouterLink>
+        </div>
       </SearchEmpty>
       <Container v-else stretch>
         <NotiCard

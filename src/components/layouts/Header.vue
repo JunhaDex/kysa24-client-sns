@@ -15,7 +15,7 @@ import BaseHeader from '@/components/layouts/headers/BaseHeader.vue'
 .header-logo {
   display: inline-block;
   width: 26px;
-  height: 24px;
+  height: 26px;
 }
 
 .header-brand {

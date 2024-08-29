@@ -86,7 +86,7 @@ function releaseLogin() {
 .login-logo {
   display: inline-block;
   width: 30px;
-  height: 28px;
+  height: 30px;
 }
 
 .links {

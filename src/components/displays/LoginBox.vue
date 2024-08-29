@@ -41,7 +41,10 @@
       </ProcessButton>
       <RouterLink to="/" class="btn btn-ghost btn-block btn-sm text-xs"> 뒤로가기</RouterLink>
     </form>
-    <div class="links mt-2"><a href="#">이용약관</a> | <a href="#">사용 설명서</a></div>
+    <div class="links mt-2">
+      <a href="https://abundant-laser-136.notion.site/mate-0e1176e6004d42618eea77f8d656bf08" target="_blank">이용약관</a> |
+      <a href="https://docs.kysa.page/" target="_blank">사용 설명서</a>
+    </div>
   </Box>
 </template>
 <script setup lang="ts">

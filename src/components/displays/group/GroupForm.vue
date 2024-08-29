@@ -65,7 +65,11 @@
           type="checkbox"
           id="terms"
         />
-        <label class="text-sm" for="terms">표준을 준수하고 이용약관에 동의합니다.</label>
+        <label class="text-sm" for="terms">표준을 준수하고
+          <a class="underline"
+             href="https://abundant-laser-136.notion.site/mate-0e1176e6004d42618eea77f8d656bf08"
+             target="_blank">이용약관</a>
+          에 동의합니다.</label>
       </div>
       <ProcessButton
         class="btn btn-sm btn-primary btn-block"

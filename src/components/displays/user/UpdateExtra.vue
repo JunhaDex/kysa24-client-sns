@@ -4,7 +4,7 @@
       <div class="form-box-header mb-4">
         <span class="text-xs">항목추가를 눌러 내 정보를 추가하세요!</span>
         <IconButton class="btn-xs btn-primary" :prefix-icon="PlusIcon" @click="addInfoItem"
-          >항목추가
+        >항목추가
         </IconButton>
       </div>
       <div class="form-box-content">
@@ -85,7 +85,7 @@ function addInfoItem() {
   infoList.value.push({ key: '', value: '' })
 }
 
-function ignoreInput(e) {
+function ignoreInput(e: any) {
   if (e.target.value.length > MAX_INPUT_LENGTH) {
     e.target.value = e.target.value.slice(0, MAX_INPUT_LENGTH)
   }

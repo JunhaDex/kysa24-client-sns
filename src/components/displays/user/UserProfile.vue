@@ -6,8 +6,8 @@
   >
     <div class="user-profile-wrap">
       <div class="name-area mr-4">
-        <h2 class="text-xl font-bold">
-          {{ user.nickname }} <span class="text-sm">{{ subfix }}</span>
+        <h2 class="text-xl font-bold whitespace-pre">
+          {{ nickFormat }} <span class="text-sm">{{ subfix }}</span>
         </h2>
         <ul>
           <li class="align-center">
@@ -40,7 +40,7 @@
   <Container>
     <Box>
       <h2 class="font-bold text-sm mb-2">상태 메세지</h2>
-      <p>
+      <p class="whitespace-pre">
         {{ user.introduce }}
       </p>
     </Box>
@@ -65,6 +65,37 @@ const userStore = useUserStore()
 const router = useRouter()
 const subfix = computed(() => {
   return sfx(props.user.sex)
+})
+const nickFormat = computed(() => {
+  const tokens = props.user.nickname.split(' ')
+  tokens.push(subfix.value)
+  let lines = []
+  let currentLine = ''
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i]
+
+    if (token.length > 11) {
+      if (currentLine) {
+        lines.push(currentLine.trim())
+        currentLine = ''
+      }
+      const breakIndex = Math.ceil(token.length / 2)
+      lines.push(token.slice(0, breakIndex) + '-')
+      currentLine = token.slice(breakIndex)
+    } else if ((currentLine + ' ' + token).trim().length > 11) {
+      lines.push(currentLine.trim())
+      currentLine = token
+    } else {
+      currentLine += (currentLine ? ' ' : '') + token
+    }
+  }
+
+  if (currentLine) {
+    lines.push(currentLine.trim())
+  }
+
+  return lines.join('\n').slice(0, -2)
 })
 const team = computed(() => {
   const match = userStore.teams.find((team) => team.id === props.user.teamId)
@@ -112,7 +143,7 @@ function gotoProfile() {
 }
 
 .team-icon {
-  mask-image: url('@/assets/icons/Users.svg');
-  -webkit-mask-image: url('@/assets/icons/Users.svg');
+  mask-image: url('@/assets/icons/UsersFill.svg');
+  -webkit-mask-image: url('@/assets/icons/UsersFill.svg');
 }
 </style>

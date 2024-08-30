@@ -13,7 +13,9 @@
       :prefix-icon="SearchIcon"
     />
     <RouterLink to="/group/new">
-      <IconButton class="btn-secondary btn-sm btn-square ml-2" :prefix-icon="PlusIcon" />
+      <div class="tooltip tooltip-bottom tooltip-secondary" data-tip="그룹만들기">
+        <IconButton class="btn-secondary btn-sm btn-square ml-2" :prefix-icon="PlusIcon" />
+      </div>
     </RouterLink>
   </div>
 </template>

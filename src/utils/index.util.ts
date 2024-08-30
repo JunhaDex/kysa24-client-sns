@@ -44,6 +44,11 @@ export function tts(time: Date | string): string {
   else return local.format('MM월DD일 HH:mm')
 }
 
+export function birthday(time: Date | string): string {
+  const local = dayjs(time).tz()
+  return local.add(1, 'day').format('YYYY년 MM월 DD일')
+}
+
 export function sfx(sex: number) {
   return sex === 1 ? '형제' : '자매'
 }

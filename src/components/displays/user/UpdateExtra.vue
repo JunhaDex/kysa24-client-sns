@@ -47,7 +47,7 @@ import type { User } from '@/types/general.type'
 import { useToastStore } from '@/stores/ui/toast.store'
 
 const DEFAULT_INFO_NUM = 5
-const MAX_INPUT_LENGTH = 100
+const MAX_INPUT_LENGTH = 150
 const userService = new UserService()
 const toastStore = useToastStore()
 const extraList = Object.values(USER_EXTRA_LIST)

@@ -4,7 +4,7 @@
     :profile-img="user.profileImg"
     @click-profile="() => emit('clickProfile')"
   >
-    <div class="user-profile-wrap">
+    <div class="user-profile-wrap mb-2">
       <div class="name-area mr-4">
         <h2 class="text-xl font-bold whitespace-pre">
           {{ nickFormat }} <span class="text-sm">{{ subfix }}</span>
@@ -20,6 +20,12 @@
             <span class="icon-mask geo-icon mr-1"></span>
             <span class="text-sm whitespace-nowrap">
               지역: <b>{{ user.geo }}</b>
+            </span>
+          </li>
+          <li class="align-center">
+            <span class="icon-mask age-icon mr-1"></span>
+            <span class="text-sm whitespace-nowrap">
+              나이: <b>{{ user.age }}세</b>
             </span>
           </li>
         </ul>
@@ -145,5 +151,10 @@ function gotoProfile() {
 .team-icon {
   mask-image: url('@/assets/icons/UsersFill.svg');
   -webkit-mask-image: url('@/assets/icons/UsersFill.svg');
+}
+
+.age-icon {
+  mask-image: url('@/assets/icons/Age.svg');
+  -webkit-mask-image: url('@/assets/icons/Age.svg');
 }
 </style>

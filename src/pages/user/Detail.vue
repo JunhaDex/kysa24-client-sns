@@ -22,10 +22,11 @@
         <Container class="pb-6">
           <Box class="extra-min">
             <h2 class="font-bold text-sm mb-2">자기소개</h2>
-            <div v-if="extraEmpty" class="no-extra">
-              <p>등록된 정보가 없습니다.</p>
-            </div>
-            <ul v-else>
+            <p class="mb-2">
+              <span class="text-sm font-bold align-middle">🎂 생년월일: </span>
+              <span>{{ parseDob }}</span>
+            </p>
+            <ul v-if="!extraEmpty">
               <li class="mb-1" v-for="key in Object.keys(extra!).sort()" :key="key">
                 <span class="text-sm font-bold align-middle">
                   ▸ {{ USER_EXTRA_LIST[key].alias }}:
@@ -66,6 +67,7 @@ import { USER_EXTRA_LIST } from '@/constants/extra.constant'
 import { ChatService } from '@/services/chat.service'
 import { useToastStore } from '@/stores/ui/toast.store'
 import ProfileImgModal from '@/components/modals/ProfileImgModal.vue'
+import { birthday } from '../../utils/index.util'
 
 const route = useRoute()
 const router = useRouter()
@@ -80,6 +82,12 @@ const extra = ref()
 const onRender = ref(true)
 const isMe = computed(() => userStore.myInfo?.ref === uRef)
 const openProfile = ref(false)
+const parseDob = computed(() => {
+  if (user.value?.dob) {
+    return birthday(user.value.dob)
+  }
+  return ''
+})
 
 const routerStack = ref([
   {

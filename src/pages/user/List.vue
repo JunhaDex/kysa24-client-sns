@@ -23,10 +23,10 @@
       </SearchEmpty>
       <Container v-else>
         <UserListCardGroup
-          v-for="key in sortedKey"
+          v-for="(key, dd) in sortedKey"
           :team-name="teamMap.get(key)!.teamName"
           :users="groupMap.get(key)!"
-          :key="key"
+          :key="`${dd}-${key}`"
         />
         <PageLoader :has-more="hasMore" @load-more="() => fetchPage(nextPage)" ref="pageLoader" />
       </Container>
@@ -61,7 +61,7 @@ const groupMap = ref(new Map<number, User[]>())
 const genFilter = ref(0)
 const pageLoader = ref<typeof PageLoader>()
 
-const sortedKey = computed(() => Array.from(groupMap.value.keys()).sort())
+const sortedKey = computed(() => Array.from(groupMap.value.keys()).sort((a, b) => a - b))
 let searchType: 'name' | 'team' | '' = ''
 
 async function fetchPage(pageNo = 1) {

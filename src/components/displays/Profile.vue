@@ -7,8 +7,8 @@
     </p>
   </div>
   <div class="profile-container">
-    <div class="profile" @click="clickProfile">
-      <img :src="profileImgDef" alt="Profile" class="profile-pic" />
+    <div class="profile">
+      <img :src="profileImgDef" alt="Profile" class="profile-pic" @click="clickProfile" />
       <div class="group-details">
         <slot />
       </div>

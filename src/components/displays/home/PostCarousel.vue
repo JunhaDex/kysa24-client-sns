@@ -81,9 +81,9 @@ function touchMove(e: any) {
 
 function touchEnd() {
   if (touchStartX.value - touchEndX.value > 50) {
-    slidePrev()
-  } else if (touchStartX.value - touchEndX.value < -50) {
     slideNext()
+  } else if (touchStartX.value - touchEndX.value < -50) {
+    slidePrev()
   }
 }
 </script>

@@ -13,7 +13,7 @@ export class FirebaseProvider {
 
   async getUserToken() {
     try {
-      const userToken = await getToken(this.messaging, { vapidKey: firebaseConfig.vapidKey })
+      const userToken = await getToken(this.messaging, { vapidKey: firebaseConfig.apiKey })
       if (userToken) {
         return userToken
       } else {

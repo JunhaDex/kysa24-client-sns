@@ -45,7 +45,7 @@
           class="textarea text-input"
           type="text"
           name="username"
-          placeholder="2024 청년대회에 참석하는 나의 소감은?"
+          placeholder="2025 청년대회에 참석하는 나의 소감은?"
           @input="() => (diffCheck.introduce = true)"
         />
       </div>

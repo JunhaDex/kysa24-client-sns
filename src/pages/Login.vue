@@ -79,7 +79,7 @@ async function processLogin(payload: { id: string; pwd: string }) {
   transform: translateX(-50%);
   width: 100%;
   height: calc(100vh - var(--footer-height) + 16px);
-  background-image: url('@/assets/images/app_splash.png');
+  background-image: url('@/assets/images/app_splash_25.jpg');
   background-size: cover;
   background-position: center;
 }

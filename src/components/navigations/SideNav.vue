@@ -123,7 +123,7 @@
             </a>
           </li>
         </ul>
-        <p class="copyright text-xs">© 2024 KYSA <i class="font-cursive">designed with</i> ❤️</p>
+        <p class="copyright text-xs">© 2025 KYSA <i class="font-cursive">designed with</i> ❤️</p>
       </div>
     </div>
   </nav>

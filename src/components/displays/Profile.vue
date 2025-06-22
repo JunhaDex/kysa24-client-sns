@@ -2,8 +2,8 @@
   <div class="cover-image">
     <img v-if="coverImg" :src="coverImg" alt="group-cover" />
     <p v-else class="cover-image-default">
-      '주의 영이... 우리마음 가운데 <br />
-      큰 변화를 이루셨으므로'
+      '내게 가까이 오라 그리하면 <br />
+      내가 너희에게 가까이 가리라.'
     </p>
   </div>
   <div class="profile-container">

@@ -24,7 +24,7 @@
         </a>
       </li>
     </ul>
-    <div>© 2024 KYSA All Rights Reserved. <i class="font-cursive">designed with</i> ❤️</div>
+    <div>© 2025 KYSA All Rights Reserved. <i class="font-cursive">designed with</i> ❤️</div>
   </footer>
 </template>
 <script setup lang="ts"></script>
